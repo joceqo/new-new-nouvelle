@@ -6,15 +6,27 @@
   "scripts": {
     "dev": "turbo run dev",
     "dev:web": "turbo run dev --filter=@nouvelle/web",
+    "dev:web:all": "turbo run dev --filter=@nouvelle/convex --filter=@nouvelle/api --filter=@nouvelle/web",
     "dev:desktop": "turbo run dev --filter=@nouvelle/desktop",
+    "dev:api": "turbo run dev --filter=@nouvelle/api",
+    "dev:convex": "turbo run dev --filter=@nouvelle/convex",
+    "dev:all": "turbo run dev --filter=@nouvelle/convex --filter=@nouvelle/api --filter=@nouvelle/web",
     "build": "turbo run build",
     "build:web": "turbo run build --filter=@nouvelle/web",
     "build:desktop": "turbo run build --filter=@nouvelle/desktop",
+    "build:api": "turbo run build --filter=@nouvelle/api",
     "typecheck": "turbo run typecheck",
     "clean": "turbo run clean && rm -rf node_modules",
     "format": "prettier --write \"**/*.{ts,tsx,md,json}\"",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
-    "storybook": "turbo run storybook --filter=@nouvelle/ui"
+    "storybook": "turbo run storybook --filter=@nouvelle/ui",
+    "docker:up": "docker compose up -d",
+    "docker:up:dashboard": "docker compose --profile dashboard up -d",
+    "docker:down": "docker compose down",
+    "docker:down:clean": "docker compose down -v",
+    "docker:logs": "docker compose logs -f",
+    "docker:ps": "docker compose ps",
+    "docker:restart": "docker compose restart"
   },
   "devDependencies": {
     "@types/node": "^22.10.5",

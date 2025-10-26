@@ -17,8 +17,6 @@ export interface SidebarHeaderProps {
   onLabelClick?: () => void;
   /** Whether workspace switcher is open */
   isOpen?: boolean;
-  /** Show divider under header */
-  showDivider?: boolean;
   /** Custom className */
   className?: string;
 }
@@ -30,7 +28,6 @@ export const SidebarHeader: React.FC<SidebarHeaderProps> = ({
   onCreateNewPage,
   onLabelClick,
   isOpen = false,
-  showDivider = true,
   className,
 }) => {
   return (
@@ -123,14 +120,6 @@ export const SidebarHeader: React.FC<SidebarHeaderProps> = ({
           )}
         </Flex>
       </Flex>
-
-      {/* Divider */}
-      {showDivider && (
-        <div
-          className="h-px w-full"
-          style={{ backgroundColor: "var(--sidebar-divider-color)" }}
-        />
-      )}
     </div>
   );
 };

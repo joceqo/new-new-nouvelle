@@ -36,3 +36,14 @@ export {
   useMatch,
   useMatches,
 } from '@tanstack/react-router';
+
+// Export auth functionality
+export { AuthProvider, useAuth } from './lib/auth-context';
+export { authApiClient, AuthApiClient } from './lib/api-client';
+export type {
+  User,
+  AuthState,
+  SendCodeResponse,
+  VerifyCodeResponse,
+  GetMeResponse,
+} from './lib/types';

@@ -35,16 +35,17 @@
    * These work automatically with Flex gap, padding, margin props!
    * Usage: <Flex gap="5" p="6"> - scales fluidly with viewport
    * Generated using: https://utopia.fyi/space/calculator/
+   * NOTE: Scale adjusted to provide tighter spacing options
    */
-  --space-1: clamp(0.25rem, 0.2rem + 0.25vw, 0.375rem);      /* ~4-6px */
-  --space-2: clamp(0.5rem, 0.4rem + 0.5vw, 0.75rem);         /* ~8-12px */
-  --space-3: clamp(0.75rem, 0.6rem + 0.75vw, 1.125rem);      /* ~12-18px */
-  --space-4: clamp(1rem, 0.8rem + 1vw, 1.5rem);              /* ~16-24px */
-  --space-5: clamp(1.5rem, 1.2rem + 1.5vw, 2.25rem);         /* ~24-36px */
-  --space-6: clamp(2rem, 1.6rem + 2vw, 3rem);                /* ~32-48px */
-  --space-7: clamp(3rem, 2.4rem + 3vw, 4.5rem);              /* ~48-72px */
-  --space-8: clamp(4rem, 3.2rem + 4vw, 6rem);                /* ~64-96px */
-  --space-9: clamp(6rem, 4.8rem + 6vw, 9rem);                /* ~96-144px */
+  --space-1: clamp(0.125rem, 0.1rem + 0.125vw, 0.1875rem);   /* ~2-3px */
+  --space-2: clamp(0.25rem, 0.2rem + 0.25vw, 0.375rem);      /* ~4-6px */
+  --space-3: clamp(0.5rem, 0.4rem + 0.5vw, 0.75rem);         /* ~8-12px */
+  --space-4: clamp(0.75rem, 0.6rem + 0.75vw, 1.125rem);      /* ~12-18px */
+  --space-5: clamp(1rem, 0.8rem + 1vw, 1.5rem);              /* ~16-24px */
+  --space-6: clamp(1.5rem, 1.2rem + 1.5vw, 2.25rem);         /* ~24-36px */
+  --space-7: clamp(2rem, 1.6rem + 2vw, 3rem);                /* ~32-48px */
+  --space-8: clamp(3rem, 2.4rem + 3vw, 4.5rem);              /* ~48-72px */
+  --space-9: clamp(4rem, 3.2rem + 4vw, 6rem);                /* ~64-96px */
 }
 
 /* Custom fluid typography utility classes */

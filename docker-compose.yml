@@ -1,0 +1,72 @@
+services:
+  # Convex Self-Hosted Backend (Official Image)
+  convex-backend:
+    image: ghcr.io/get-convex/convex-backend:latest
+    container_name: new-nouvelle-convex-backend
+    stop_grace_period: 10s
+    stop_signal: SIGINT
+    ports:
+      - "${CONVEX_PORT:-3210}:3210"
+      - "${CONVEX_SITE_PORT:-3211}:3211"
+    volumes:
+      - convex_data:/convex/data
+    environment:
+      - CONVEX_CLOUD_ORIGIN=${CONVEX_CLOUD_ORIGIN:-http://127.0.0.1:3210}
+      - CONVEX_SITE_ORIGIN=${CONVEX_SITE_ORIGIN:-http://127.0.0.1:3211}
+      - RUST_LOG=${RUST_LOG:-info}
+      - DOCUMENT_RETENTION_DELAY=${DOCUMENT_RETENTION_DELAY:-172800}
+    networks:
+      - new-nouvelle-network
+    restart: unless-stopped
+    healthcheck:
+      test: curl -f http://localhost:3210/version
+      interval: 5s
+      start_period: 10s
+
+  # Convex Dashboard (Optional - for inspecting data)
+  convex-dashboard:
+    image: ghcr.io/get-convex/convex-dashboard:latest
+    container_name: new-nouvelle-convex-dashboard
+    stop_grace_period: 10s
+    stop_signal: SIGINT
+    ports:
+      - "${CONVEX_DASHBOARD_PORT:-6791}:6791"
+    environment:
+      - NEXT_PUBLIC_DEPLOYMENT_URL=${NEXT_PUBLIC_DEPLOYMENT_URL:-http://127.0.0.1:3210}
+    depends_on:
+      convex-backend:
+        condition: service_healthy
+    networks:
+      - new-nouvelle-network
+    restart: unless-stopped
+    profiles:
+      - dashboard  # Only start with: docker compose --profile dashboard up
+
+  # Ollama for local AI models (optional)
+  ollama:
+    image: ollama/ollama:latest
+    container_name: new-nouvelle-ollama
+    restart: unless-stopped
+    ports:
+      - "${OLLAMA_EXTERNAL_PORT:-11434}:11434"
+    volumes:
+      - ollama_data:/root/.ollama
+    networks:
+      - new-nouvelle-network
+    environment:
+      - OLLAMA_HOST=0.0.0.0
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:11434/api/version"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+volumes:
+  convex_data:
+    driver: local
+  ollama_data:
+    driver: local
+
+networks:
+  new-nouvelle-network:
+    driver: bridge

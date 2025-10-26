@@ -1,0 +1,41 @@
+# Dependencies
+node_modules
+npm-debug.log
+yarn-error.log
+pnpm-debug.log
+
+# Build outputs
+dist
+.next
+out
+build
+.turbo
+
+# Development
+.git
+.gitignore
+*.md
+.vscode
+.idea
+
+# Environment files (sensitive data)
+.env.local
+.env*.local
+*.env
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+logs
+
+# Testing
+coverage
+.nyc_output
+
+# Misc
+.cache
+tmp
+temp

@@ -24,7 +24,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
   return (
     <Flex
       direction="column"
-      className="h-screen w-64 bg-(--sidebar-bg) text-(--sidebar-item-text)"
+      className="h-screen w-64 bg-[var(--sidebar-bg)] text-[var(--sidebar-item-text)]"
       p="3"
     >
       {/* Header */}
@@ -37,7 +37,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
       />
 
       {/* Navigation Links */}
-      <Flex direction="column" gap="0.5" mb="3">
+      <Flex direction="column" gap="1" mb="3">
         <SidebarItem icon={Search} label="Search" />
         <SidebarItem icon={Home} label="Home" isActive />
         <SidebarItem
