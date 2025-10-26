@@ -1,0 +1,275 @@
+/**
+ * Notion-inspired design tokens
+ * Organized in two layers:
+ * 1. Base palette tokens (raw colors)
+ * 2. Semantic tokens (UI role mappings)
+ */
+
+:root {
+  /* ===================================
+     BASE PALETTE TOKENS - LIGHT MODE
+     =================================== */
+
+  /* Default / Base */
+  --palette-default-text: #373530;
+  --palette-default-bg: #FFFFFF;
+
+  /* Gray / Muted */
+  --palette-gray-text: #787774;
+  --palette-gray-bg: #F1F1EF;
+
+  /* Brown */
+  --palette-brown-text: #976D57;
+  --palette-brown-bg: #F3EEEE;
+
+  /* Orange */
+  --palette-orange-text: #CC782F;
+  --palette-orange-bg: #F8ECDF;
+
+  /* Yellow */
+  --palette-yellow-text: #C29343;
+  --palette-yellow-bg: #FAF3DD;
+
+  /* Green */
+  --palette-green-text: #548164;
+  --palette-green-bg: #EEF3ED;
+
+  /* Blue */
+  --palette-blue-text: #487CA5;
+  --palette-blue-bg: #E9F3F7;
+
+  /* Purple */
+  --palette-purple-text: #8A67AB;
+  --palette-purple-bg: #F6F3F8;
+
+  /* Pink */
+  --palette-pink-text: #B35488;
+  --palette-pink-bg: #F9F2F5;
+
+  /* Red */
+  --palette-red-text: #C4554D;
+  --palette-red-bg: #FAECEC;
+
+  /* ===================================
+     SEMANTIC UI TOKENS - LIGHT MODE
+     =================================== */
+
+  /* Backgrounds */
+  --color-bg-base: var(--palette-default-bg);
+  --color-bg-surface: #FAFAFA;
+  --color-bg-muted: var(--palette-gray-bg);
+  --color-bg-hover: #F5F5F5;
+  --color-bg-active: #EBEBEB;
+
+  /* Text */
+  --color-text-primary: var(--palette-default-text);
+  --color-text-secondary: var(--palette-gray-text);
+  --color-text-muted: #9B9A97;
+  --color-text-inverse: #FFFFFF;
+
+  /* Borders & Dividers */
+  --color-border: #E0E0E0;
+  --color-border-subtle: #EFEFEF;
+  --color-divider: #E9E9E7;
+
+  /* Shadows */
+  --color-shadow-sm: rgba(0, 0, 0, 0.04);
+  --color-shadow-md: rgba(0, 0, 0, 0.07);
+  --color-shadow-lg: rgba(0, 0, 0, 0.12);
+
+  /* Accent colors */
+  --color-accent-default-text: var(--palette-default-text);
+  --color-accent-default-bg: var(--palette-default-bg);
+  --color-accent-gray-text: var(--palette-gray-text);
+  --color-accent-gray-bg: var(--palette-gray-bg);
+  --color-accent-brown-text: var(--palette-brown-text);
+  --color-accent-brown-bg: var(--palette-brown-bg);
+  --color-accent-orange-text: var(--palette-orange-text);
+  --color-accent-orange-bg: var(--palette-orange-bg);
+  --color-accent-yellow-text: var(--palette-yellow-text);
+  --color-accent-yellow-bg: var(--palette-yellow-bg);
+  --color-accent-green-text: var(--palette-green-text);
+  --color-accent-green-bg: var(--palette-green-bg);
+  --color-accent-blue-text: var(--palette-blue-text);
+  --color-accent-blue-bg: var(--palette-blue-bg);
+  --color-accent-purple-text: var(--palette-purple-text);
+  --color-accent-purple-bg: var(--palette-purple-bg);
+  --color-accent-pink-text: var(--palette-pink-text);
+  --color-accent-pink-bg: var(--palette-pink-bg);
+  --color-accent-red-text: var(--palette-red-text);
+  --color-accent-red-bg: var(--palette-red-bg);
+
+  /* ===================================
+     SIDEBAR TOKENS
+     =================================== */
+
+  /* Sidebar container */
+  --sidebar-bg: #F7F6F3;
+  --sidebar-border: var(--color-border-subtle);
+
+  /* Sidebar items */
+  --sidebar-item-bg: transparent;
+  --sidebar-item-bg-hover: rgba(0, 0, 0, 0.04);
+  --sidebar-item-bg-active: rgba(0, 0, 0, 0.08);
+  --sidebar-item-text: var(--color-text-primary);
+  --sidebar-item-text-muted: var(--color-text-secondary);
+  --sidebar-item-radius: 6px;
+
+  /* Sidebar icons */
+  --sidebar-icon-color: var(--color-text-secondary);
+  --sidebar-icon-hover: var(--color-text-primary);
+
+  /* Sidebar actions (ellipsis, plus buttons) */
+  --sidebar-action-color: var(--color-text-muted);
+  --sidebar-action-hover-color: var(--color-text-primary);
+  --sidebar-action-bg-hover: rgba(0, 0, 0, 0.06);
+
+  /* Sidebar header */
+  --sidebar-header-bg: transparent;
+  --sidebar-header-hover-bg: rgba(0, 0, 0, 0.04);
+  --sidebar-header-text: var(--color-text-primary);
+  --sidebar-header-icon: var(--color-text-muted);
+  --sidebar-header-icon-hover: var(--color-text-primary);
+  --sidebar-divider-color: rgba(0, 0, 0, 0.1);
+  --sidebar-header-padding-y: 8px;
+  --sidebar-header-padding-x: 12px;
+
+  /* ===================================
+     LAYOUT & SPACING TOKENS
+     =================================== */
+
+  --radius-sm: 0.25rem;
+  --radius-base: 0.375rem;
+  --radius-md: 0.5rem;
+  --radius-lg: 0.75rem;
+  --radius-xl: 1rem;
+
+  --spacing-unit: 1rem;
+  --spacing-xs: 0.25rem;
+  --spacing-sm: 0.5rem;
+  --spacing-md: 1rem;
+  --spacing-lg: 1.5rem;
+  --spacing-xl: 2rem;
+
+  /* ===================================
+     TYPOGRAPHY TOKENS
+     =================================== */
+
+  --font-family-base: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol";
+  --font-family-mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
+
+  --font-size-xs: 0.75rem;
+  --font-size-sm: 0.875rem;
+  --font-size-base: 1rem;
+  --font-size-lg: 1.125rem;
+  --font-size-xl: 1.25rem;
+  --font-size-2xl: 1.5rem;
+
+  --line-height-tight: 1.25;
+  --line-height-base: 1.5;
+  --line-height-relaxed: 1.75;
+}
+
+/* ===================================
+   DARK MODE OVERRIDES
+   =================================== */
+
+[data-theme="dark"],
+.dark {
+  /* BASE PALETTE TOKENS - DARK MODE */
+
+  /* Default / Base */
+  --palette-default-text: #D4D4D4;
+  --palette-default-bg: #191919;
+
+  /* Gray / Muted */
+  --palette-gray-text: #9B9B9B;
+  --palette-gray-bg: #252525;
+
+  /* Brown */
+  --palette-brown-text: #A27763;
+  --palette-brown-bg: #2E2724;
+
+  /* Orange */
+  --palette-orange-text: #CB7B37;
+  --palette-orange-bg: #36291F;
+
+  /* Yellow */
+  --palette-yellow-text: #C19138;
+  --palette-yellow-bg: #372E20;
+
+  /* Green */
+  --palette-green-text: #4F9768;
+  --palette-green-bg: #242B26;
+
+  /* Blue */
+  --palette-blue-text: #447ACB;
+  --palette-blue-bg: #1F282D;
+
+  /* Purple */
+  --palette-purple-text: #865DBB;
+  --palette-purple-bg: #2A2430;
+
+  /* Pink */
+  --palette-pink-text: #BA4A78;
+  --palette-pink-bg: #2E2328;
+
+  /* Red */
+  --palette-red-text: #BE524B;
+  --palette-red-bg: #332523;
+
+  /* SEMANTIC UI TOKENS - DARK MODE */
+
+  /* Backgrounds */
+  --color-bg-base: var(--palette-default-bg);
+  --color-bg-surface: #1E1E1E;
+  --color-bg-muted: var(--palette-gray-bg);
+  --color-bg-hover: #2A2A2A;
+  --color-bg-active: #37352F;
+
+  /* Text */
+  --color-text-primary: var(--palette-default-text);
+  --color-text-secondary: var(--palette-gray-text);
+  --color-text-muted: #6F6F6F;
+  --color-text-inverse: #191919;
+
+  /* Borders & Dividers */
+  --color-border: #444444;
+  --color-border-subtle: #333333;
+  --color-divider: #2F2F2F;
+
+  /* Shadows */
+  --color-shadow-sm: rgba(0, 0, 0, 0.3);
+  --color-shadow-md: rgba(0, 0, 0, 0.5);
+  --color-shadow-lg: rgba(0, 0, 0, 0.7);
+
+  /* SIDEBAR TOKENS - DARK MODE */
+
+  /* Sidebar container */
+  --sidebar-bg: #1E1E1E;
+  --sidebar-border: var(--color-border-subtle);
+
+  /* Sidebar items */
+  --sidebar-item-bg: transparent;
+  --sidebar-item-bg-hover: rgba(255, 255, 255, 0.06);
+  --sidebar-item-bg-active: rgba(255, 255, 255, 0.12);
+  --sidebar-item-text: var(--color-text-primary);
+  --sidebar-item-text-muted: var(--color-text-secondary);
+
+  /* Sidebar icons */
+  --sidebar-icon-color: var(--color-text-secondary);
+  --sidebar-icon-hover: var(--color-text-primary);
+
+  /* Sidebar actions */
+  --sidebar-action-color: var(--color-text-muted);
+  --sidebar-action-hover-color: var(--color-text-primary);
+  --sidebar-action-bg-hover: rgba(255, 255, 255, 0.08);
+
+  /* Sidebar header */
+  --sidebar-header-bg: transparent;
+  --sidebar-header-hover-bg: rgba(255, 255, 255, 0.06);
+  --sidebar-header-text: var(--color-text-primary);
+  --sidebar-header-icon: var(--color-text-muted);
+  --sidebar-header-icon-hover: var(--color-text-primary);
+  --sidebar-divider-color: rgba(255, 255, 255, 0.1);
+}

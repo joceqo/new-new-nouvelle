@@ -1,0 +1,201 @@
+{
+  "$schema": "./theme-config.schema.json",
+  "name": "Notion-Inspired Theme",
+  "description": "A customizable theme system inspired by Notion's design language",
+  "version": "1.0.0",
+  "themes": {
+    "light": {
+      "palette": {
+        "default": {
+          "text": "#373530",
+          "bg": "#FFFFFF"
+        },
+        "gray": {
+          "text": "#787774",
+          "bg": "#F1F1EF"
+        },
+        "brown": {
+          "text": "#976D57",
+          "bg": "#F3EEEE"
+        },
+        "orange": {
+          "text": "#CC782F",
+          "bg": "#F8ECDF"
+        },
+        "yellow": {
+          "text": "#C29343",
+          "bg": "#FAF3DD"
+        },
+        "green": {
+          "text": "#548164",
+          "bg": "#EEF3ED"
+        },
+        "blue": {
+          "text": "#487CA5",
+          "bg": "#E9F3F7"
+        },
+        "purple": {
+          "text": "#8A67AB",
+          "bg": "#F6F3F8"
+        },
+        "pink": {
+          "text": "#B35488",
+          "bg": "#F9F2F5"
+        },
+        "red": {
+          "text": "#C4554D",
+          "bg": "#FAECEC"
+        }
+      },
+      "semantic": {
+        "background": {
+          "base": "#FFFFFF",
+          "surface": "#FAFAFA",
+          "muted": "#F1F1EF",
+          "hover": "#F5F5F5",
+          "active": "#EBEBEB"
+        },
+        "text": {
+          "primary": "#373530",
+          "secondary": "#787774",
+          "muted": "#9B9A97",
+          "inverse": "#FFFFFF"
+        },
+        "border": {
+          "default": "#E0E0E0",
+          "subtle": "#EFEFEF",
+          "divider": "#E9E9E7"
+        },
+        "shadow": {
+          "sm": "rgba(0, 0, 0, 0.04)",
+          "md": "rgba(0, 0, 0, 0.07)",
+          "lg": "rgba(0, 0, 0, 0.12)"
+        }
+      }
+    },
+    "dark": {
+      "palette": {
+        "default": {
+          "text": "#D4D4D4",
+          "bg": "#191919"
+        },
+        "gray": {
+          "text": "#9B9B9B",
+          "bg": "#252525"
+        },
+        "brown": {
+          "text": "#A27763",
+          "bg": "#2E2724"
+        },
+        "orange": {
+          "text": "#CB7B37",
+          "bg": "#36291F"
+        },
+        "yellow": {
+          "text": "#C19138",
+          "bg": "#372E20"
+        },
+        "green": {
+          "text": "#4F9768",
+          "bg": "#242B26"
+        },
+        "blue": {
+          "text": "#447ACB",
+          "bg": "#1F282D"
+        },
+        "purple": {
+          "text": "#865DBB",
+          "bg": "#2A2430"
+        },
+        "pink": {
+          "text": "#BA4A78",
+          "bg": "#2E2328"
+        },
+        "red": {
+          "text": "#BE524B",
+          "bg": "#332523"
+        }
+      },
+      "semantic": {
+        "background": {
+          "base": "#191919",
+          "surface": "#1E1E1E",
+          "muted": "#252525",
+          "hover": "#2A2A2A",
+          "active": "#37352F"
+        },
+        "text": {
+          "primary": "#D4D4D4",
+          "secondary": "#9B9B9B",
+          "muted": "#6F6F6F",
+          "inverse": "#191919"
+        },
+        "border": {
+          "default": "#444444",
+          "subtle": "#333333",
+          "divider": "#2F2F2F"
+        },
+        "shadow": {
+          "sm": "rgba(0, 0, 0, 0.3)",
+          "md": "rgba(0, 0, 0, 0.5)",
+          "lg": "rgba(0, 0, 0, 0.7)"
+        }
+      }
+    }
+  },
+  "layout": {
+    "radius": {
+      "sm": "0.25rem",
+      "base": "0.375rem",
+      "md": "0.5rem",
+      "lg": "0.75rem",
+      "xl": "1rem"
+    },
+    "spacing": {
+      "unit": "1rem",
+      "xs": "0.25rem",
+      "sm": "0.5rem",
+      "md": "1rem",
+      "lg": "1.5rem",
+      "xl": "2rem"
+    }
+  },
+  "typography": {
+    "fontFamily": {
+      "base": "-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, 'Apple Color Emoji', Arial, sans-serif, 'Segoe UI Emoji', 'Segoe UI Symbol'",
+      "mono": "ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas, 'Liberation Mono', monospace"
+    },
+    "fontSize": {
+      "xs": "0.75rem",
+      "sm": "0.875rem",
+      "base": "1rem",
+      "lg": "1.125rem",
+      "xl": "1.25rem",
+      "2xl": "1.5rem"
+    },
+    "lineHeight": {
+      "tight": "1.25",
+      "base": "1.5",
+      "relaxed": "1.75"
+    }
+  },
+  "customization": {
+    "notes": [
+      "To create a custom theme, copy this JSON and modify the color values",
+      "All colors should be in hex format or rgba() for shadows",
+      "You can override individual tokens or entire theme sections",
+      "Use the theme provider to apply custom themes dynamically"
+    ],
+    "examples": {
+      "customAccent": {
+        "description": "Example of customizing just the blue accent color",
+        "palette": {
+          "blue": {
+            "text": "#2563eb",
+            "bg": "#dbeafe"
+          }
+        }
+      }
+    }
+  }
+}

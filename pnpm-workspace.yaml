@@ -1,0 +1,8 @@
+packages:
+  - "apps/*"
+  - "packages/*"
+  - "packages/sync/*"
+  - "packages/mcp/*"
+  - "packages/mcp/servers/*"
+  - "libs/*"
+  - "tooling/*"
