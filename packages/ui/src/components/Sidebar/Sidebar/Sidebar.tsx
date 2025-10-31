@@ -10,6 +10,7 @@ export interface SidebarProps {
   onToggleSidebar?: () => void;
   onCreateNewPage?: () => void;
   onWorkspaceClick?: () => void;
+  onLogout?: () => void;
   children?: React.ReactNode;
 }
 
@@ -19,13 +20,13 @@ export const Sidebar: React.FC<SidebarProps> = ({
   onToggleSidebar = () => {},
   onCreateNewPage = () => {},
   onWorkspaceClick = () => {},
+  onLogout,
   children,
 }) => {
   return (
     <Flex
       direction="column"
-      className="h-screen w-64 bg-[var(--sidebar-bg)] text-[var(--sidebar-item-text)]"
-      p="3"
+      className="h-screen w-64 px-5 py-5 bg-[var(--sidebar-bg)] text-[var(--sidebar-item-text)]"
     >
       {/* Header */}
       <SidebarHeader
@@ -34,6 +35,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
         onToggleSidebar={onToggleSidebar}
         onCreateNewPage={onCreateNewPage}
         onLabelClick={onWorkspaceClick}
+        onLogout={onLogout}
       />
 
       {/* Navigation Links */}

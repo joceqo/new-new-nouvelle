@@ -1,684 +1,14 @@
 
 > @nouvelle/desktop@0.0.0 dev /Users/jocelin/Desktop/coding/important/new-new-nouvelle/apps/desktop
-> tauri dev
+> vite & tauri dev
 
+
+  [32m[1mVITE[22m v6.4.0[39m  [2mready in [0m[1m214[22m[2m[0m ms[22m
+
+  [32m➜[39m  [1mLocal[22m:   [36mhttp://localhost:[1m1420[22m/[39m
+[2m  [32m➜[39m  [1mNetwork[22m[2m: use [22m[1m--host[22m[2m to expose[22m
 [1m[32m     Running[0m DevCommand (`cargo  run --no-default-features --color always --`)
-[1m[31m       Error[0m Failed to parse version `2` for crate `tauri`
-[1m[31m       Error[0m Failed to parse version `2` for crate `tauri-plugin-shell`
 [1m[32m        Info[0m Watching /Users/jocelin/Desktop/coding/important/new-new-nouvelle/apps/desktop/src-tauri for changes...
-[1m[32m    Updating[0m crates.io index
-[1m[36m       Fetch[0m [========>                        ] 5 complete; 1 ...[1m[36m       Fetch[0m [===========>                     ] 50 complete; 1...[1m[36m       Fetch[0m [===========>                     ] 63 complete; 2...[1m[36m       Fetch[0m [==============>                  ] 67 complete; 1...[1m[36m       Fetch[0m [==============>                  ] 172 complete; ...[1m[36m       Fetch[0m [==============>                  ] 174 complete; ...[1m[36m       Fetch[0m [=================>               ] 186 complete; ...[1m[36m       Fetch[0m [=================>               ] 287 complete; ...[1m[36m       Fetch[0m [=================>               ] 290 complete; ...[1m[36m       Fetch[0m [====================>            ] 299 complete; ...[1m[36m       Fetch[0m [====================>            ] 348 complete; ...[1m[36m       Fetch[0m [====================>            ] 355 complete; ...[1m[36m       Fetch[0m [=============================>   ] 396 complete; ...[K[1m[32m     Locking[0m 462 packages to latest compatible versions
-[1m[36m      Adding[0m toml v0.8.2 [1m[33m(available: v0.8.23)[0m
-[1m[36m      Adding[0m toml_datetime v0.6.3 [1m[33m(available: v0.6.11)[0m
-[1m[36m      Adding[0m toml_edit v0.20.2 [1m[33m(available: v0.20.7)[0m
-[1m[36m Downloading[0m 1 crate                                              [1m[36m Downloading[0m 2 crates                                             [1m[36m Downloading[0m 3 crates                                             [1m[36m Downloading[0m 4 crates                                             [1m[36m Downloading[0m 5 crates                                             [1m[36m Downloading[0m 6 crates                                             [1m[36m Downloading[0m 7 crates                                             [1m[36m Downloading[0m 8 crates                                             [1m[36m Downloading[0m 9 crates                                             [1m[36m Downloading[0m 10 crates                                            [1m[36m Downloading[0m 11 crates                                            [1m[36m Downloading[0m 12 crates                                            [1m[36m Downloading[0m 13 crates                                            [1m[36m Downloading[0m 14 crates                                            [1m[36m Downloading[0m 15 crates                                            [1m[36m Downloading[0m 16 crates                                            [1m[36m Downloading[0m 17 crates                                            [1m[36m Downloading[0m 18 crates                                            [1m[36m Downloading[0m 19 crates                                            [1m[36m Downloading[0m 20 crates                                            [1m[36m Downloading[0m 21 crates                                            [1m[36m Downloading[0m 22 crates                                            [1m[36m Downloading[0m 23 crates                                            [1m[36m Downloading[0m 24 crates                                            [1m[36m Downloading[0m 25 crates                                            [1m[36m Downloading[0m 26 crates                                            [1m[36m Downloading[0m 27 crates                                            [1m[36m Downloading[0m 28 crates                                            [1m[36m Downloading[0m 29 crates                                            [1m[36m Downloading[0m 30 crates                                            [1m[36m Downloading[0m 31 crates                                            [1m[36m Downloading[0m 32 crates                                            [1m[36m Downloading[0m 33 crates                                            [1m[36m Downloading[0m 34 crates                                            [1m[36m Downloading[0m 35 crates                                            [1m[36m Downloading[0m 36 crates                                            [1m[36m Downloading[0m 37 crates                                            [1m[36m Downloading[0m 38 crates                                            [1m[36m Downloading[0m 39 crates                                            [1m[36m Downloading[0m 40 crates                                            [1m[36m Downloading[0m 41 crates                                            [1m[36m Downloading[0m 42 crates                                            [1m[36m Downloading[0m 43 crates                                            [1m[36m Downloading[0m 44 crates                                            [1m[36m Downloading[0m 45 crates                                            [1m[36m Downloading[0m 46 crates                                            [1m[36m Downloading[0m 47 crates                                            [1m[36m Downloading[0m 48 crates                                            [1m[36m Downloading[0m 49 crates                                            [1m[36m Downloading[0m 50 crates                                            [1m[36m Downloading[0m 51 crates                                            [1m[36m Downloading[0m 52 crates                                            [1m[36m Downloading[0m 53 crates                                            [1m[36m Downloading[0m 54 crates                                            [1m[36m Downloading[0m 55 crates                                            [1m[36m Downloading[0m 56 crates                                            [1m[36m Downloading[0m 57 crates                                            [1m[36m Downloading[0m 58 crates                                            [1m[36m Downloading[0m 59 crates                                            [1m[36m Downloading[0m 60 crates                                            [1m[36m Downloading[0m 61 crates                                            [1m[36m Downloading[0m 62 crates                                            [1m[36m Downloading[0m 63 crates                                            [1m[36m Downloading[0m 64 crates                                            [1m[36m Downloading[0m 65 crates                                            [1m[36m Downloading[0m 66 crates                                            [1m[36m Downloading[0m 67 crates                                            [1m[36m Downloading[0m 68 crates                                            [1m[36m Downloading[0m 69 crates                                            [1m[36m Downloading[0m 70 crates                                            [1m[36m Downloading[0m 71 crates                                            [1m[36m Downloading[0m 72 crates                                            [1m[36m Downloading[0m 73 crates                                            [1m[36m Downloading[0m 74 crates                                            [1m[36m Downloading[0m 75 crates                                            [1m[36m Downloading[0m 76 crates                                            [1m[36m Downloading[0m 77 crates                                            [1m[36m Downloading[0m 78 crates                                            [1m[36m Downloading[0m 79 crates                                            [1m[36m Downloading[0m 80 crates                                            [1m[36m Downloading[0m 81 crates                                            [1m[36m Downloading[0m 82 crates                                            [1m[36m Downloading[0m 83 crates                                            [1m[36m Downloading[0m 84 crates                                            [1m[36m Downloading[0m 85 crates                                            [1m[36m Downloading[0m 86 crates                                            [1m[36m Downloading[0m 87 crates                                            [1m[36m Downloading[0m 88 crates                                            [1m[36m Downloading[0m 89 crates                                            [1m[36m Downloading[0m 90 crates                                            [1m[36m Downloading[0m 91 crates                                            [1m[36m Downloading[0m 92 crates                                            [1m[36m Downloading[0m 93 crates                                            [1m[36m Downloading[0m 94 crates                                            [1m[36m Downloading[0m 95 crates                                            [1m[36m Downloading[0m 96 crates                                            [1m[36m Downloading[0m 97 crates                                            [1m[36m Downloading[0m 98 crates                                            [1m[36m Downloading[0m 99 crates                                            [1m[36m Downloading[0m 100 crates                                           [1m[36m Downloading[0m 101 crates                                           [1m[36m Downloading[0m 102 crates                                           [1m[36m Downloading[0m 103 crates                                           [1m[36m Downloading[0m 104 crates                                           [1m[36m Downloading[0m 105 crates                                           [1m[36m Downloading[0m 106 crates                                           [1m[36m Downloading[0m 107 crates                                           [1m[36m Downloading[0m 108 crates                                           [1m[36m Downloading[0m 109 crates                                           [1m[36m Downloading[0m 110 crates                                           [1m[36m Downloading[0m 111 crates                                           [1m[36m Downloading[0m 112 crates                                           [1m[36m Downloading[0m 113 crates                                           [1m[36m Downloading[0m 114 crates                                           [1m[36m Downloading[0m 115 crates                                           [1m[36m Downloading[0m 116 crates                                           [1m[36m Downloading[0m 117 crates                                           [1m[36m Downloading[0m 118 crates                                           [1m[36m Downloading[0m 119 crates                                           [1m[36m Downloading[0m 120 crates                                           [1m[36m Downloading[0m 121 crates                                           [1m[36m Downloading[0m 122 crates                                           [1m[36m Downloading[0m 123 crates                                           [1m[36m Downloading[0m 124 crates                                           [1m[36m Downloading[0m 125 crates                                           [1m[36m Downloading[0m 126 crates                                           [1m[36m Downloading[0m 127 crates                                           [1m[36m Downloading[0m 128 crates                                           [1m[36m Downloading[0m 129 crates                                           [1m[36m Downloading[0m 130 crates                                           [1m[36m Downloading[0m 131 crates                                           [1m[36m Downloading[0m 132 crates                                           [1m[36m Downloading[0m 133 crates                                           [1m[36m Downloading[0m 134 crates                                           [1m[36m Downloading[0m 135 crates                                           [1m[36m Downloading[0m 136 crates                                           [1m[36m Downloading[0m 137 crates                                           [1m[36m Downloading[0m 138 crates                                           [1m[36m Downloading[0m 139 crates                                           [1m[36m Downloading[0m 140 crates                                           [1m[36m Downloading[0m 141 crates                                           [1m[36m Downloading[0m 142 crates                                           [1m[36m Downloading[0m 143 crates                                           [1m[36m Downloading[0m 144 crates                                           [1m[36m Downloading[0m 145 crates                                           [1m[36m Downloading[0m 146 crates                                           [1m[36m Downloading[0m 147 crates                                           [1m[36m Downloading[0m 148 crates                                           [1m[36m Downloading[0m 149 crates                                           [1m[36m Downloading[0m 150 crates                                           [1m[36m Downloading[0m 151 crates                                           [1m[36m Downloading[0m 152 crates                                           [1m[36m Downloading[0m 153 crates                                           [1m[36m Downloading[0m 154 crates                                           [1m[36m Downloading[0m 155 crates                                           [1m[36m Downloading[0m 156 crates                                           [1m[36m Downloading[0m 157 crates                                           [1m[36m Downloading[0m 158 crates                                           [1m[36m Downloading[0m 159 crates                                           [1m[36m Downloading[0m 160 crates                                           [1m[36m Downloading[0m 161 crates                                           [1m[36m Downloading[0m 162 crates                                           [1m[36m Downloading[0m 163 crates                                           [1m[36m Downloading[0m 164 crates                                           [1m[36m Downloading[0m 165 crates                                           [1m[36m Downloading[0m 166 crates                                           [1m[36m Downloading[0m 167 crates                                           [1m[36m Downloading[0m 168 crates                                           [1m[36m Downloading[0m 169 crates                                           [1m[36m Downloading[0m 170 crates                                           [1m[36m Downloading[0m 171 crates                                           [1m[36m Downloading[0m 172 crates                                           [1m[36m Downloading[0m 173 crates                                           [1m[36m Downloading[0m 174 crates                                           [1m[36m Downloading[0m 175 crates                                           [1m[36m Downloading[0m 176 crates                                           [1m[36m Downloading[0m 177 crates                                           [1m[36m Downloading[0m 178 crates                                           [1m[36m Downloading[0m 179 crates                                           [1m[36m Downloading[0m 180 crates                                           [1m[36m Downloading[0m 181 crates                                           [1m[36m Downloading[0m 182 crates                                           [1m[36m Downloading[0m 183 crates                                           [1m[36m Downloading[0m 184 crates                                           [1m[36m Downloading[0m 185 crates                                           [1m[36m Downloading[0m 186 crates                                           [1m[36m Downloading[0m 187 crates                                           [1m[36m Downloading[0m 188 crates                                           [1m[36m Downloading[0m 189 crates                                           [1m[36m Downloading[0m 190 crates                                           [1m[36m Downloading[0m 191 crates                                           [1m[36m Downloading[0m 192 crates                                           [1m[36m Downloading[0m 193 crates                                           [1m[36m Downloading[0m 194 crates                                           [1m[36m Downloading[0m 195 crates                                           [1m[36m Downloading[0m 196 crates                                           [1m[36m Downloading[0m 197 crates                                           [1m[36m Downloading[0m 198 crates                                           [1m[36m Downloading[0m 199 crates                                           [1m[36m Downloading[0m 200 crates                                           [1m[36m Downloading[0m 201 crates                                           [1m[36m Downloading[0m 202 crates                                           [1m[36m Downloading[0m 203 crates                                           [1m[36m Downloading[0m 204 crates                                           [1m[36m Downloading[0m 205 crates                                           [1m[36m Downloading[0m 206 crates                                           [1m[36m Downloading[0m 207 crates                                           [1m[36m Downloading[0m 208 crates                                           [1m[36m Downloading[0m 209 crates                                           [1m[36m Downloading[0m 210 crates                                           [1m[36m Downloading[0m 211 crates                                           [1m[36m Downloading[0m 212 crates                                           [1m[36m Downloading[0m 213 crates                                           [1m[36m Downloading[0m 214 crates                                           [1m[36m Downloading[0m 215 crates                                           [1m[36m Downloading[0m 216 crates                                           [1m[36m Downloading[0m 217 crates                                           [1m[36m Downloading[0m 218 crates                                           [1m[36m Downloading[0m 219 crates                                           [1m[36m Downloading[0m 220 crates                                           [1m[36m Downloading[0m 221 crates                                           [1m[36m Downloading[0m 222 crates                                           [1m[36m Downloading[0m 223 crates                                           [1m[36m Downloading[0m 224 crates                                           [1m[36m Downloading[0m 225 crates                                           [1m[36m Downloading[0m 226 crates                                           [1m[36m Downloading[0m 227 crates                                           [1m[36m Downloading[0m 228 crates                                           [1m[36m Downloading[0m 229 crates                                           [1m[36m Downloading[0m 230 crates                                           [1m[36m Downloading[0m 231 crates                                           [1m[36m Downloading[0m 232 crates                                           [1m[36m Downloading[0m 233 crates                                           [1m[36m Downloading[0m 234 crates                                           [1m[36m Downloading[0m 235 crates                                           [1m[36m Downloading[0m 236 crates                                           [1m[36m Downloading[0m 237 crates                                           [1m[36m Downloading[0m 238 crates                                           [1m[36m Downloading[0m 239 crates                                           [1m[36m Downloading[0m 240 crates                                           [1m[36m Downloading[0m 241 crates                                           [1m[36m Downloading[0m 242 crates                                           [1m[36m Downloading[0m 243 crates                                           [1m[36m Downloading[0m 244 crates                                           [1m[36m Downloading[0m 245 crates                                           [1m[36m Downloading[0m 246 crates                                           [1m[36m Downloading[0m 247 crates                                           [1m[36m Downloading[0m 248 crates                                           [1m[36m Downloading[0m 249 crates                                           [1m[36m Downloading[0m 250 crates                                           [1m[36m Downloading[0m 251 crates                                           [1m[36m Downloading[0m 252 crates                                           [1m[36m Downloading[0m 253 crates                                           [1m[36m Downloading[0m 254 crates                                           [1m[36m Downloading[0m 255 crates                                           [1m[36m Downloading[0m 256 crates                                           [1m[36m Downloading[0m 257 crates                                           [1m[36m Downloading[0m 258 crates                                           [1m[36m Downloading[0m 259 crates                                           [1m[36m Downloading[0m 260 crates                                           [1m[36m Downloading[0m 261 crates                                           [1m[36m Downloading[0m 262 crates                                           [1m[36m Downloading[0m 263 crates                                           [1m[36m Downloading[0m 264 crates                                           [1m[36m Downloading[0m 265 crates                                           [1m[36m Downloading[0m 266 crates                                           [1m[36m Downloading[0m 267 crates                                           [1m[36m Downloading[0m 268 crates                                           [1m[36m Downloading[0m 269 crates                                           [1m[36m Downloading[0m 270 crates                                           [1m[36m Downloading[0m 271 crates                                           [1m[36m Downloading[0m 272 crates                                           [1m[36m Downloading[0m 273 crates                                           [1m[36m Downloading[0m 274 crates                                           [1m[36m Downloading[0m 275 crates                                           [1m[36m Downloading[0m 276 crates                                           [K[1m[32m  Downloaded[0m alloc-stdlib v0.2.2
-[1m[36m Downloading[0m 275 crates, remaining bytes: 1.2MiB                  [K[1m[32m  Downloaded[0m alloc-no-stdlib v2.0.4
-[1m[36m Downloading[0m 274 crates, remaining bytes: 1.1MiB                  [K[1m[32m  Downloaded[0m block-buffer v0.10.4
-[1m[36m Downloading[0m 273 crates, remaining bytes: 3.0MiB                  [K[1m[32m  Downloaded[0m core-graphics-types v0.2.0
-[1m[36m Downloading[0m 272 crates, remaining bytes: 3.0MiB                  [K[1m[32m  Downloaded[0m adler2 v2.0.1
-[1m[36m Downloading[0m 271 crates, remaining bytes: 3.0MiB                  [K[1m[32m  Downloaded[0m cargo-platform v0.1.9
-[1m[36m Downloading[0m 270 crates, remaining bytes: 3.2MiB                  [K[1m[32m  Downloaded[0m cfg-if v1.0.4
-[1m[36m Downloading[0m 269 crates, remaining bytes: 3.1MiB                  [K[1m[32m  Downloaded[0m autocfg v1.5.0
-[1m[36m Downloading[0m 268 crates, remaining bytes: 4.1MiB                  [K[1m[32m  Downloaded[0m stable_deref_trait v1.2.1
-[1m[36m Downloading[0m 267 crates, remaining bytes: 4.1MiB                  [K[1m[32m  Downloaded[0m block2 v0.6.2
-[1m[36m Downloading[0m 266 crates, remaining bytes: 4.1MiB                  [K[1m[32m  Downloaded[0m bitflags v1.3.2
-[1m[36m Downloading[0m 265 crates, remaining bytes: 4.0MiB                  [K[1m[32m  Downloaded[0m kuchikiki v0.8.8-speedreader
-[1m[36m Downloading[0m 264 crates, remaining bytes: 4.2MiB                  [K[1m[32m  Downloaded[0m shared_child v1.1.1
-[1m[36m Downloading[0m 263 crates, remaining bytes: 4.0MiB                  [K[1m[32m  Downloaded[0m synstructure v0.13.2
-[1m[36m Downloading[0m 262 crates, remaining bytes: 4.2MiB                  [K[1m[32m  Downloaded[0m strsim v0.11.1
-[1m[36m Downloading[0m 261 crates, remaining bytes: 4.0MiB                  [K[1m[32m  Downloaded[0m cargo_toml v0.22.3
-[1m[36m Downloading[0m 260 crates, remaining bytes: 4.0MiB                  [K[1m[32m  Downloaded[0m foreign-types v0.5.0
-[1m[36m Downloading[0m 259 crates, remaining bytes: 3.9MiB                  [K[1m[32m  Downloaded[0m camino v1.2.1
-[1m[36m Downloading[0m 258 crates, remaining bytes: 3.9MiB                  [K[1m[32m  Downloaded[0m unic-char-property v0.9.0
-[1m[36m Downloading[0m 257 crates, remaining bytes: 8.4MiB                  [K[1m[32m  Downloaded[0m sigchld v0.2.4
-[1m[36m Downloading[0m 256 crates, remaining bytes: 8.1MiB                  [K[1m[32m  Downloaded[0m lazy_static v1.5.0
-[1m[36m Downloading[0m 255 crates, remaining bytes: 8.1MiB                  [K[1m[32m  Downloaded[0m nodrop v0.1.14
-[1m[36m Downloading[0m 254 crates, remaining bytes: 9.3MiB                  [K[1m[32m  Downloaded[0m embed_plist v1.2.2
-[1m[36m Downloading[0m 253 crates, remaining bytes: 9.2MiB                  [K[1m[32m  Downloaded[0m dpi v0.1.2
-[1m[36m Downloading[0m 252 crates, remaining bytes: 9.2MiB                  [K[1m[32m  Downloaded[0m hex v0.4.3
-[1m[36m Downloading[0m 251 crates, remaining bytes: 9.0MiB                  [K[1m[32m  Downloaded[0m option-ext v0.2.0
-[1m[36m Downloading[0m 250 crates, remaining bytes: 10.4MiB                 [K[1m[32m  Downloaded[0m ppv-lite86 v0.2.21
-[1m[36m Downloading[0m 249 crates, remaining bytes: 9.8MiB                  [K[1m[32m  Downloaded[0m powerfmt v0.2.0
-[1m[36m Downloading[0m 248 crates, remaining bytes: 9.8MiB                  [K[1m[32m  Downloaded[0m rand_chacha v0.3.1
-[1m[36m Downloading[0m 247 crates, remaining bytes: 9.2MiB                  [K[1m[32m  Downloaded[0m smallvec v1.15.1
-[1m[36m Downloading[0m 246 crates, remaining bytes: 9.2MiB                  [K[1m[32m  Downloaded[0m matches v0.1.10
-[1m[36m Downloading[0m 245 crates, remaining bytes: 9.1MiB                  [K[1m[32m  Downloaded[0m same-file v1.0.6
-[1m[36m Downloading[0m 244 crates, remaining bytes: 8.5MiB                  [K[1m[32m  Downloaded[0m thiserror-impl v2.0.17
-[1m[36m Downloading[0m 243 crates, remaining bytes: 8.3MiB                  [K[1m[32m  Downloaded[0m schemars v0.9.0
-[1m[36m Downloading[0m 242 crates, remaining bytes: 8.0MiB                  [K[1m[32m  Downloaded[0m serialize-to-javascript-impl v0.1.2
-[1m[36m Downloading[0m 241 crates, remaining bytes: 7.3MiB                  [K[1m[32m  Downloaded[0m phf v0.10.1
-[1m[36m Downloading[0m 240 crates, remaining bytes: 6.1MiB                  [K[1m[32m  Downloaded[0m rand_chacha v0.2.2
-[1m[36m Downloading[0m 239 crates, remaining bytes: 6.2MiB                  [K[1m[32m  Downloaded[0m ref-cast-impl v1.0.25
-[1m[36m Downloading[0m 238 crates, remaining bytes: 5.8MiB                  [K[1m[32m  Downloaded[0m objc2-quartz-core v0.3.2
-[1m[36m Downloading[0m 237 crates, remaining bytes: 5.0MiB                  [K[1m[32m  Downloaded[0m phf_codegen v0.11.3
-[1m[36m Downloading[0m 236 crates, remaining bytes: 4.7MiB                  [K[1m[32m  Downloaded[0m rand_pcg v0.2.1
-[1m[36m Downloading[0m 235 crates, remaining bytes: 4.3MiB                  [K[1m[32m  Downloaded[0m rand v0.8.5
-[1m[36m Downloading[0m 234 crates, remaining bytes: 4.1MiB                  [K[1m[32m  Downloaded[0m proc-macro2 v1.0.101
-[1m[36m Downloading[0m 233 crates, remaining bytes: 3.7MiB                  [K[1m[32m  Downloaded[0m quote v1.0.41
-[1m[36m Downloading[0m 232 crates, remaining bytes: 3.4MiB                  [K[1m[32m  Downloaded[0m objc2-core-foundation v0.3.2
-[1m[36m Downloading[0m 231 crates, remaining bytes: 3.1MiB                  [K[1m[32m  Downloaded[0m serde_with v3.15.0
-[1m[36m Downloading[0m 230 crates, remaining bytes: 2.9MiB                  [K[1m[32m  Downloaded[0m wry v0.53.4
-[1m[36m Downloading[0m 229 crates, remaining bytes: 2.7MiB                  [K[1m[32m  Downloaded[0m rand v0.7.3
-[1m[36m Downloading[0m 228 crates, remaining bytes: 2.5MiB                  [K[1m[32m  Downloaded[0m tauri v2.8.5
-[1m[36m Downloading[0m 227 crates, remaining bytes: 2.4MiB                  [K[1m[32m  Downloaded[0m objc2 v0.6.3
-[1m[36m Downloading[0m 226 crates, remaining bytes: 2.3MiB                  [K[1m[32m  Downloaded[0m zerocopy v0.8.27
-[1m[36m Downloading[0m 225 crates, remaining bytes: 2.2MiB                  [K[1m[32m  Downloaded[0m tao v0.34.4
-[1m[36m Downloading[0m 224 crates, remaining bytes: 2.2MiB                  [K[1m[32m  Downloaded[0m quick-xml v0.38.3
-[1m[36m Downloading[0m 223 crates, remaining bytes: 2.1MiB                  [K[1m[32m  Downloaded[0m syn v2.0.107
-[1m[36m Downloading[0m 222 crates, remaining bytes: 2.0MiB                  [K[1m[32m  Downloaded[0m syn v1.0.109
-[1m[36m Downloading[0m 221 crates, remaining bytes: 1.9MiB                  [K[1m[32m  Downloaded[0m winnow v0.7.13
-[1m[36m Downloading[0m 220 crates, remaining bytes: 1.8MiB                  [K[1m[32m  Downloaded[0m pin-project-lite v0.2.16
-[1m[36m Downloading[0m 219 crates, remaining bytes: 1.8MiB                  [K[1m[32m  Downloaded[0m tauri-utils v2.7.0
-[1m[36m Downloading[0m 218 crates, remaining bytes: 1.7MiB                  [K[1m[32m  Downloaded[0m plist v1.8.0
-[1m[36m Downloading[0m 217 crates, remaining bytes: 1.7MiB                  [K[1m[32m  Downloaded[0m phf_generator v0.8.0
-[1m[36m Downloading[0m 216 crates, remaining bytes: 1.6MiB                  [K[1m[32m  Downloaded[0m time v0.3.44
-[1m[36m Downloading[0m 215 crates, remaining bytes: 1.5MiB                  [K[1m[32m  Downloaded[0m proc-macro-hack v0.5.20+deprecated
-[1m[36m Downloading[0m 214 crates, remaining bytes: 1.4MiB                  [K[1m[32m  Downloaded[0m precomputed-hash v0.1.1
-[1m[36m Downloading[0m 213 crates, remaining bytes: 1.4MiB                  [K[1m[32m  Downloaded[0m muda v0.17.1
-[1m[36m Downloading[0m 212 crates, remaining bytes: 1.3MiB                  [K[1m[32m  Downloaded[0m objc2-app-kit v0.3.2
-[1m[36m Downloading[0m 211 crates, extracting objc2-app-kit ...             [K[1m[32m  Downloaded[0m zerovec v0.11.4
-[1m[36m Downloading[0m 210 crates, remaining bytes: 1.2MiB                  [K[1m[32m  Downloaded[0m rand_core v0.6.4
-[1m[36m Downloading[0m 209 crates, remaining bytes: 1.1MiB                  [K[1m[32m  Downloaded[0m pathdiff v0.2.3
-[1m[36m Downloading[0m 208 crates, remaining bytes: 1.1MiB                  [K[1m[32m  Downloaded[0m parking_lot_core v0.9.12
-[1m[36m Downloading[0m 207 crates, remaining bytes: 1.0MiB                  [K[1m[32m  Downloaded[0m open v5.3.2
-[1m[36m Downloading[0m 206 crates, remaining bytes: 970.7KiB                [K[1m[32m  Downloaded[0m once_cell v1.21.3
-[1m[36m Downloading[0m 205 crates, remaining bytes: 922.7KiB                [K[1m[32m  Downloaded[0m objc2-security v0.3.2
-[1m[36m Downloading[0m 204 crates, remaining bytes: 874.7KiB                [K[1m[32m  Downloaded[0m memchr v2.7.6
-[1m[36m Downloading[0m 203 crates, remaining bytes: 826.8KiB                [K[1m[32m  Downloaded[0m unicode-segmentation v1.12.0
-[1m[36m Downloading[0m 202 crates, remaining bytes: 775.1KiB                [K[1m[32m  Downloaded[0m tauri-plugin-shell v2.3.1
-[1m[36m Downloading[0m 201 crates, remaining bytes: 714.9KiB                [K[1m[32m  Downloaded[0m libc v0.2.177
-[1m[36m Downloading[0m 200 crates, extracting libc ...                      [K[1m[32m  Downloaded[0m percent-encoding v2.3.2
-[1m[36m Downloading[0m 199 crates, remaining bytes: 619.0KiB                [K[1m[32m  Downloaded[0m parking_lot v0.12.5
-[1m[36m Downloading[0m 198 crates, remaining bytes: 587.0KiB                [K[1m[32m  Downloaded[0m tokio v1.48.0
-[1m[36m Downloading[0m 197 crates, extracting tokio ...                     [K[1m[32m  Downloaded[0m objc2-web-kit v0.3.2
-[1m[36m Downloading[0m 196 crates, remaining bytes: 534.4KiB                [K[1m[32m  Downloaded[0m regex-automata v0.4.13
-[1m[36m Downloading[0m 195 crates, extracting regex-automata ...            [K[1m[32m  Downloaded[0m regex v1.12.2
-[1m[36m Downloading[0m 194 crates, remaining bytes: 502.4KiB                [K[1m[32m  Downloaded[0m serde v1.0.228
-[1m[36m Downloading[0m 193 crates, remaining bytes: 486.4KiB                [K[1m[32m  Downloaded[0m objc2-core-text v0.3.2
-[1m[36m Downloading[0m 192 crates, remaining bytes: 470.4KiB                [K[1m[32m  Downloaded[0m objc2-core-image v0.3.2
-[1m[36m Downloading[0m 191 crates, remaining bytes: 450.7KiB                [K[1m[32m  Downloaded[0m mio v1.1.0
-[1m[36m Downloading[0m 190 crates, remaining bytes: 434.7KiB                [K[1m[32m  Downloaded[0m url v2.5.7
-[1m[36m Downloading[0m 189 crates, remaining bytes: 418.7KiB                [K[1m[32m  Downloaded[0m serde_json v1.0.145
-[1m[36m Downloading[0m 188 crates, remaining bytes: 402.7KiB                [K[1m[32m  Downloaded[0m selectors v0.24.0
-[1m[36m Downloading[0m 187 crates, remaining bytes: 386.7KiB                [K[1m[32m  Downloaded[0m objc2-core-graphics v0.3.2
-[1m[36m Downloading[0m 186 crates, remaining bytes: 370.7KiB                [K[1m[32m  Downloaded[0m zerotrie v0.2.2
-[1m[36m Downloading[0m 185 crates, remaining bytes: 350.7KiB                [K[1m[32m  Downloaded[0m uuid v1.18.1
-[1m[36m Downloading[0m 184 crates, remaining bytes: 334.7KiB                [K[1m[32m  Downloaded[0m ref-cast v1.0.25
-[1m[36m Downloading[0m 183 crates, remaining bytes: 318.7KiB                [K[1m[32m  Downloaded[0m raw-window-handle v0.6.2
-[1m[36m Downloading[0m 182 crates, remaining bytes: 302.7KiB                [K[1m[32m  Downloaded[0m serde_with_macros v3.15.0
-[1m[36m Downloading[0m 181 crates, remaining bytes: 286.7KiB                [K[1m[32m  Downloaded[0m serde_spanned v1.0.3
-[1m[36m Downloading[0m 180 crates, remaining bytes: 270.7KiB                [K[1m[32m  Downloaded[0m serde_repr v0.1.20
-[1m[36m Downloading[0m 179 crates, remaining bytes: 250.7KiB                [K[1m[32m  Downloaded[0m serde_derive_internals v0.29.1
-[1m[36m Downloading[0m 178 crates, remaining bytes: 234.7KiB                [K[1m[32m  Downloaded[0m serde_derive v1.0.228
-[1m[36m Downloading[0m 177 crates, remaining bytes: 218.7KiB                [K[1m[32m  Downloaded[0m png v0.17.16
-[1m[36m Downloading[0m 176 crates, remaining bytes: 202.7KiB                [K[1m[32m  Downloaded[0m semver v1.0.27
-[1m[36m Downloading[0m 175 crates, remaining bytes: 186.7KiB                [K[1m[32m  Downloaded[0m objc2-cloud-kit v0.3.2
-[1m[36m Downloading[0m 174 crates, remaining bytes: 170.7KiB                [K[1m[32m  Downloaded[0m num-traits v0.2.19
-[1m[36m Downloading[0m 173 crates, remaining bytes: 150.7KiB                [K[1m[32m  Downloaded[0m walkdir v2.5.0
-[1m[36m Downloading[0m 172 crates, remaining bytes: 134.7KiB                [K[1m[32m  Downloaded[0m typenum v1.19.0
-[1m[36m Downloading[0m 171 crates, remaining bytes: 118.7KiB                [K[1m[32m  Downloaded[0m tray-icon v0.21.1
-[1m[36m Downloading[0m 170 crates, remaining bytes: 102.7KiB                [K[1m[32m  Downloaded[0m potential_utf v0.1.3
-[1m[36m Downloading[0m 169 crates, remaining bytes: 86.7KiB                 [K[1m[32m  Downloaded[0m schemars_derive v0.8.22
-[1m[36m Downloading[0m 168 crates, remaining bytes: 70.7KiB                 [K[1m[32m  Downloaded[0m rustc_version v0.4.1
-[1m[36m Downloading[0m 167 crates, remaining bytes: 50.7KiB                 [K[1m[32m  Downloaded[0m regex-syntax v0.8.8
-[1m[36m Downloading[0m 166 crates, remaining bytes: 34.7KiB                 [K[1m[32m  Downloaded[0m phf_macros v0.11.3
-[1m[36m Downloading[0m 165 crates, remaining bytes: 18.7KiB                 [K[1m[32m  Downloaded[0m phf_macros v0.10.0
-[1m[36m Downloading[0m 164 crates, remaining bytes: 2.7KiB                  [K[1m[32m  Downloaded[0m window-vibrancy v0.6.0
-[1m[36m Downloading[0m 163 crates, extracting window-vibrancy ...           [K[1m[32m  Downloaded[0m phf_generator v0.11.3
-[1m[36m Downloading[0m 162 crates                                           [K[1m[32m  Downloaded[0m phf_generator v0.10.0
-[1m[36m Downloading[0m 161 crates                                           [K[1m[32m  Downloaded[0m objc2-foundation v0.3.2
-[1m[36m Downloading[0m 160 crates                                           [K[1m[32m  Downloaded[0m miniz_oxide v0.8.9
-[1m[36m Downloading[0m 159 crates                                           [K[1m[32m  Downloaded[0m urlpattern v0.3.0
-[1m[36m Downloading[0m 158 crates                                           [K[1m[32m  Downloaded[0m toml_parser v1.0.4
-[1m[36m Downloading[0m 157 crates                                           [K[1m[32m  Downloaded[0m phf v0.8.0
-[1m[36m Downloading[0m 156 crates                                           [K[1m[32m  Downloaded[0m serde_core v1.0.228
-[1m[36m Downloading[0m 155 crates                                           [K[1m[32m  Downloaded[0m serde-untagged v0.1.9
-[1m[36m Downloading[0m 154 crates                                           [K[1m[32m  Downloaded[0m scopeguard v1.2.0
-[1m[36m Downloading[0m 153 crates                                           [K[1m[32m  Downloaded[0m objc2-exception-helper v0.1.1
-[1m[36m Downloading[0m 152 crates                                           [K[1m[32m  Downloaded[0m servo_arc v0.2.0
-[1m[36m Downloading[0m 151 crates                                           [K[1m[32m  Downloaded[0m objc2-core-data v0.3.2
-[1m[36m Downloading[0m 150 crates                                           [K[1m[32m  Downloaded[0m log v0.4.28
-[1m[36m Downloading[0m 149 crates                                           [K[1m[32m  Downloaded[0m lock_api v0.4.14
-[1m[36m Downloading[0m 148 crates                                           [K[1m[32m  Downloaded[0m litemap v0.8.0
-[1m[36m Downloading[0m 147 crates                                           [K[1m[32m  Downloaded[0m writeable v0.6.1
-[1m[36m Downloading[0m 146 crates                                           [K[1m[32m  Downloaded[0m unicode-ident v1.0.19
-[1m[36m Downloading[0m 145 crates                                           [K[1m[32m  Downloaded[0m typeid v1.0.3
-[1m[36m Downloading[0m 144 crates                                           [K[1m[32m  Downloaded[0m toml v0.9.8
-[1m[36m Downloading[0m 143 crates                                           [K[1m[32m  Downloaded[0m tinystr v0.8.1
-[1m[36m Downloading[0m 142 crates                                           [K[1m[32m  Downloaded[0m time-macros v0.2.24
-[1m[36m Downloading[0m 141 crates                                           [K[1m[32m  Downloaded[0m thiserror v2.0.17
-[1m[36m Downloading[0m 140 crates                                           [K[1m[32m  Downloaded[0m thiserror v1.0.69
-[1m[36m Downloading[0m 139 crates                                           [K[1m[32m  Downloaded[0m tendril v0.4.3
-[1m[36m Downloading[0m 138 crates                                           [K[1m[32m  Downloaded[0m tauri-winres v0.3.3
-[1m[36m Downloading[0m 137 crates                                           [K[1m[32m  Downloaded[0m tauri-runtime-wry v2.8.1
-[1m[36m Downloading[0m 136 crates                                           [K[1m[32m  Downloaded[0m encoding_rs v0.8.35
-[1m[36m Downloading[0m 135 crates, extracting encoding_rs ...               [K[1m[32m  Downloaded[0m serialize-to-javascript v0.1.2
-[1m[36m Downloading[0m 134 crates                                           [K[1m[32m  Downloaded[0m phf_shared v0.10.0
-[1m[36m Downloading[0m 133 crates                                           [K[1m[32m  Downloaded[0m phf_shared v0.8.0
-[1m[36m Downloading[0m 132 crates                                           [K[1m[32m  Downloaded[0m objc2-io-surface v0.3.2
-[1m[36m Downloading[0m 131 crates                                           [K[1m[32m  Downloaded[0m schemars v1.0.4
-[1m[36m Downloading[0m 130 crates                                           [K[1m[32m  Downloaded[0m rand_core v0.5.1
-[1m[36m Downloading[0m 129 crates                                           [K[1m[32m  Downloaded[0m objc2-core-video v0.3.2
-[1m[36m Downloading[0m 128 crates                                           [K[1m[32m  Downloaded[0m markup5ever v0.14.1
-[1m[36m Downloading[0m 127 crates                                           [K[1m[32m  Downloaded[0m zerovec-derive v0.11.1
-[1m[36m Downloading[0m 126 crates                                           [K[1m[32m  Downloaded[0m yoke v0.8.0
-[1m[36m Downloading[0m 125 crates                                           [K[1m[32m  Downloaded[0m utf-8 v0.7.6
-[1m[36m Downloading[0m 124 crates                                           [K[1m[32m  Downloaded[0m toml_writer v1.0.4
-[1m[36m Downloading[0m 123 crates                                           [K[1m[32m  Downloaded[0m time-core v0.1.6
-[1m[36m Downloading[0m 122 crates                                           [K[1m[32m  Downloaded[0m tauri-runtime v2.8.0
-[1m[36m Downloading[0m 121 crates                                           [K[1m[32m  Downloaded[0m socket2 v0.6.1
-[1m[36m Downloading[0m 120 crates                                           [K[1m[32m  Downloaded[0m brotli v8.0.2
-[1m[36m Downloading[0m 119 crates, extracting brotli ...                    [K[1m[32m  Downloaded[0m schemars v0.8.22
-[1m[36m Downloading[0m 118 crates                                           [K[1m[32m  Downloaded[0m ryu v1.0.20
-[1m[36m Downloading[0m 117 crates                                           [K[1m[32m  Downloaded[0m zerofrom-derive v0.1.6
-[1m[36m Downloading[0m 116 crates                                           [K[1m[32m  Downloaded[0m version_check v0.9.5
-[1m[36m Downloading[0m 115 crates                                           [K[1m[32m  Downloaded[0m unic-ucd-version v0.9.0
-[1m[36m Downloading[0m 114 crates                                           [K[1m[32m  Downloaded[0m unic-ucd-ident v0.9.0
-[1m[36m Downloading[0m 113 crates                                           [K[1m[32m  Downloaded[0m mime v0.3.17
-[1m[36m Downloading[0m 112 crates                                           [K[1m[32m  Downloaded[0m chrono v0.4.42
-[1m[36m Downloading[0m 111 crates                                           [K[1m[32m  Downloaded[0m mac v0.1.1
-[1m[36m Downloading[0m 110 crates                                           [K[1m[32m  Downloaded[0m zerofrom v0.1.6
-[1m[36m Downloading[0m 109 crates                                           [K[1m[32m  Downloaded[0m tauri-macros v2.4.0
-[1m[36m Downloading[0m 108 crates                                           [K[1m[32m  Downloaded[0m signal-hook v0.3.18
-[1m[36m Downloading[0m 107 crates                                           [K[1m[32m  Downloaded[0m idna v1.1.0
-[1m[36m Downloading[0m 106 crates                                           [K[1m[32m  Downloaded[0m icu_properties_data v2.0.1
-[1m[36m Downloading[0m 105 crates                                           [K[1m[32m  Downloaded[0m icu_locale_core v2.0.0
-[1m[36m Downloading[0m 104 crates                                           [K[1m[32m  Downloaded[0m ico v0.4.0
-[1m[36m Downloading[0m 103 crates                                           [K[1m[32m  Downloaded[0m hashbrown v0.16.0
-[1m[36m Downloading[0m 102 crates                                           [K[1m[32m  Downloaded[0m derive_more v0.99.20
-[1m[36m Downloading[0m 101 crates                                           [K[1m[32m  Downloaded[0m darling_core v0.21.3
-[1m[36m Downloading[0m 100 crates                                           [K[1m[32m  Downloaded[0m crossbeam-channel v0.5.15
-[1m[36m Downloading[0m 99 crates                                            [K[1m[32m  Downloaded[0m brotli-decompressor v5.0.0
-[1m[36m Downloading[0m 98 crates                                            [K[1m[32m  Downloaded[0m aho-corasick v1.1.3
-[1m[36m Downloading[0m 97 crates                                            [K[1m[32m  Downloaded[0m phf_shared v0.11.3
-[1m[36m Downloading[0m 96 crates                                            [K[1m[32m  Downloaded[0m phf_codegen v0.8.0
-[1m[36m Downloading[0m 95 crates                                            [K[1m[32m  Downloaded[0m phf v0.11.3
-[1m[36m Downloading[0m 94 crates                                            [K[1m[32m  Downloaded[0m os_pipe v1.2.3
-[1m[36m Downloading[0m 93 crates                                            [K[1m[32m  Downloaded[0m num-conv v0.1.0
-[1m[36m Downloading[0m 92 crates                                            [K[1m[32m  Downloaded[0m new_debug_unreachable v1.0.6
-[1m[36m Downloading[0m 91 crates                                            [K[1m[32m  Downloaded[0m yoke-derive v0.8.0
-[1m[36m Downloading[0m 90 crates                                            [K[1m[32m  Downloaded[0m tauri-codegen v2.4.0
-[1m[36m Downloading[0m 89 crates                                            [K[1m[32m  Downloaded[0m tauri-build v2.4.1
-[1m[36m Downloading[0m 88 crates                                            [K[1m[32m  Downloaded[0m icu_properties v2.0.1
-[1m[36m Downloading[0m 87 crates                                            [K[1m[32m  Downloaded[0m objc2-javascript-core v0.3.2
-[1m[36m Downloading[0m 86 crates                                            [K[1m[32m  Downloaded[0m objc2-encode v4.1.0
-[1m[36m Downloading[0m 85 crates                                            [K[1m[32m  Downloaded[0m indexmap v2.12.0
-[1m[36m Downloading[0m 84 crates                                            [K[1m[32m  Downloaded[0m iana-time-zone v0.1.64
-[1m[36m Downloading[0m 83 crates                                            [K[1m[32m  Downloaded[0m http v1.3.1
-[1m[36m Downloading[0m 82 crates                                            [K[1m[32m  Downloaded[0m html5ever v0.29.1
-[1m[36m Downloading[0m 81 crates                                            [K[1m[32m  Downloaded[0m hashbrown v0.12.3
-[1m[36m Downloading[0m 80 crates                                            [K[1m[32m  Downloaded[0m getrandom v0.3.4
-[1m[36m Downloading[0m 79 crates                                            [K[1m[32m  Downloaded[0m getrandom v0.2.16
-[1m[36m Downloading[0m 78 crates                                            [K[1m[32m  Downloaded[0m getrandom v0.1.16
-[1m[36m Downloading[0m 77 crates                                            [K[1m[32m  Downloaded[0m find-msvc-tools v0.1.4
-[1m[36m Downloading[0m 76 crates                                            [K[1m[32m  Downloaded[0m dispatch2 v0.3.0
-[1m[36m Downloading[0m 75 crates                                            [K[1m[32m  Downloaded[0m crc32fast v1.5.0
-[1m[36m Downloading[0m 74 crates                                            [K[1m[32m  Downloaded[0m match_token v0.1.0
-[1m[36m Downloading[0m 73 crates                                            [K[1m[32m  Downloaded[0m utf8_iter v1.0.4
-[1m[36m Downloading[0m 72 crates                                            [K[1m[32m  Downloaded[0m unic-common v0.9.0
-[1m[36m Downloading[0m 71 crates                                            [K[1m[32m  Downloaded[0m unic-char-range v0.9.0
-[1m[36m Downloading[0m 70 crates                                            [K[1m[32m  Downloaded[0m keyboard-types v0.7.0
-[1m[36m Downloading[0m 69 crates                                            [K[1m[32m  Downloaded[0m infer v0.19.0
-[1m[36m Downloading[0m 68 crates                                            [K[1m[32m  Downloaded[0m icu_normalizer_data v2.0.0
-[1m[36m Downloading[0m 67 crates                                            [K[1m[32m  Downloaded[0m icu_collections v2.0.0
-[1m[36m Downloading[0m 66 crates                                            [K[1m[32m  Downloaded[0m erased-serde v0.4.8
-[1m[36m Downloading[0m 65 crates                                            [K[1m[32m  Downloaded[0m dtoa v1.0.10
-[1m[36m Downloading[0m 64 crates                                            [K[1m[32m  Downloaded[0m cc v1.2.41
-[1m[36m Downloading[0m 63 crates                                            [K[1m[32m  Downloaded[0m futf v0.1.5
-[1m[36m Downloading[0m 62 crates                                            [K[1m[32m  Downloaded[0m fnv v1.0.7
-[1m[36m Downloading[0m 61 crates                                            [K[1m[32m  Downloaded[0m dtoa-short v0.3.5
-[1m[36m Downloading[0m 60 crates                                            [K[1m[32m  Downloaded[0m displaydoc v0.2.5
-[1m[36m Downloading[0m 59 crates                                            [K[1m[32m  Downloaded[0m dirs-sys v0.5.0
-[1m[36m Downloading[0m 58 crates                                            [K[1m[32m  Downloaded[0m ctor v0.2.9
-[1m[36m Downloading[0m 57 crates                                            [K[1m[32m  Downloaded[0m cssparser v0.29.6
-[1m[36m Downloading[0m 56 crates                                            [K[1m[32m  Downloaded[0m crypto-common v0.1.6
-[1m[36m Downloading[0m 55 crates                                            [K[1m[32m  Downloaded[0m cookie v0.18.1
-[1m[36m Downloading[0m 54 crates                                            [K[1m[32m  Downloaded[0m bytes v1.10.1
-[1m[36m Downloading[0m 53 crates                                            [K[1m[32m  Downloaded[0m tauri-plugin v2.4.0
-[1m[36m Downloading[0m 52 crates                                            [K[1m[32m  Downloaded[0m sha2 v0.10.9
-[1m[36m Downloading[0m 51 crates                                            [K[1m[32m  Downloaded[0m itoa v1.0.15
-[1m[36m Downloading[0m 50 crates                                            [K[1m[32m  Downloaded[0m indexmap v1.9.3
-[1m[36m Downloading[0m 49 crates                                            [K[1m[32m  Downloaded[0m idna_adapter v1.2.1
-[1m[36m Downloading[0m 48 crates                                            [K[1m[32m  Downloaded[0m icu_provider v2.0.0
-[1m[36m Downloading[0m 47 crates                                            [K[1m[32m  Downloaded[0m glob v0.3.3
-[1m[36m Downloading[0m 46 crates                                            [K[1m[32m  Downloaded[0m fxhash v0.2.1
-[1m[36m Downloading[0m 45 crates                                            [K[1m[32m  Downloaded[0m foreign-types-shared v0.3.1
-[1m[36m Downloading[0m 44 crates                                            [K[1m[32m  Downloaded[0m foreign-types-macros v0.2.3
-[1m[36m Downloading[0m 43 crates                                            [K[1m[32m  Downloaded[0m fdeflate v0.3.7
-[1m[36m Downloading[0m 42 crates                                            [K[1m[32m  Downloaded[0m equivalent v1.0.2
-[1m[36m Downloading[0m 41 crates                                            [K[1m[32m  Downloaded[0m dyn-clone v1.0.20
-[1m[36m Downloading[0m 40 crates                                            [K[1m[32m  Downloaded[0m cpufeatures v0.2.17
-[1m[36m Downloading[0m 39 crates                                            [K[1m[32m  Downloaded[0m icu_normalizer v2.0.0
-[1m[36m Downloading[0m 38 crates                                            [K[1m[32m  Downloaded[0m flate2 v1.1.4
-[1m[36m Downloading[0m 37 crates                                            [K[1m[32m  Downloaded[0m deranged v0.5.4
-[1m[36m Downloading[0m 36 crates                                            [K[1m[32m  Downloaded[0m core-foundation-sys v0.8.7
-[1m[36m Downloading[0m 35 crates                                            [K[1m[32m  Downloaded[0m cfb v0.7.3
-[1m[36m Downloading[0m 34 crates                                            [K[1m[32m  Downloaded[0m bitflags v2.9.4
-[1m[36m Downloading[0m 33 crates                                            [K[1m[32m  Downloaded[0m base64 v0.22.1
-[1m[36m Downloading[0m 32 crates                                            [K[1m[32m  Downloaded[0m base64 v0.21.7
-[1m[36m Downloading[0m 31 crates                                            [K[1m[32m  Downloaded[0m toml_datetime v0.7.3
-[1m[36m Downloading[0m 30 crates                                            [K[1m[32m  Downloaded[0m thiserror-impl v1.0.69
-[1m[36m Downloading[0m 29 crates                                            [K[1m[32m  Downloaded[0m swift-rs v1.0.7
-[1m[36m Downloading[0m 28 crates                                            [K[1m[32m  Downloaded[0m string_cache v0.8.9
-[1m[36m Downloading[0m 27 crates                                            [K[1m[32m  Downloaded[0m siphasher v1.0.1
-[1m[36m Downloading[0m 26 crates                                            [K[1m[32m  Downloaded[0m simd-adler32 v0.3.7
-[1m[36m Downloading[0m 25 crates                                            [K[1m[32m  Downloaded[0m jsonptr v0.6.3
-[1m[36m Downloading[0m 24 crates                                            [K[1m[32m  Downloaded[0m form_urlencoded v1.2.2
-[1m[36m Downloading[0m 23 crates                                            [K[1m[32m  Downloaded[0m embed-resource v3.0.6
-[1m[36m Downloading[0m 22 crates                                            [K[1m[32m  Downloaded[0m darling v0.21.3
-[1m[36m Downloading[0m 21 crates                                            [K[1m[32m  Downloaded[0m core-graphics v0.24.0
-[1m[36m Downloading[0m 20 crates                                            [K[1m[32m  Downloaded[0m core-foundation v0.10.1
-[1m[36m Downloading[0m 19 crates                                            [K[1m[32m  Downloaded[0m siphasher v0.3.11
-[1m[36m Downloading[0m 18 crates                                            [K[1m[32m  Downloaded[0m signal-hook-registry v1.4.6
-[1m[36m Downloading[0m 17 crates                                            [K[1m[32m  Downloaded[0m shlex v1.3.0
-[1m[36m Downloading[0m 16 crates                                            [K[1m[32m  Downloaded[0m heck v0.5.0
-[1m[36m Downloading[0m 15 crates                                            [K[1m[32m  Downloaded[0m dunce v1.0.5
-[1m[36m Downloading[0m 14 crates                                            [K[1m[32m  Downloaded[0m crossbeam-utils v0.8.21
-[1m[36m Downloading[0m 13 crates                                            [K[1m[32m  Downloaded[0m convert_case v0.4.0
-[1m[36m Downloading[0m 12 crates                                            [K[1m[32m  Downloaded[0m string_cache_codegen v0.5.4
-[1m[36m Downloading[0m 11 crates                                            [K[1m[32m  Downloaded[0m json-patch v3.0.1
-[1m[36m Downloading[0m 10 crates                                            [K[1m[32m  Downloaded[0m ident_case v1.0.1
-[1m[36m Downloading[0m 9 crates                                             [K[1m[32m  Downloaded[0m digest v0.10.7
-[1m[36m Downloading[0m 8 crates                                             [K[1m[32m  Downloaded[0m cssparser-macros v0.6.1
-[1m[36m Downloading[0m 7 crates                                             [K[1m[32m  Downloaded[0m cargo_metadata v0.19.2
-[1m[36m Downloading[0m 6 crates                                             [K[1m[32m  Downloaded[0m byteorder v1.5.0
-[1m[36m Downloading[0m 5 crates                                             [K[1m[32m  Downloaded[0m anyhow v1.0.100
-[1m[36m Downloading[0m 4 crates                                             [K[1m[32m  Downloaded[0m generic-array v0.14.9
-[1m[36m Downloading[0m 3 crates                                             [K[1m[32m  Downloaded[0m dispatch v0.2.0
-[1m[36m Downloading[0m 2 crates                                             [K[1m[32m  Downloaded[0m dirs v6.0.0
-[1m[36m Downloading[0m 1 crate                                              [K[1m[32m  Downloaded[0m darling_macro v0.21.3
-[1m[36m Downloading[0m 0 crates                                             [K[1m[32m  Downloaded[0m 276 crates (18.8MiB) in 1.39s (largest was `window-vibrancy` at 1.3MiB)
-[1m[32m   Compiling[0m proc-macro2 v1.0.101
-[1m[32m   Compiling[0m quote v1.0.41
-[1m[32m   Compiling[0m unicode-ident v1.0.19
-[1m[32m   Compiling[0m libc v0.2.177
-[1m[32m   Compiling[0m cfg-if v1.0.4
-[1m[32m   Compiling[0m serde_core v1.0.228
-[1m[32m   Compiling[0m zerocopy v0.8.27
-[1m[32m   Compiling[0m memchr v2.7.6
-[1m[32m   Compiling[0m itoa v1.0.15
-[1m[32m   Compiling[0m serde v1.0.228
-[1m[32m   Compiling[0m smallvec v1.15.1
-[1m[36m    Building[0m [                           ] 0/389: serde_core(bu...[K[1m[32m   Compiling[0m shlex v1.3.0
-[1m[36m    Building[0m [                           ] 1/389: serde_core(bu...[K[1m[32m   Compiling[0m find-msvc-tools v0.1.4
-[1m[36m    Building[0m [                           ] 2/389: serde_core(bu...[K[1m[32m   Compiling[0m writeable v0.6.1
-[1m[36m    Building[0m [                           ] 3/389: serde_core(bu...[K[1m[32m   Compiling[0m litemap v0.8.0
-[1m[36m    Building[0m [                           ] 5/389: serde_core(bu...[K[1m[32m   Compiling[0m cc v1.2.41
-[1m[36m    Building[0m [                           ] 6/389: serde_core(bu...[K[1m[32m   Compiling[0m stable_deref_trait v1.2.1
-[1m[36m    Building[0m [                           ] 7/389: serde_core(bu...[K[1m[32m   Compiling[0m icu_normalizer_data v2.0.0
-[1m[36m    Building[0m [                           ] 8/389: serde_core(bu...[K[1m[32m   Compiling[0m icu_properties_data v2.0.1
-[1m[36m    Building[0m [                           ] 9/389: serde_core(bu...[K[1m[32m   Compiling[0m siphasher v1.0.1
-[1m[36m    Building[0m [                          ] 10/389: serde_core(bu...[K[1m[32m   Compiling[0m phf_shared v0.11.3
-[1m[36m    Building[0m [                          ] 11/389: serde_core(bu...[K[1m[32m   Compiling[0m fnv v1.0.7
-[1m[36m    Building[0m [                          ] 12/389: serde_core(bu...[K[1m[32m   Compiling[0m ryu v1.0.20
-[1m[36m    Building[0m [                          ] 13/389: serde_core(bu...[K[1m[32m   Compiling[0m siphasher v0.3.11
-[1m[36m    Building[0m [                          ] 14/389: serde_core(bu...[K[1m[32m   Compiling[0m utf8_iter v1.0.4
-[1m[36m    Building[0m [>                         ] 15/389: serde_core(bu...[K[1m[32m   Compiling[0m getrandom v0.1.16
-[1m[36m    Building[0m [>                         ] 16/389: serde_core(bu...[K[1m[32m   Compiling[0m objc2-exception-helper v0.1.1
-[1m[36m    Building[0m [>                         ] 17/389: serde_core(bu...[1m[36m    Building[0m [>                         ] 18/389: serde_core(bu...[1m[36m    Building[0m [>                         ] 19/389: serde_core(bu...[1m[36m    Building[0m [>                         ] 21/389: serde_core(bu...[1m[36m    Building[0m [>                         ] 28/389: libc(build), ...[1m[36m    Building[0m [>                         ] 29/389: libc(build), ...[K[1m[32m   Compiling[0m byteorder v1.5.0
-[1m[36m    Building[0m [=>                        ] 30/389: libc(build), ...[K[1m[32m   Compiling[0m objc2 v0.6.3
-[1m[36m    Building[0m [=>                        ] 31/389: libc(build), ...[K[1m[32m   Compiling[0m objc2-encode v4.1.0
-[1m[36m    Building[0m [=>                        ] 32/389: libc(build), ...[K[1m[32m   Compiling[0m serde_json v1.0.145
-[1m[36m    Building[0m [=>                        ] 33/389: libc(build), ...[1m[36m    Building[0m [=>                        ] 34/389: libc(build), ...[K[1m[32m   Compiling[0m strsim v0.11.1
-[1m[36m    Building[0m [=>                        ] 35/389: libc(build), ...[K[1m[32m   Compiling[0m winnow v0.7.13
-[1m[36m    Building[0m [=>                        ] 36/389: libc(build), ...[K[1m[32m   Compiling[0m typeid v1.0.3
-[1m[36m    Building[0m [=>                        ] 37/389: libc(build), ...[1m[36m    Building[0m [=>                        ] 38/389: libc(build), ...[K[1m[32m   Compiling[0m syn v2.0.107
-[1m[36m    Building[0m [=>                        ] 39/389: libc(build), ...[1m[36m    Building[0m [=>                        ] 40/389: libc, icu_nor...[K[1m[32m   Compiling[0m syn v1.0.109
-[1m[36m    Building[0m [=>                        ] 41/389: libc, icu_nor...[K[1m[32m   Compiling[0m ident_case v1.0.1
-[1m[36m    Building[0m [=>                        ] 42/389: libc, icu_nor...[1m[36m    Building[0m [=>                        ] 43/389: libc, serde_c...[1m[36m    Building[0m [=>                        ] 44/389: libc, serde_c...[1m[36m    Building[0m [==>                       ] 45/389: libc, serde_c...[K[1m[32m   Compiling[0m getrandom v0.2.16
-[1m[36m    Building[0m [==>                       ] 46/389: serde_core(bu...[1m[36m    Building[0m [==>                       ] 47/389: serde_core, s...[K[1m[32m   Compiling[0m rand_core v0.6.4
-[1m[36m    Building[0m [==>                       ] 48/389: serde_core, r...[1m[36m    Building[0m [==>                       ] 49/389: serde_core, r...[K[1m[32m   Compiling[0m rand_core v0.5.1
-[1m[36m    Building[0m [==>                       ] 50/389: serde_core, s...[K[1m[32m   Compiling[0m toml_parser v1.0.4
-[1m[36m    Building[0m [==>                       ] 51/389: serde_core, s...[1m[36m    Building[0m [==>                       ] 52/389: serde_core, s...[1m[36m    Building[0m [==>                       ] 53/389: serde_core, s...[K[1m[32m   Compiling[0m toml_writer v1.0.4
-[1m[36m    Building[0m [==>                       ] 54/389: serde_core, t...[1m[36m    Building[0m [==>                       ] 55/389: serde_core, t...[K[1m[32m   Compiling[0m erased-serde v0.4.8
-[1m[36m    Building[0m [==>                       ] 56/389: serde_core, e...[K[1m[32m   Compiling[0m log v0.4.28
-[1m[36m    Building[0m [==>                       ] 57/389: serde_core, e...[K[1m[32m   Compiling[0m thiserror v2.0.17
-[1m[36m    Building[0m [==>                       ] 58/389: serde_core, e...[K[1m[32m   Compiling[0m rand_pcg v0.2.1
-[1m[36m    Building[0m [==>                       ] 59/389: serde_core, e...[1m[36m    Building[0m [===>                      ] 60/389: serde_core, s...[K[1m[32m   Compiling[0m phf_shared v0.8.0
-[1m[36m    Building[0m [===>                      ] 61/389: serde_core, s...[K[1m[32m   Compiling[0m aho-corasick v1.1.3
-[1m[36m    Building[0m [===>                      ] 62/389: serde_core, a...[K[1m[32m   Compiling[0m parking_lot_core v0.9.12
-[1m[36m    Building[0m [===>                      ] 63/389: serde_core, a...[1m[36m    Building[0m [===>                      ] 64/389: serde_core, a...[K[1m[32m   Compiling[0m unic-common v0.9.0
-[1m[36m    Building[0m [===>                      ] 65/389: serde_core, a...[1m[36m    Building[0m [===>                      ] 66/389: serde_core, a...[1m[36m    Building[0m [===>                      ] 67/389: serde_core, a...[K[1m[32m   Compiling[0m proc-macro-hack v0.5.20+deprecated
-[1m[36m    Building[0m [===>                      ] 68/389: serde_core, a...[1m[36m    Building[0m [===>                      ] 69/389: serde_core, a...[1m[36m    Building[0m [===>                      ] 70/389: serde_core, a...[K[1m[32m   Compiling[0m synstructure v0.13.2
-[1m[36m    Building[0m [===>                      ] 71/389: aho-corasick,...[K[1m[32m   Compiling[0m darling_core v0.21.3
-[1m[36m    Building[0m [===>                      ] 72/389: darling_core,...[K[1m[32m   Compiling[0m regex-syntax v0.8.8
-[1m[36m    Building[0m [===>                      ] 73/389: darling_core,...[1m[36m    Building[0m [===>                      ] 74/389: darling_core,...[K[1m[32m   Compiling[0m unic-char-range v0.9.0
-[1m[36m    Building[0m [====>                     ] 75/389: darling_core,...[K[1m[32m   Compiling[0m thiserror v1.0.69
-[1m[36m    Building[0m [====>                     ] 76/389: darling_core,...[K[1m[32m   Compiling[0m unic-char-property v0.9.0
-[1m[36m    Building[0m [====>                     ] 77/389: darling_core,...[K[1m[32m   Compiling[0m unic-ucd-version v0.9.0
-[1m[36m    Building[0m [====>                     ] 79/389: darling_core,...[1m[36m    Building[0m [====>                     ] 80/389: darling_core,...[1m[36m    Building[0m [====>                     ] 81/389: darling_core,...[K[1m[32m   Compiling[0m phf_shared v0.10.0
-[1m[36m    Building[0m [====>                     ] 82/389: darling_core,...[K[1m[32m   Compiling[0m ppv-lite86 v0.2.21
-[1m[36m    Building[0m [====>                     ] 83/389: darling_core,...[1m[36m    Building[0m [====>                     ] 84/389: darling_core,...[1m[36m    Building[0m [====>                     ] 85/389: darling_core,...[K[1m[32m   Compiling[0m getrandom v0.3.4
-[1m[36m    Building[0m [====>                     ] 86/389: darling_core,...[K[1m[32m   Compiling[0m rand_chacha v0.3.1
-[1m[36m    Building[0m [====>                     ] 87/389: darling_core,...[K[1m[32m   Compiling[0m rand_chacha v0.2.2
-[1m[32m   Compiling[0m alloc-no-stdlib v2.0.4
-[1m[36m    Building[0m [====>                     ] 89/389: darling_core,...[K[1m[32m   Compiling[0m new_debug_unreachable v1.0.6
-[1m[36m    Building[0m [=====>                    ] 90/389: darling_core,...[K[1m[32m   Compiling[0m scopeguard v1.2.0
-[1m[36m    Building[0m [=====>                    ] 91/389: darling_core,...[K[1m[32m   Compiling[0m bytes v1.10.1
-[1m[36m    Building[0m [=====>                    ] 92/389: darling_core,...[K[1m[32m   Compiling[0m alloc-stdlib v0.2.2
-[1m[36m    Building[0m [=====>                    ] 93/389: darling_core,...[K[1m[32m   Compiling[0m lock_api v0.4.14
-[1m[36m    Building[0m [=====>                    ] 94/389: darling_core,...[1m[36m    Building[0m [=====>                    ] 95/389: darling_core,...[1m[36m    Building[0m [=====>                    ] 96/389: darling_core,...[1m[36m    Building[0m [=====>                    ] 97/389: darling_core,...[K[1m[32m   Compiling[0m rand v0.8.5
-[1m[36m    Building[0m [=====>                    ] 98/389: darling_core,...[1m[36m    Building[0m [=====>                    ] 99/389: darling_core,...[K[1m[32m   Compiling[0m rand v0.7.3
-[1m[36m    Building[0m [=====>                   ] 100/389: darling_core,...[K[1m[32m   Compiling[0m unic-ucd-ident v0.9.0
-[1m[36m    Building[0m [=====>                   ] 101/389: darling_core,...[K[1m[32m   Compiling[0m mac v0.1.1
-[1m[36m    Building[0m [=====>                   ] 102/389: darling_core,...[K[1m[32m   Compiling[0m precomputed-hash v0.1.1
-[1m[36m    Building[0m [=====>                   ] 103/389: darling_core,...[K[1m[32m   Compiling[0m bitflags v1.3.2
-[1m[36m    Building[0m [=====>                   ] 104/389: darling_core,...[K[1m[32m   Compiling[0m anyhow v1.0.100
-[1m[36m    Building[0m [=====>                   ] 105/389: darling_core,...[K[1m[32m   Compiling[0m futf v0.1.5
-[1m[36m    Building[0m [=====>                   ] 106/389: darling_core,...[K[1m[32m   Compiling[0m http v1.3.1
-[1m[36m    Building[0m [=====>                   ] 107/389: darling_core,...[1m[36m    Building[0m [=====>                   ] 108/389: darling_core,...[K[1m[32m   Compiling[0m parking_lot v0.12.5
-[1m[32m   Compiling[0m brotli-decompressor v5.0.0
-[1m[36m    Building[0m [======>                  ] 110/389: darling_core,...[K[1m[32m   Compiling[0m serde_derive v1.0.228
-[1m[36m    Building[0m [======>                  ] 111/389: darling_core,...[K[1m[32m   Compiling[0m zerofrom-derive v0.1.6
-[1m[36m    Building[0m [======>                  ] 112/389: darling_core,...[K[1m[32m   Compiling[0m yoke-derive v0.8.0
-[1m[36m    Building[0m [======>                  ] 113/389: darling_core,...[K[1m[32m   Compiling[0m zerovec-derive v0.11.1
-[1m[36m    Building[0m [======>                  ] 114/389: darling_core,...[K[1m[32m   Compiling[0m displaydoc v0.2.5
-[1m[36m    Building[0m [======>                  ] 115/389: syn, rand, ob...[K[1m[32m   Compiling[0m phf_generator v0.11.3
-[1m[36m    Building[0m [======>                  ] 116/389: syn, objc2, h...[K[1m[32m   Compiling[0m darling_macro v0.21.3
-[1m[36m    Building[0m [======>                  ] 117/389: syn, objc2, h...[K[1m[32m   Compiling[0m phf_macros v0.11.3
-[1m[36m    Building[0m [======>                  ] 118/389: syn, objc2, h...[K[1m[32m   Compiling[0m thiserror-impl v2.0.17
-[1m[36m    Building[0m [======>                  ] 119/389: syn, objc2, h...[K[1m[32m   Compiling[0m darling v0.21.3
-[1m[36m    Building[0m [======>                  ] 120/389: syn, objc2, h...[K[1m[32m   Compiling[0m thiserror-impl v1.0.69
-[1m[36m    Building[0m [======>                  ] 121/389: syn, objc2, h...[K[1m[32m   Compiling[0m regex-automata v0.4.13
-[1m[36m    Building[0m [======>                  ] 122/389: syn, objc2, h...[K[1m[32m   Compiling[0m serde_with_macros v3.15.0
-[1m[36m    Building[0m [======>                  ] 123/389: syn, objc2, h...[K[1m[32m   Compiling[0m phf_codegen v0.11.3
-[1m[36m    Building[0m [======>                  ] 124/389: syn, objc2, h...[K[1m[32m   Compiling[0m zerofrom v0.1.6
-[1m[36m    Building[0m [=======>                 ] 125/389: syn, objc2, h...[K[1m[32m   Compiling[0m string_cache_codegen v0.5.4
-[1m[36m    Building[0m [=======>                 ] 126/389: syn, objc2, h...[K[1m[32m   Compiling[0m phf_generator v0.8.0
-[1m[36m    Building[0m [=======>                 ] 127/389: syn, objc2, p...[K[1m[32m   Compiling[0m phf_generator v0.10.0
-[1m[36m    Building[0m [=======>                 ] 128/389: syn, objc2, h...[K[1m[32m   Compiling[0m phf_codegen v0.8.0
-[1m[36m    Building[0m [=======>                 ] 129/389: syn, phf_code...[1m[36m    Building[0m [=======>                 ] 130/389: syn, phf_code...[K[1m[32m   Compiling[0m yoke v0.8.0
-[1m[36m    Building[0m [=======>                 ] 131/389: syn, phf_code...[1m[36m    Building[0m [=======>                 ] 132/389: syn, phf_code...[K[1m[32m   Compiling[0m semver v1.0.27
-[1m[36m    Building[0m [=======>                 ] 133/389: semver, syn, ...[K[1m[32m   Compiling[0m markup5ever v0.14.1
-[1m[36m    Building[0m [=======>                 ] 134/389: semver, syn, ...[K[1m[32m   Compiling[0m toml_datetime v0.7.3
-[1m[36m    Building[0m [=======>                 ] 135/389: syn, objc2, m...[K[1m[32m   Compiling[0m serde_spanned v1.0.3
-[1m[36m    Building[0m [=======>                 ] 136/389: syn, objc2, m...[K[1m[32m   Compiling[0m powerfmt v0.2.0
-[1m[36m    Building[0m [=======>                 ] 137/389: syn, markup5e...[K[1m[32m   Compiling[0m hashbrown v0.16.0
-[1m[36m    Building[0m [=======>                 ] 138/389: syn, markup5e...[K[1m[32m   Compiling[0m zerovec v0.11.4
-[1m[36m    Building[0m [=======>                 ] 139/389: syn, zerovec,...[K[1m[32m   Compiling[0m zerotrie v0.2.2
-[1m[36m    Building[0m [=======>                 ] 140/389: syn, zerotrie...[1m[36m    Building[0m [========>                ] 141/389: syn, zerotrie...[K[1m[32m   Compiling[0m cssparser v0.29.6
-[1m[36m    Building[0m [========>                ] 142/389: cssparser(bui...[K[1m[32m   Compiling[0m phf_macros v0.10.0
-[1m[36m    Building[0m [========>                ] 143/389: cssparser(bui...[K[1m[32m   Compiling[0m dtoa v1.0.10
-[1m[36m    Building[0m [========>                ] 144/389: cssparser(bui...[K[1m[32m   Compiling[0m same-file v1.0.6
-[1m[36m    Building[0m [========>                ] 145/389: cssparser(bui...[K[1m[32m   Compiling[0m equivalent v1.0.2
-[1m[36m    Building[0m [========>                ] 146/389: cssparser(bui...[1m[36m    Building[0m [========>                ] 147/389: cssparser(bui...[K[1m[32m   Compiling[0m version_check v0.9.5
-[1m[36m    Building[0m [========>                ] 148/389: cssparser(bui...[K[1m[32m   Compiling[0m time-core v0.1.6
-[1m[36m    Building[0m [========>                ] 149/389: cssparser(bui...[1m[36m    Building[0m [========>                ] 150/389: cssparser(bui...[K[1m[32m   Compiling[0m num-conv v0.1.0
-[1m[36m    Building[0m [========>                ] 151/389: cssparser(bui...[K[1m[32m   Compiling[0m autocfg v1.5.0
-[1m[36m    Building[0m [========>                ] 152/389: cssparser(bui...[K[1m[32m   Compiling[0m utf-8 v0.7.6
-[1m[36m    Building[0m [========>                ] 153/389: cssparser(bui...[K[1m[32m   Compiling[0m percent-encoding v2.3.2
-[1m[36m    Building[0m [========>                ] 154/389: cssparser(bui...[K[1m[32m   Compiling[0m walkdir v2.5.0
-[1m[36m    Building[0m [========>                ] 155/389: cssparser(bui...[K[1m[32m   Compiling[0m form_urlencoded v1.2.2
-[1m[36m    Building[0m [=========>               ] 156/389: cssparser(bui...[K[1m[32m   Compiling[0m tendril v0.4.3
-[1m[32m   Compiling[0m indexmap v2.12.0
-[1m[36m    Building[0m [=========>               ] 158/389: cssparser(bui...[1m[36m    Building[0m [=========>               ] 159/389: cssparser(bui...[K[1m[32m   Compiling[0m dtoa-short v0.3.5
-[1m[36m    Building[0m [=========>               ] 160/389: cssparser(bui...[K[1m[32m   Compiling[0m toml v0.9.8
-[1m[36m    Building[0m [=========>               ] 161/389: cssparser(bui...[K[1m[32m   Compiling[0m indexmap v1.9.3
-[1m[36m    Building[0m [=========>               ] 162/389: cssparser(bui...[K[1m[32m   Compiling[0m deranged v0.5.4
-[1m[36m    Building[0m [=========>               ] 163/389: cssparser(bui...[1m[36m    Building[0m [=========>               ] 164/389: cssparser(bui...[K[1m[32m   Compiling[0m phf v0.10.1
-[1m[36m    Building[0m [=========>               ] 165/389: cssparser(bui...[K[1m[32m   Compiling[0m selectors v0.24.0
-[1m[36m    Building[0m [=========>               ] 166/389: cssparser(bui...[1m[36m    Building[0m [=========>               ] 167/389: zerovec, mark...[K[1m[32m   Compiling[0m tinystr v0.8.1
-[1m[36m    Building[0m [=========>               ] 168/389: tinystr, zero...[K[1m[32m   Compiling[0m potential_utf v0.1.3
-[1m[36m    Building[0m [=========>               ] 169/389: potential_utf...[K[1m[32m   Compiling[0m regex v1.12.2
-[1m[36m    Building[0m [=========>               ] 170/389: potential_utf...[K[1m[32m   Compiling[0m icu_locale_core v2.0.0
-[1m[36m    Building[0m [=========>               ] 171/389: tinystr, icu_...[K[1m[32m   Compiling[0m icu_collections v2.0.0
-[1m[36m    Building[0m [==========>              ] 172/389: tinystr, icu_...[K[1m[32m   Compiling[0m phf v0.11.3
-[1m[36m    Building[0m [==========>              ] 173/389: tinystr, icu_...[K[1m[32m   Compiling[0m brotli v8.0.2
-[1m[36m    Building[0m [==========>              ] 174/389: tinystr, icu_...[K[1m[32m   Compiling[0m ctor v0.2.9
-[1m[36m    Building[0m [==========>              ] 175/389: tinystr, icu_...[1m[36m    Building[0m [==========>              ] 176/389: tinystr, icu_...[1m[36m    Building[0m [==========>              ] 177/389: serde, icu_lo...[K[1m[32m   Compiling[0m cssparser-macros v0.6.1
-[1m[36m    Building[0m [==========>              ] 178/389: serde, icu_lo...[K[1m[32m   Compiling[0m convert_case v0.4.0
-[1m[36m    Building[0m [==========>              ] 179/389: serde, icu_lo...[K[1m[32m   Compiling[0m matches v0.1.10
-[1m[36m    Building[0m [==========>              ] 180/389: matches, serd...[K[1m[32m   Compiling[0m glob v0.3.3
-[1m[36m    Building[0m [==========>              ] 181/389: matches, serd...[K[1m[32m   Compiling[0m nodrop v0.1.14
-[1m[36m    Building[0m [==========>              ] 182/389: matches, nodr...[K[1m[32m   Compiling[0m dunce v1.0.5
-[1m[36m    Building[0m [==========>              ] 183/389: nodrop, serde...[K[1m[32m   Compiling[0m camino v1.2.1
-[1m[36m    Building[0m [==========>              ] 184/389: camino(build....[K[1m[32m   Compiling[0m servo_arc v0.2.0
-[1m[36m    Building[0m [==========>              ] 185/389: camino(build....[1m[36m    Building[0m [==========>              ] 186/389: camino(build....[K[1m[32m   Compiling[0m icu_provider v2.0.0
-[1m[36m    Building[0m [===========>             ] 187/389: camino(build....[K[1m[32m   Compiling[0m derive_more v0.99.20
-[1m[36m    Building[0m [===========>             ] 188/389: camino(build....[1m[36m    Building[0m [===========>             ] 189/389: serde, icu_lo...[K[1m[32m   Compiling[0m icu_properties v2.0.1
-[1m[36m    Building[0m [===========>             ] 190/389: serde, icu_lo...[K[1m[32m   Compiling[0m bitflags v2.9.4
-[1m[36m    Building[0m [===========>             ] 191/389: serde, icu_lo...[K[1m[32m   Compiling[0m icu_normalizer v2.0.0
-[1m[36m    Building[0m [===========>             ] 192/389: serde, icu_lo...[K[1m[32m   Compiling[0m string_cache v0.8.9
-[1m[36m    Building[0m [===========>             ] 193/389: serde, icu_lo...[K[1m[32m   Compiling[0m uuid v1.18.1
-[1m[36m    Building[0m [===========>             ] 194/389: serde, icu_lo...[K[1m[32m   Compiling[0m objc2-core-foundation v0.3.2
-[1m[36m    Building[0m [===========>             ] 195/389: objc2-core-fo...[K[1m[32m   Compiling[0m swift-rs v1.0.7
-[1m[36m    Building[0m [===========>             ] 196/389: swift-rs(buil...[1m[36m    Building[0m [===========>             ] 197/389: swift-rs(buil...[1m[36m    Building[0m [===========>             ] 198/389: swift-rs(buil...[1m[36m    Building[0m [===========>             ] 199/389: swift-rs(buil...[1m[36m    Building[0m [===========>             ] 200/389: swift-rs(buil...[K[1m[32m   Compiling[0m block2 v0.6.2
-[1m[36m    Building[0m [===========>             ] 201/389: swift-rs(buil...[K[1m[32m   Compiling[0m match_token v0.1.0
-[1m[36m    Building[0m [===========>             ] 202/389: swift-rs(buil...[K[1m[32m   Compiling[0m serde_derive_internals v0.29.1
-[1m[36m    Building[0m [============>            ] 203/389: swift-rs(buil...[K[1m[32m   Compiling[0m phf v0.8.0
-[1m[32m   Compiling[0m fxhash v0.2.1
-[1m[36m    Building[0m [============>            ] 205/389: objc2-core-fo...[K[1m[32m   Compiling[0m schemars v0.8.22
-[1m[36m    Building[0m [============>            ] 206/389: objc2-core-fo...[K[1m[32m   Compiling[0m hashbrown v0.12.3
-[1m[36m    Building[0m [============>            ] 208/389: objc2-core-fo...[K[1m[32m   Compiling[0m cfb v0.7.3
-[1m[36m    Building[0m [============>            ] 209/389: objc2-core-fo...[1m[36m    Building[0m [============>            ] 210/389: objc2-core-fo...[K[1m[32m   Compiling[0m html5ever v0.29.1
-[1m[36m    Building[0m [============>            ] 211/389: objc2-core-fo...[1m[36m    Building[0m [============>            ] 212/389: camino, objc2...[K[1m[32m   Compiling[0m jsonptr v0.6.3
-[1m[36m    Building[0m [============>            ] 213/389: camino, objc2...[1m[36m    Building[0m [============>            ] 214/389: camino, objc2...[K[1m[32m   Compiling[0m idna_adapter v1.2.1
-[1m[36m    Building[0m [============>            ] 215/389: camino, idna_...[K[1m[32m   Compiling[0m objc2-foundation v0.3.2
-[1m[36m    Building[0m [============>            ] 216/389: objc2-foundat...[K[1m[32m   Compiling[0m idna v1.1.0
-[1m[36m    Building[0m [============>            ] 217/389: idna, objc2-f...[1m[36m    Building[0m [=============>           ] 218/389: idna, objc2-f...[K[1m[32m   Compiling[0m cargo-platform v0.1.9
-[1m[36m    Building[0m [=============>           ] 219/389: idna, objc2-f...[1m[36m    Building[0m [=============>           ] 220/389: idna, objc2-f...[1m[36m    Building[0m [=============>           ] 221/389: idna, objc2-f...[1m[36m    Building[0m [=============>           ] 222/389: idna, objc2-f...[K[1m[32m   Compiling[0m schemars_derive v0.8.22
-[1m[36m    Building[0m [=============>           ] 223/389: idna, objc2-f...[K[1m[32m   Compiling[0m dyn-clone v1.0.20
-[1m[36m    Building[0m [=============>           ] 224/389: idna, objc2-f...[K[1m[32m   Compiling[0m base64 v0.21.7
-[1m[36m    Building[0m [=============>           ] 225/389: idna, objc2-f...[K[1m[32m   Compiling[0m cargo_metadata v0.19.2
-[1m[36m    Building[0m [=============>           ] 226/389: idna, objc2-f...[K[1m[32m   Compiling[0m url v2.5.7
-[1m[36m    Building[0m [=============>           ] 227/389: idna, objc2-f...[1m[36m    Building[0m [=============>           ] 228/389: idna, objc2-f...[1m[36m    Building[0m [=============>           ] 229/389: idna, objc2-f...[1m[36m    Building[0m [=============>           ] 230/389: idna, objc2-f...[K[1m[32m   Compiling[0m serde-untagged v0.1.9
-[1m[36m    Building[0m [=============>           ] 231/389: idna, objc2-f...[K[1m[32m   Compiling[0m infer v0.19.0
-[1m[36m    Building[0m [=============>           ] 232/389: idna, objc2-f...[K[1m[32m   Compiling[0m json-patch v3.0.1
-[1m[36m    Building[0m [=============>           ] 233/389: idna, objc2-f...[1m[36m    Building[0m [==============>          ] 234/389: idna, objc2-f...[K[1m[32m   Compiling[0m serde_with v3.15.0
-[1m[36m    Building[0m [==============>          ] 235/389: idna, objc2-f...[K[1m[32m   Compiling[0m option-ext v0.2.0
-[1m[36m    Building[0m [==============>          ] 236/389: objc2-foundat...[K[1m[32m   Compiling[0m urlpattern v0.3.0
-[1m[36m    Building[0m [==============>          ] 237/389: objc2-foundat...[K[1m[32m   Compiling[0m dirs-sys v0.5.0
-[1m[36m    Building[0m [==============>          ] 238/389: objc2-foundat...[1m[36m    Building[0m [==============>          ] 239/389: objc2-foundat...[1m[36m    Building[0m [==============>          ] 240/389: objc2-foundat...[K[1m[32m   Compiling[0m typenum v1.19.0
-[1m[36m    Building[0m [==============>          ] 241/389: objc2-foundat...[K[1m[32m   Compiling[0m dirs v6.0.0
-[1m[36m    Building[0m [==============>          ] 242/389: objc2-foundat...[K[1m[32m   Compiling[0m objc2-core-graphics v0.3.2
-[1m[36m    Building[0m [==============>          ] 243/389: objc2-foundat...[K[1m[32m   Compiling[0m objc2-core-text v0.3.2
-[1m[36m    Building[0m [==============>          ] 244/389: objc2-foundat...[1m[36m    Building[0m [==============>          ] 245/389: objc2-foundat...[1m[36m    Building[0m [==============>          ] 246/389: objc2-foundat...[K[1m[32m   Compiling[0m objc2-core-video v0.3.2
-[1m[36m    Building[0m [==============>          ] 247/389: objc2-foundat...[K[1m[32m   Compiling[0m generic-array v0.14.9
-[1m[36m    Building[0m [==============>          ] 248/389: objc2-foundat...[K[1m[32m   Compiling[0m kuchikiki v0.8.8-speedreader
-[1m[36m    Building[0m [===============>         ] 249/389: objc2-foundat...[K[1m[32m   Compiling[0m rustc_version v0.4.1
-[1m[36m    Building[0m [===============>         ] 250/389: objc2-foundat...[K[1m[32m   Compiling[0m quick-xml v0.38.3
-[1m[32m   Compiling[0m base64 v0.22.1
-[1m[36m    Building[0m [===============>         ] 252/389: objc2-foundat...[K[1m[32m   Compiling[0m simd-adler32 v0.3.7
-[1m[32m   Compiling[0m crc32fast v1.5.0
-[1m[36m    Building[0m [===============>         ] 254/389: objc2-foundat...[1m[36m    Building[0m [===============>         ] 255/389: objc2-foundat...[1m[36m    Building[0m [===============>         ] 256/389: objc2-foundat...[1m[36m    Building[0m [===============>         ] 257/389: objc2-foundat...[1m[36m    Building[0m [===============>         ] 258/389: objc2-foundat...[1m[36m    Building[0m [===============>         ] 259/389: objc2-foundat...[K[1m[32m   Compiling[0m embed-resource v3.0.6
-[1m[36m    Building[0m [===============>         ] 260/389: objc2-foundat...[1m[36m    Building[0m [===============>         ] 261/389: objc2-foundat...[1m[36m    Building[0m [===============>         ] 262/389: objc2-foundat...[1m[36m    Building[0m [===============>         ] 263/389: objc2-foundat...[1m[36m    Building[0m [===============>         ] 264/389: objc2-foundat...[K[1m[32m   Compiling[0m time v0.3.44
-[1m[36m    Building[0m [================>        ] 265/389: objc2-foundat...[K[1m[32m   Compiling[0m heck v0.5.0
-[1m[36m    Building[0m [================>        ] 266/389: objc2-foundat...[K[1m[32m   Compiling[0m adler2 v2.0.1
-[1m[36m    Building[0m [================>        ] 267/389: objc2-foundat...[K[1m[32m   Compiling[0m miniz_oxide v0.8.9
-[1m[36m    Building[0m [================>        ] 268/389: objc2-foundat...[1m[36m    Building[0m [================>        ] 269/389: objc2-foundat...[1m[36m    Building[0m [================>        ] 270/389: objc2-foundat...[K[1m[32m   Compiling[0m tauri-winres v0.3.3
-[1m[36m    Building[0m [================>        ] 271/389: objc2-foundat...[1m[36m    Building[0m [================>        ] 272/389: objc2-foundat...[K[1m[32m   Compiling[0m cargo_toml v0.22.3
-[1m[36m    Building[0m [================>        ] 273/389: objc2-foundat...[K[1m[32m   Compiling[0m time-macros v0.2.24
-[1m[36m    Building[0m [================>        ] 274/389: objc2-foundat...[K[1m[32m   Compiling[0m crossbeam-utils v0.8.21
-[1m[36m    Building[0m [================>        ] 275/389: objc2-foundat...[K[1m[32m   Compiling[0m fdeflate v0.3.7
-[1m[36m    Building[0m [================>        ] 276/389: objc2-foundat...[K[1m[32m   Compiling[0m tauri-utils v2.7.0
-[1m[36m    Building[0m [================>        ] 277/389: objc2-foundat...[1m[36m    Building[0m [================>        ] 278/389: objc2-foundat...[1m[36m    Building[0m [================>        ] 279/389: objc2-foundat...[K[1m[32m   Compiling[0m flate2 v1.1.4
-[1m[36m    Building[0m [================>        ] 280/389: objc2-foundat...[K[1m[32m   Compiling[0m dpi v0.1.2
-[1m[36m    Building[0m [=================>       ] 281/389: objc2-foundat...[1m[36m    Building[0m [=================>       ] 282/389: uuid, objc2-f...[K[1m[32m   Compiling[0m cookie v0.18.1
-[1m[36m    Building[0m [=================>       ] 283/389: uuid, objc2-f...[K[1m[32m   Compiling[0m raw-window-handle v0.6.2
-[1m[36m    Building[0m [=================>       ] 284/389: uuid, objc2-f...[K[1m[32m   Compiling[0m core-foundation-sys v0.8.7
-[1m[36m    Building[0m [=================>       ] 285/389: uuid, objc2-f...[1m[36m    Building[0m [=================>       ] 286/389: uuid, objc2-f...[1m[36m    Building[0m [=================>       ] 287/389: objc2-foundat...[1m[36m    Building[0m [=================>       ] 288/389: objc2-foundat...[K[1m[32m   Compiling[0m core-foundation v0.10.1
-[1m[36m    Building[0m [=================>       ] 289/389: objc2-foundat...[K[1m[32m   Compiling[0m block-buffer v0.10.4
-[1m[36m    Building[0m [=================>       ] 290/389: objc2-foundat...[K[1m[32m   Compiling[0m crypto-common v0.1.6
-[1m[36m    Building[0m [=================>       ] 291/389: objc2-foundat...[K[1m[32m   Compiling[0m png v0.17.16
-[1m[36m    Building[0m [=================>       ] 292/389: objc2-foundat...[1m[36m    Building[0m [=================>       ] 293/389: objc2-foundat...[K[1m[32m   Compiling[0m objc2-security v0.3.2
-[1m[36m    Building[0m [=================>       ] 294/389: objc2-foundat...[K[1m[32m   Compiling[0m objc2-javascript-core v0.3.2
-[1m[36m    Building[0m [=================>       ] 295/389: objc2-foundat...[1m[36m    Building[0m [==================>      ] 296/389: objc2-foundat...[K[1m[32m   Compiling[0m foreign-types-macros v0.2.3
-[1m[36m    Building[0m [==================>      ] 297/389: objc2-foundat...[1m[36m    Building[0m [==================>      ] 298/389: objc2-foundat...[1m[36m    Building[0m [==================>      ] 299/389: objc2-foundat...[1m[36m    Building[0m [==================>      ] 300/389: objc2-foundat...[1m[36m    Building[0m [==================>      ] 301/389: objc2-foundat...[K[1m[32m   Compiling[0m foreign-types-shared v0.3.1
-[1m[36m    Building[0m [==================>      ] 302/389: objc2-foundat...[1m[36m    Building[0m [==================>      ] 303/389: objc2-foundat...[K[1m[32m   Compiling[0m plist v1.8.0
-[1m[36m    Building[0m [==================>      ] 304/389: objc2-foundat...[1m[36m    Building[0m [==================>      ] 305/389: objc2-foundat...[K[1m[32m   Compiling[0m foreign-types v0.5.0
-[1m[36m    Building[0m [==================>      ] 306/389: objc2-foundat...[1m[36m    Building[0m [==================>      ] 307/389: objc2-foundat...[1m[36m    Building[0m [==================>      ] 308/389: objc2-foundat...[K[1m[32m   Compiling[0m crossbeam-channel v0.5.15
-[1m[36m    Building[0m [==================>      ] 309/389: objc2-foundat...[K[1m[32m   Compiling[0m core-graphics-types v0.2.0
-[1m[36m    Building[0m [==================>      ] 310/389: objc2-foundat...[K[1m[32m   Compiling[0m digest v0.10.7
-[1m[36m    Building[0m [===================>     ] 312/389: objc2-foundat...[1m[36m    Building[0m [===================>     ] 313/389: objc2-foundat...[1m[36m    Building[0m [===================>     ] 314/389: objc2-foundat...[K[1m[32m   Compiling[0m cpufeatures v0.2.17
-[1m[36m    Building[0m [===================>     ] 315/389: objc2-foundat...[K[1m[32m   Compiling[0m tauri-runtime v2.8.0
-[1m[36m    Building[0m [===================>     ] 316/389: tauri-runtime...[1m[36m    Building[0m [===================>     ] 317/389: tauri-runtime...[K[1m[32m   Compiling[0m signal-hook v0.3.18
-[1m[36m    Building[0m [===================>     ] 318/389: objc2-foundat...[K[1m[32m   Compiling[0m wry v0.53.4
-[1m[36m    Building[0m [===================>     ] 319/389: objc2-foundat...[K[1m[32m   Compiling[0m once_cell v1.21.3
-[1m[36m    Building[0m [===================>     ] 320/389: objc2-foundat...[1m[36m    Building[0m [===================>     ] 321/389: objc2-foundat...[K[1m[32m   Compiling[0m sha2 v0.10.9
-[1m[36m    Building[0m [===================>     ] 322/389: objc2-foundat...[1m[36m    Building[0m [===================>     ] 323/389: objc2-foundat...[1m[36m    Building[0m [===================>     ] 324/389: objc2-foundat...[1m[36m    Building[0m [===================>     ] 325/389: objc2-foundat...[K[1m[32m   Compiling[0m core-graphics v0.24.0
-[1m[36m    Building[0m [===================>     ] 326/389: objc2-foundat...[K[1m[32m   Compiling[0m ico v0.4.0
-[1m[36m    Building[0m [====================>    ] 327/389: objc2-foundat...[K[1m[32m   Compiling[0m signal-hook-registry v1.4.6
-[1m[36m    Building[0m [====================>    ] 328/389: objc2-foundat...[K[1m[32m   Compiling[0m unicode-segmentation v1.12.0
-[1m[36m    Building[0m [====================>    ] 329/389: objc2-foundat...[1m[36m    Building[0m [====================>    ] 330/389: objc2-foundat...[K[1m[32m   Compiling[0m tauri-runtime-wry v2.8.1
-[1m[36m    Building[0m [====================>    ] 331/389: objc2-foundat...[K[1m[32m   Compiling[0m dispatch v0.2.0
-[1m[36m    Building[0m [====================>    ] 332/389: objc2-foundat...[K[1m[32m   Compiling[0m lazy_static v1.5.0
-[1m[36m    Building[0m [====================>    ] 333/389: objc2-foundat...[1m[36m    Building[0m [====================>    ] 334/389: objc2-foundat...[1m[36m    Building[0m [====================>    ] 335/389: objc2-foundat...[K[1m[32m   Compiling[0m serialize-to-javascript-impl v0.1.2
-[1m[36m    Building[0m [====================>    ] 336/389: objc2-foundat...[K[1m[32m   Compiling[0m os_pipe v1.2.3
-[1m[36m    Building[0m [====================>    ] 337/389: objc2-foundat...[K[1m[32m   Compiling[0m keyboard-types v0.7.0
-[1m[36m    Building[0m [====================>    ] 338/389: objc2-foundat...[K[1m[32m   Compiling[0m pin-project-lite v0.2.16
-[1m[36m    Building[0m [====================>    ] 339/389: objc2-foundat...[K[1m[32m   Compiling[0m tokio v1.48.0
-[1m[36m    Building[0m [====================>    ] 340/389: tokio, objc2-...[K[1m[32m   Compiling[0m sigchld v0.2.4
-[1m[36m    Building[0m [====================>    ] 342/389: tokio, objc2-...[K[1m[32m   Compiling[0m serde_repr v0.1.20
-[1m[32m   Compiling[0m embed_plist v1.2.2
-[1m[36m    Building[0m [=====================>   ] 344/389: tokio, objc2-...[1m[36m    Building[0m [=====================>   ] 345/389: tokio, objc2-...[K[1m[32m   Compiling[0m mime v0.3.17
-[1m[36m    Building[0m [=====================>   ] 346/389: tokio, objc2-...[K[1m[32m   Compiling[0m pathdiff v0.2.3
-[1m[36m    Building[0m [=====================>   ] 347/389: tokio, objc2-...[K[1m[32m   Compiling[0m shared_child v1.1.1
-[1m[36m    Building[0m [=====================>   ] 348/389: tokio, objc2-...[K[1m[32m   Compiling[0m open v5.3.2
-[1m[36m    Building[0m [=====================>   ] 349/389: tokio, objc2-...[K[1m[32m   Compiling[0m encoding_rs v0.8.35
-[1m[36m    Building[0m [=====================>   ] 350/389: tokio, objc2-...[K[1m[32m   Compiling[0m serialize-to-javascript v0.1.2
-[1m[36m    Building[0m [=====================>   ] 351/389: tokio, objc2-...[1m[36m    Building[0m [=====================>   ] 352/389: tokio, objc2-...[1m[36m    Building[0m [=====================>   ] 353/389: tokio, objc2-...[1m[36m    Building[0m [=====================>   ] 354/389: tokio, objc2-...[1m[36m    Building[0m [=====================>   ] 355/389: tokio, objc2-...[1m[36m    Building[0m [=====================>   ] 356/389: tokio, objc2-...[1m[36m    Building[0m [=====================>   ] 357/389: tokio, objc2-...[1m[36m    Building[0m [======================>  ] 358/389: tokio, objc2-...[1m[36m    Building[0m [======================>  ] 359/389: tokio, objc2-...[1m[36m    Building[0m [======================>  ] 360/389: objc2-foundat...[K[1m[32m   Compiling[0m tauri-build v2.4.1
-[1m[32m   Compiling[0m tauri-plugin v2.4.0
-[1m[32m   Compiling[0m tauri-codegen v2.4.0
-[1m[36m    Building[0m [======================>  ] 360/389: objc2-foundat...[1m[36m    Building[0m [======================>  ] 361/389: objc2-foundat...[1m[36m    Building[0m [======================>  ] 362/389: objc2-foundat...[1m[36m    Building[0m [======================>  ] 363/389: objc2-foundat...[K[1m[32m   Compiling[0m tauri v2.8.5
-[1m[36m    Building[0m [======================>  ] 364/389: objc2-foundat...[K[1m[32m   Compiling[0m tauri-plugin-shell v2.3.1
-[1m[32m   Compiling[0m tauri-macros v2.4.0
 [1m[32m   Compiling[0m nouvelle-desktop v0.0.0 (/Users/jocelin/Desktop/coding/important/new-new-nouvelle/apps/desktop/src-tauri)
-[1m[36m    Building[0m [======================>  ] 364/389: objc2-foundat...[1m[36m    Building[0m [======================>  ] 365/389: objc2-foundat...[1m[36m    Building[0m [======================>  ] 366/389: objc2-foundat...[1m[36m    Building[0m [======================>  ] 367/389: objc2-foundat...[1m[36m    Building[0m [======================>  ] 368/389: objc2-foundat...[1m[36m    Building[0m [======================>  ] 369/389: objc2-foundat...[K[1m[32m   Compiling[0m objc2-quartz-core v0.3.2
-[1m[32m   Compiling[0m objc2-core-data v0.3.2
-[1m[32m   Compiling[0m objc2-cloud-kit v0.3.2
-[1m[32m   Compiling[0m objc2-core-image v0.3.2
-[1m[36m    Building[0m [======================>  ] 369/389: objc2-foundat...[1m[36m    Building[0m [======================>  ] 370/389: objc2-foundat...[K[1m[32m   Compiling[0m objc2-app-kit v0.3.2
-[1m[36m    Building[0m [======================>  ] 370/389: objc2-foundat...[1m[36m    Building[0m [======================>  ] 372/389: objc2-foundat...[1m[36m    Building[0m [======================>  ] 373/389: objc2-foundat...[1m[36m    Building[0m [=======================> ] 374/389: objc2-foundat...[1m[36m    Building[0m [=======================> ] 375/389: objc2-foundat...[1m[36m    Building[0m [=======================> ] 376/389: objc2-foundat...[1m[36m    Building[0m [=======================> ] 377/389: objc2-app-kit   [K[1m[32m   Compiling[0m objc2-web-kit v0.3.2
-[1m[32m   Compiling[0m tao v0.34.4
-[1m[32m   Compiling[0m window-vibrancy v0.6.0
-[1m[32m   Compiling[0m muda v0.17.1
-[1m[36m    Building[0m [=======================> ] 377/389: muda, objc2-w...[1m[36m    Building[0m [=======================> ] 378/389: muda, objc2-w...[1m[36m    Building[0m [=======================> ] 379/389: objc2-web-kit...[1m[36m    Building[0m [=======================> ] 380/389: objc2-web-kit...[1m[36m    Building[0m [=======================> ] 381/389: objc2-web-kit   [1m[36m    Building[0m [=======================> ] 381/389: wry, objc2-we...[1m[36m    Building[0m [=======================> ] 382/389: wry, objc2-we...[1m[36m    Building[0m [=======================> ] 383/389: wry, tauri-ru...[1m[36m    Building[0m [=======================> ] 384/389: tauri-runtime...[1m[36m    Building[0m [=======================> ] 385/389: tauri           [1m[36m    Building[0m [=======================> ] 385/389: tauri, tauri-...[1m[36m    Building[0m [=======================> ] 386/389: tauri-plugin-...[1m[36m    Building[0m [=======================> ] 387/389: nouvelle-desktop[K[0m[1m[38;5;9merror[0m[0m[1m: proc macro panicked[0m
-[0m  [0m[0m[1m[38;5;12m--> [0m[0msrc/lib.rs:15:14[0m
-[0m   [0m[0m[1m[38;5;12m|[0m
-[0m[1m[38;5;12m15[0m[0m [0m[0m[1m[38;5;12m|[0m[0m [0m[0m        .run(tauri::generate_context!())[0m
-[0m   [0m[0m[1m[38;5;12m|[0m[0m              [0m[0m[1m[38;5;9m^^^^^^^^^^^^^^^^^^^^^^^^^^[0m
-[0m   [0m[0m[1m[38;5;12m|[0m
-[0m   [0m[0m[1m[38;5;12m= [0m[0m[1mhelp[0m[0m: message: failed to open icon /Users/jocelin/Desktop/coding/important/new-new-nouvelle/apps/desktop/src-tauri/icons/icon.png: No such file or directory (os error 2)[0m
-
-[1m[36m    Building[0m [=======================> ] 387/389: nouvelle-desktop[K[1m[31merror[0m[1m:[0m could not compile `nouvelle-desktop` (lib) due to 1 previous error
-[1m[32m        Info[0m File src-tauri/icons/StoreLogo.png changed. Rebuilding application...
-[1m[32m     Running[0m DevCommand (`cargo  run --no-default-features --color always --`)
-[1m[32m        Info[0m File src-tauri/icons/Square30x30Logo.png changed. Rebuilding application...
-[1m[32m     Running[0m DevCommand (`cargo  run --no-default-features --color always --`)
-[1m[32m        Info[0m File src-tauri/icons/Square44x44Logo.png changed. Rebuilding application...
-[1m[32m     Running[0m DevCommand (`cargo  run --no-default-features --color always --`)
-[1m[32m        Info[0m File src-tauri/icons/Square71x71Logo.png changed. Rebuilding application...
-[1m[32m     Running[0m DevCommand (`cargo  run --no-default-features --color always --`)
-[1m[32m        Info[0m File src-tauri/icons/Square89x89Logo.png changed. Rebuilding application...
-[1m[32m     Running[0m DevCommand (`cargo  run --no-default-features --color always --`)
-[1m[32m        Info[0m File src-tauri/icons/Square107x107Logo.png changed. Rebuilding application...
-[1m[32m     Running[0m DevCommand (`cargo  run --no-default-features --color always --`)
-[1m[32m        Info[0m File src-tauri/icons/Square142x142Logo.png changed. Rebuilding application...
-[1m[32m     Running[0m DevCommand (`cargo  run --no-default-features --color always --`)
-[1m[32m        Info[0m File src-tauri/icons/Square150x150Logo.png changed. Rebuilding application...
-[1m[32m     Running[0m DevCommand (`cargo  run --no-default-features --color always --`)
-[1m[32m        Info[0m File src-tauri/icons/Square284x284Logo.png changed. Rebuilding application...
-[1m[32m     Running[0m DevCommand (`cargo  run --no-default-features --color always --`)
-[1m[32m        Info[0m File src-tauri/icons/Square310x310Logo.png changed. Rebuilding application...
-[1m[32m     Running[0m DevCommand (`cargo  run --no-default-features --color always --`)
-[1m[32m        Info[0m File src-tauri/icons/icon.icns changed. Rebuilding application...
-[1m[32m     Running[0m DevCommand (`cargo  run --no-default-features --color always --`)
-[1m[32m        Info[0m File src-tauri/icons/icon.ico changed. Rebuilding application...
-[1m[32m     Running[0m DevCommand (`cargo  run --no-default-features --color always --`)
-[1m[32m        Info[0m File src-tauri/icons/android changed. Rebuilding application...
-[1m[32m     Running[0m DevCommand (`cargo  run --no-default-features --color always --`)
-[1m[32m        Info[0m File src-tauri/icons/android/mipmap-hdpi changed. Rebuilding application...
-[1m[32m     Running[0m DevCommand (`cargo  run --no-default-features --color always --`)
-[1m[32m        Info[0m File src-tauri/icons/android/mipmap-mdpi changed. Rebuilding application...
-[1m[32m     Running[0m DevCommand (`cargo  run --no-default-features --color always --`)
-[1m[32m        Info[0m File src-tauri/icons/android/mipmap-xhdpi changed. Rebuilding application...
-[1m[32m     Running[0m DevCommand (`cargo  run --no-default-features --color always --`)
-[1m[32m        Info[0m File src-tauri/icons/android/mipmap-xxhdpi changed. Rebuilding application...
-[1m[32m     Running[0m DevCommand (`cargo  run --no-default-features --color always --`)
-[1m[32m        Info[0m File src-tauri/icons/android/mipmap-xxxhdpi changed. Rebuilding application...
-[1m[32m     Running[0m DevCommand (`cargo  run --no-default-features --color always --`)
-[1m[32m        Info[0m File src-tauri/icons/ios changed. Rebuilding application...
-[1m[32m     Running[0m DevCommand (`cargo  run --no-default-features --color always --`)
-[1m[32m        Info[0m File src-tauri/icons/32x32.png changed. Rebuilding application...
-[1m[32m     Running[0m DevCommand (`cargo  run --no-default-features --color always --`)
-[1m[32m        Info[0m File src-tauri/icons/64x64.png changed. Rebuilding application...
-[1m[32m     Running[0m DevCommand (`cargo  run --no-default-features --color always --`)
-[1m[32m        Info[0m File src-tauri/icons/128x128.png changed. Rebuilding application...
-[1m[32m     Running[0m DevCommand (`cargo  run --no-default-features --color always --`)
-[1m[32m        Info[0m File src-tauri/icons/128x128@2x.png changed. Rebuilding application...
-[1m[32m     Running[0m DevCommand (`cargo  run --no-default-features --color always --`)
-[1m[32m        Info[0m File src-tauri/icons/icon.png changed. Rebuilding application...
-[1m[32m     Running[0m DevCommand (`cargo  run --no-default-features --color always --`)
-[1m[32m        Info[0m File src-tauri/icons/android/mipmap-hdpi/ic_launcher_foreground.png changed. Rebuilding application...
-[1m[32m     Running[0m DevCommand (`cargo  run --no-default-features --color always --`)
-[1m[32m        Info[0m File src-tauri/icons/android/mipmap-hdpi/ic_launcher_round.png changed. Rebuilding application...
-[1m[32m     Running[0m DevCommand (`cargo  run --no-default-features --color always --`)
-[1m[32m        Info[0m File src-tauri/icons/android/mipmap-hdpi/ic_launcher.png changed. Rebuilding application...
-[1m[32m     Running[0m DevCommand (`cargo  run --no-default-features --color always --`)
-[1m[32m        Info[0m File src-tauri/icons/android/mipmap-mdpi/ic_launcher_foreground.png changed. Rebuilding application...
-[1m[32m     Running[0m DevCommand (`cargo  run --no-default-features --color always --`)
-[1m[32m        Info[0m File src-tauri/icons/android/mipmap-mdpi/ic_launcher_round.png changed. Rebuilding application...
-[1m[32m     Running[0m DevCommand (`cargo  run --no-default-features --color always --`)
-[1m[32m        Info[0m File src-tauri/icons/android/mipmap-mdpi/ic_launcher.png changed. Rebuilding application...
-[1m[32m     Running[0m DevCommand (`cargo  run --no-default-features --color always --`)
-[1m[32m        Info[0m File src-tauri/icons/android/mipmap-xhdpi/ic_launcher_foreground.png changed. Rebuilding application...
-[1m[32m     Running[0m DevCommand (`cargo  run --no-default-features --color always --`)
-[1m[32m        Info[0m File src-tauri/icons/android/mipmap-xhdpi/ic_launcher_round.png changed. Rebuilding application...
-[1m[32m     Running[0m DevCommand (`cargo  run --no-default-features --color always --`)
-[1m[32m        Info[0m File src-tauri/icons/android/mipmap-xhdpi/ic_launcher.png changed. Rebuilding application...
-[1m[32m     Running[0m DevCommand (`cargo  run --no-default-features --color always --`)
-[1m[32m        Info[0m File src-tauri/icons/android/mipmap-xxhdpi/ic_launcher_foreground.png changed. Rebuilding application...
-[1m[32m     Running[0m DevCommand (`cargo  run --no-default-features --color always --`)
-[1m[32m        Info[0m File src-tauri/icons/android/mipmap-xxhdpi/ic_launcher_round.png changed. Rebuilding application...
-[1m[32m     Running[0m DevCommand (`cargo  run --no-default-features --color always --`)
-[1m[32m        Info[0m File src-tauri/icons/android/mipmap-xxhdpi/ic_launcher.png changed. Rebuilding application...
-[1m[32m     Running[0m DevCommand (`cargo  run --no-default-features --color always --`)
-[1m[32m        Info[0m File src-tauri/icons/android/mipmap-xxxhdpi/ic_launcher_foreground.png changed. Rebuilding application...
-[1m[32m     Running[0m DevCommand (`cargo  run --no-default-features --color always --`)
-[1m[32m        Info[0m File src-tauri/icons/android/mipmap-xxxhdpi/ic_launcher_round.png changed. Rebuilding application...
-[1m[32m     Running[0m DevCommand (`cargo  run --no-default-features --color always --`)
-[1m[32m        Info[0m File src-tauri/icons/android/mipmap-xxxhdpi/ic_launcher.png changed. Rebuilding application...
-[1m[32m     Running[0m DevCommand (`cargo  run --no-default-features --color always --`)
-[1m[32m        Info[0m File src-tauri/icons/ios/AppIcon-20x20@2x-1.png changed. Rebuilding application...
-[1m[32m     Running[0m DevCommand (`cargo  run --no-default-features --color always --`)
-[1m[32m        Info[0m File src-tauri/icons/ios/AppIcon-20x20@1x.png changed. Rebuilding application...
-[1m[32m     Running[0m DevCommand (`cargo  run --no-default-features --color always --`)
-[1m[32m        Info[0m File src-tauri/icons/ios/AppIcon-20x20@2x.png changed. Rebuilding application...
-[1m[32m     Running[0m DevCommand (`cargo  run --no-default-features --color always --`)
-[1m[32m        Info[0m File src-tauri/icons/ios/AppIcon-20x20@3x.png changed. Rebuilding application...
-[1m[32m     Running[0m DevCommand (`cargo  run --no-default-features --color always --`)
-[1m[32m        Info[0m File src-tauri/icons/ios/AppIcon-29x29@2x-1.png changed. Rebuilding application...
-[1m[32m     Running[0m DevCommand (`cargo  run --no-default-features --color always --`)
-[1m[32m        Info[0m File src-tauri/icons/ios/AppIcon-29x29@1x.png changed. Rebuilding application...
-[1m[32m     Running[0m DevCommand (`cargo  run --no-default-features --color always --`)
-[1m[32m        Info[0m File src-tauri/icons/ios/AppIcon-29x29@2x.png changed. Rebuilding application...
-[1m[32m     Running[0m DevCommand (`cargo  run --no-default-features --color always --`)
-[1m[32m        Info[0m File src-tauri/icons/ios/AppIcon-29x29@3x.png changed. Rebuilding application...
-[1m[32m     Running[0m DevCommand (`cargo  run --no-default-features --color always --`)
-[1m[32m        Info[0m File src-tauri/icons/ios/AppIcon-40x40@2x-1.png changed. Rebuilding application...
-[1m[32m     Running[0m DevCommand (`cargo  run --no-default-features --color always --`)
-[1m[32m        Info[0m File src-tauri/icons/ios/AppIcon-40x40@1x.png changed. Rebuilding application...
-[1m[32m     Running[0m DevCommand (`cargo  run --no-default-features --color always --`)
-[1m[32m        Info[0m File src-tauri/icons/ios/AppIcon-40x40@2x.png changed. Rebuilding application...
-[1m[32m     Running[0m DevCommand (`cargo  run --no-default-features --color always --`)
-[1m[32m   Compiling[0m nouvelle-desktop v0.0.0 (/Users/jocelin/Desktop/coding/important/new-new-nouvelle/apps/desktop/src-tauri)
-[1m[36m    Building[0m [=======================> ] 386/389: nouvelle-desk...[1m[32m        Info[0m File src-tauri/icons/ios/AppIcon-40x40@3x.png changed. Rebuilding application...
-[1m[32m     Running[0m DevCommand (`cargo  run --no-default-features --color always --`)
-[1m[32m        Info[0m File src-tauri/icons/ios/AppIcon-60x60@2x.png changed. Rebuilding application...
-[1m[32m     Running[0m DevCommand (`cargo  run --no-default-features --color always --`)
-[1m[32m        Info[0m File src-tauri/icons/ios/AppIcon-60x60@3x.png changed. Rebuilding application...
-[1m[32m     Running[0m DevCommand (`cargo  run --no-default-features --color always --`)
-[1m[32m        Info[0m File src-tauri/icons/ios/AppIcon-76x76@1x.png changed. Rebuilding application...
-[1m[32m     Running[0m DevCommand (`cargo  run --no-default-features --color always --`)
-[1m[32m        Info[0m File src-tauri/icons/ios/AppIcon-76x76@2x.png changed. Rebuilding application...
-[1m[32m     Running[0m DevCommand (`cargo  run --no-default-features --color always --`)
-[1m[32m        Info[0m File src-tauri/icons/ios/AppIcon-83.5x83.5@2x.png changed. Rebuilding application...
-[1m[32m     Running[0m DevCommand (`cargo  run --no-default-features --color always --`)
-[1m[32m        Info[0m File src-tauri/icons/ios/AppIcon-512@2x.png changed. Rebuilding application...
-[1m[32m     Running[0m DevCommand (`cargo  run --no-default-features --color always --`)
-[1m[32m   Compiling[0m nouvelle-desktop v0.0.0 (/Users/jocelin/Desktop/coding/important/new-new-nouvelle/apps/desktop/src-tauri)
-[1m[36m    Building[0m [=======================> ] 386/389: nouvelle-desk...[1m[36m    Building[0m [=======================> ] 387/389: nouvelle-desktop[1m[36m    Building[0m [=======================> ] 388/389: nouvelle-desk...[K[1m[32m    Finished[0m ]8;;https://doc.rust-lang.org/cargo/reference/profiles.html#default-profiles\`dev` profile [unoptimized + debuginfo]]8;;\ target(s) in 5.75s
+[1m[36m    Building[0m [=======================> ] 386/389: nouvelle-desktop(build)                                               [1m[36m    Building[0m [=======================> ] 387/389: nouvelle-desktop                                                      [1m[36m    Building[0m [=======================> ] 388/389: nouvelle-desktop(bin)                                                 [K[1m[32m    Finished[0m ]8;;https://doc.rust-lang.org/cargo/reference/profiles.html#default-profiles\`dev` profile [unoptimized + debuginfo]]8;;\ target(s) in 3.63s
 [1m[32m     Running[0m `target/debug/nouvelle-desktop`
-RemoteLayerTreeDrawingAreaProxyMac::scheduleDisplayLink(): page has no displayID
-RemoteLayerTreeDrawingAreaProxyMac::scheduleDisplayLink(): page has no displayID
-RemoteLayerTreeDrawingAreaProxyMac::scheduleDisplayLink(): page has no displayID

@@ -11,7 +11,6 @@ export function OnboardingPage() {
   const navigate = useNavigate();
   const [currentStep, setCurrentStep] = useState<OnboardingStep>("profile");
   const [selectedUseCase, setSelectedUseCase] = useState<UseCase | null>(null);
-  const [selectedInterests, setSelectedInterests] = useState<string[]>([]);
 
   const handleProfileComplete = () => {
     setCurrentStep("useCase");
@@ -22,8 +21,8 @@ export function OnboardingPage() {
     setCurrentStep("interests");
   };
 
-  const handleInterestsComplete = (interests: string[]) => {
-    setSelectedInterests(interests);
+  const handleInterestsComplete = (_interests: string[]) => {
+    // TODO: Send interests to backend
     // Generate random page ID similar to Notion's format
     const pageId = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
     navigate({ to: `/getting-started/${pageId}` });

@@ -2,37 +2,38 @@
 > @nouvelle/router@0.0.0 dev /Users/jocelin/Desktop/coding/important/new-new-nouvelle/packages/router
 > tsc --watch
 
-[2J[3J[H[[90m11:50:50 PM[0m] Starting compilation in watch mode...
+[2J[3J[H[[90m10:20:10 PM[0m] Starting compilation in watch mode...
 
-[96msrc/types.ts[0m:[93m17[0m:[93m49[0m - [91merror[0m[90m TS2536: [0mType 'TPath' cannot be used to index type '{ "/": Route<...> | Route<...>; "/about": Route<...>; "/documents/$documentId": Route<...>; "/editor": Route<...>; }'.
+[[90m10:20:11 PM[0m] Found 0 errors. Watching for file changes.
 
-[7m17[0m export type RouteParams<TPath extends string> = Router['routesByPath'][TPath]['types']['allParams'];
-[7m  [0m [91m                                                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+[2J[3J[H[[90m10:25:33 PM[0m] File change detected. Starting incremental compilation...
 
-[96msrc/types.ts[0m:[93m17[0m:[93m49[0m - [91merror[0m[90m TS2536: [0mType '"types"' cannot be used to index type '{ "/": Route<...> | Route<...>; "/about": Route<...>; "/documents/$documentId": Route<...>; "/editor": Route<...>; }[TPath]'.
+[[90m10:25:33 PM[0m] Found 0 errors. Watching for file changes.
 
-[7m17[0m export type RouteParams<TPath extends string> = Router['routesByPath'][TPath]['types']['allParams'];
-[7m  [0m [91m                                                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+[2J[3J[H[[90m10:26:26 PM[0m] File change detected. Starting incremental compilation...
 
-[96msrc/types.ts[0m:[93m17[0m:[93m49[0m - [91merror[0m[90m TS2536: [0mType '"allParams"' cannot be used to index type '{ "/": Route<...> | Route<...>; "/about": Route<...>; "/documents/$documentId": Route<...>; "/editor": Route<...>; }[TPath]["types"]'.
+[[90m10:26:27 PM[0m] Found 0 errors. Watching for file changes.
 
-[7m17[0m export type RouteParams<TPath extends string> = Router['routesByPath'][TPath]['types']['allParams'];
-[7m  [0m [91m                                                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+[2J[3J[H[[90m10:33:08 PM[0m] File change detected. Starting incremental compilation...
 
-[96msrc/types.ts[0m:[93m20[0m:[93m49[0m - [91merror[0m[90m TS2536: [0mType 'TPath' cannot be used to index type '{ "/": Route<...> | Route<...>; "/about": Route<...>; "/documents/$documentId": Route<...>; "/editor": Route<...>; }'.
+[96msrc/pages/getting-started/GettingStartedPage.tsx[0m:[93m8[0m:[93m9[0m - [91merror[0m[90m TS6133: [0m'user' is declared but its value is never read.
 
-[7m20[0m export type RouteSearch<TPath extends string> = Router['routesByPath'][TPath]['types']['searchSchema'];
-[7m  [0m [91m                                                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+[7m8[0m   const { user } = useAuth();
+[7m [0m [91m        ~~~~~~~~[0m
 
-[96msrc/types.ts[0m:[93m20[0m:[93m49[0m - [91merror[0m[90m TS2536: [0mType '"types"' cannot be used to index type '{ "/": Route<...> | Route<...>; "/about": Route<...>; "/documents/$documentId": Route<...>; "/editor": Route<...>; }[TPath]'.
+[[90m10:33:09 PM[0m] Found 1 error. Watching for file changes.
 
-[7m20[0m export type RouteSearch<TPath extends string> = Router['routesByPath'][TPath]['types']['searchSchema'];
-[7m  [0m [91m                                                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+[2J[3J[H[[90m10:39:10 PM[0m] File change detected. Starting incremental compilation...
 
-[96msrc/types.ts[0m:[93m20[0m:[93m49[0m - [91merror[0m[90m TS2536: [0mType '"searchSchema"' cannot be used to index type '{ "/": Route<...> | Route<...>; "/about": Route<...>; "/documents/$documentId": Route<...>; "/editor": Route<...>; }[TPath]["types"]'.
+[[90m10:39:10 PM[0m] Found 0 errors. Watching for file changes.
 
-[7m20[0m export type RouteSearch<TPath extends string> = Router['routesByPath'][TPath]['types']['searchSchema'];
-[7m  [0m [91m                                                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+[2J[3J[H[[90m11:08:18 PM[0m] File change detected. Starting incremental compilation...
 
-[[90m11:50:51 PM[0m] Found 6 errors. Watching for file changes.
+[96msrc/pages/getting-started/GettingStartedPage.tsx[0m:[93m22[0m:[93m9[0m - [91merror[0m[90m TS2322: [0mType '{ children: Element[]; workspaceName: string; icon: Element; onLogout: () => void; }' is not assignable to type 'IntrinsicAttributes & SidebarProps'.
+  Property 'onLogout' does not exist on type 'IntrinsicAttributes & SidebarProps'.
+
+[7m22[0m         onLogout={handleLogout}
+[7m  [0m [91m        ~~~~~~~~[0m
+
+[[90m11:08:18 PM[0m] Found 1 error. Watching for file changes.
 

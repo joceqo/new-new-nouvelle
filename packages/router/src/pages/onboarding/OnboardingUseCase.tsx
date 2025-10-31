@@ -48,7 +48,7 @@ export function OnboardingUseCase({ onNext, onBack }: OnboardingUseCaseProps) {
   };
 
   return (
-    <div className="min-h-screen bg-gray-900 flex flex-col text-white">
+    <div className="min-h-screen bg-white flex flex-col">
       {/* Top Navigation Bar */}
       <div className="flex items-center justify-between px-6 py-4">
         {/* Back Button */}
@@ -56,7 +56,7 @@ export function OnboardingUseCase({ onNext, onBack }: OnboardingUseCaseProps) {
           onClick={onBack}
           disabled={!onBack}
           className={`flex items-center gap-2 ${
-            onBack ? "text-gray-400 hover:text-white" : "text-gray-700 cursor-not-allowed"
+            onBack ? "text-gray-600 hover:text-gray-900 cursor-pointer" : "text-gray-400 cursor-not-allowed"
           }`}
           aria-label="Go back"
         >
@@ -68,12 +68,12 @@ export function OnboardingUseCase({ onNext, onBack }: OnboardingUseCaseProps) {
           <select
             value={language}
             onChange={(e) => setLanguage(e.target.value as "en" | "fr")}
-            className="appearance-none bg-transparent border-none text-sm text-gray-300 pr-6 cursor-pointer focus:outline-none"
+            className="appearance-none bg-transparent border-none text-sm text-gray-700 pr-6 cursor-pointer focus:outline-none"
           >
-            <option value="en" className="bg-gray-900">English (US)</option>
-            <option value="fr" className="bg-gray-900">Français</option>
+            <option value="en">English</option>
+            <option value="fr">Français</option>
           </select>
-          <ChevronDown className="h-4 w-4 text-gray-300 absolute right-0 top-1/2 -translate-y-1/2 pointer-events-none" />
+          <ChevronDown className="h-4 w-4 text-gray-700 absolute right-0 top-1/2 -translate-y-1/2 pointer-events-none" />
         </div>
       </div>
 
@@ -82,10 +82,10 @@ export function OnboardingUseCase({ onNext, onBack }: OnboardingUseCaseProps) {
         <div className="w-full max-w-md">
           {/* Header */}
           <div className="text-center mb-12">
-            <h1 className="text-3xl font-semibold text-white mb-3">
+            <h1 className="text-3xl font-semibold text-gray-900 mb-3">
               How do you want to use Nouvelle?
             </h1>
-            <p className="text-base text-gray-400">
+            <p className="text-base text-gray-600">
               This helps customize your experience
             </p>
           </div>
@@ -102,23 +102,23 @@ export function OnboardingUseCase({ onNext, onBack }: OnboardingUseCaseProps) {
                   onClick={() => setSelectedUseCase(option.id)}
                   className={`w-full p-6 rounded-lg border transition-all text-left ${
                     isSelected
-                      ? "border-blue-500 bg-blue-500/10"
-                      : "border-gray-700 bg-gray-800/50 hover:border-gray-600 hover:bg-gray-800"
+                      ? "border-blue-500 bg-blue-50"
+                      : "border-gray-200 bg-white hover:border-gray-300 hover:bg-gray-50"
                   }`}
                 >
                   <div className="flex items-start gap-4">
                     <div className={`p-3 rounded-lg ${
-                      isSelected ? "bg-blue-500/20" : "bg-gray-700/50"
+                      isSelected ? "bg-blue-100" : "bg-gray-100"
                     }`}>
                       <Icon className={`h-6 w-6 ${
-                        isSelected ? "text-blue-400" : "text-gray-400"
+                        isSelected ? "text-blue-600" : "text-gray-600"
                       }`} />
                     </div>
                     <div className="flex-1">
-                      <h3 className="text-lg font-medium text-white mb-1">
+                      <h3 className="text-lg font-medium text-gray-900 mb-1">
                         {option.title}
                       </h3>
-                      <p className="text-sm text-gray-400">
+                      <p className="text-sm text-gray-600">
                         {option.description}
                       </p>
                     </div>

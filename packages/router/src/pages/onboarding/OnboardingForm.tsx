@@ -15,7 +15,6 @@ export function OnboardingForm({ onBack, onComplete, selectedUseCase: _selectedU
 
   const [name, setName] = useState("");
   const [avatarPreview, setAvatarPreview] = useState<string | null>(null);
-  const [avatarFile, setAvatarFile] = useState<File | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [language, setLanguage] = useState<"en" | "fr">("en");
 
@@ -34,7 +33,7 @@ export function OnboardingForm({ onBack, onComplete, selectedUseCase: _selectedU
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
-      setAvatarFile(file);
+      // TODO: Implement avatar upload to backend
       const reader = new FileReader();
       reader.onloadend = () => {
         setAvatarPreview(reader.result as string);

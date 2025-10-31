@@ -13,9 +13,13 @@ import { Loader2, CheckCircle, AlertCircle } from "lucide-react";
 import { authApiClient } from "../../lib/api-client";
 import { useAuth } from "../../lib/auth-context";
 
+type MagicLinkSearch = {
+  token?: string;
+};
+
 export function MagicLinkPage() {
   const navigate = useNavigate();
-  const search = useSearch({ from: "/auth/magic-link" });
+  const search = useSearch({ from: "/auth/magic-link" }) as MagicLinkSearch;
   const { login } = useAuth();
   const [status, setStatus] = useState<"loading" | "success" | "error">("loading");
   const [errorMessage, setErrorMessage] = useState("");

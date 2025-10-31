@@ -5,8 +5,8 @@
   "identifier": "com.nouvelle.app",
   "build": {
     "beforeDevCommand": "",
-    "devUrl": "http://localhost:3001",
-    "beforeBuildCommand": "npm run build",
+    "devUrl": "http://localhost:1420",
+    "beforeBuildCommand": "pnpm build",
     "frontendDist": "../dist"
   },
   "app": {

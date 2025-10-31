@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { ArrowLeft, ChevronDown, Check, List, Target, Briefcase, DollarSign, Book, Globe, Plane, Palette, TrendingUp, UtensilsCrossed } from "lucide-react";
+import { ArrowLeft, ChevronDown, Check, List, Target, DollarSign, Book, Globe, Plane, Palette, TrendingUp, UtensilsCrossed } from "lucide-react";
 import { Button } from "@nouvelle/ui";
 
 interface Interest {
@@ -51,7 +51,7 @@ export function OnboardingInterests({ onNext, onBack }: OnboardingInterestsProps
   };
 
   return (
-    <div className="min-h-screen bg-gray-900 flex flex-col text-white">
+    <div className="min-h-screen bg-white flex flex-col">
       {/* Top Navigation Bar */}
       <div className="flex items-center justify-between px-6 py-4">
         {/* Back Button */}
@@ -59,7 +59,7 @@ export function OnboardingInterests({ onNext, onBack }: OnboardingInterestsProps
           onClick={onBack}
           disabled={!onBack}
           className={`flex items-center gap-2 ${
-            onBack ? "text-gray-400 hover:text-white" : "text-gray-700 cursor-not-allowed"
+            onBack ? "text-gray-600 hover:text-gray-900 cursor-pointer" : "text-gray-400 cursor-not-allowed"
           }`}
           aria-label="Go back"
         >
@@ -71,12 +71,12 @@ export function OnboardingInterests({ onNext, onBack }: OnboardingInterestsProps
           <select
             value={language}
             onChange={(e) => setLanguage(e.target.value as "en" | "fr")}
-            className="appearance-none bg-transparent border-none text-sm text-gray-300 pr-6 cursor-pointer focus:outline-none"
+            className="appearance-none bg-transparent border-none text-sm text-gray-700 pr-6 cursor-pointer focus:outline-none"
           >
-            <option value="en" className="bg-gray-900">English (US)</option>
-            <option value="fr" className="bg-gray-900">Français</option>
+            <option value="en">English</option>
+            <option value="fr">Français</option>
           </select>
-          <ChevronDown className="h-4 w-4 text-gray-300 absolute right-0 top-1/2 -translate-y-1/2 pointer-events-none" />
+          <ChevronDown className="h-4 w-4 text-gray-700 absolute right-0 top-1/2 -translate-y-1/2 pointer-events-none" />
         </div>
       </div>
 
@@ -85,10 +85,10 @@ export function OnboardingInterests({ onNext, onBack }: OnboardingInterestsProps
         <div className="w-full max-w-2xl">
           {/* Header */}
           <div className="mb-8">
-            <h1 className="text-3xl font-semibold text-white mb-2">
+            <h1 className="text-3xl font-semibold text-gray-900 mb-2">
               What's on your mind?
             </h1>
-            <p className="text-base text-gray-400">
+            <p className="text-base text-gray-600">
               Select as many as you want.
             </p>
             <p className="text-sm text-gray-500 mt-2">
@@ -108,15 +108,15 @@ export function OnboardingInterests({ onNext, onBack }: OnboardingInterestsProps
                   onClick={() => toggleInterest(interest.id)}
                   className={`p-4 rounded-lg border transition-all text-left flex items-center gap-3 ${
                     isSelected
-                      ? "border-blue-500 bg-blue-500/10"
-                      : "border-gray-700 bg-gray-800/50 hover:border-gray-600 hover:bg-gray-800"
+                      ? "border-blue-500 bg-blue-50"
+                      : "border-gray-200 bg-white hover:border-gray-300 hover:bg-gray-50"
                   }`}
                 >
                   <Icon className={`h-5 w-5 flex-shrink-0 ${
-                    isSelected ? "text-blue-400" : "text-gray-400"
+                    isSelected ? "text-blue-600" : "text-gray-600"
                   }`} />
                   <span className={`text-sm font-medium ${
-                    isSelected ? "text-white" : "text-gray-300"
+                    isSelected ? "text-gray-900" : "text-gray-700"
                   }`}>
                     {interest.label}
                   </span>

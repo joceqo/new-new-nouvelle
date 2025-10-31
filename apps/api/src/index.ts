@@ -9,6 +9,7 @@ const app = new Elysia()
     cors({
       origin: [
         'http://localhost:3000', // Web app
+        'http://localhost:1420', // Desktop app Vite server
         'http://localhost:5173', // Vite dev server
         'http://localhost:5174', // Alternative Vite port
         'tauri://localhost', // Tauri

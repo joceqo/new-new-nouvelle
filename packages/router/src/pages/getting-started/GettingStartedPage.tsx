@@ -1,9 +1,17 @@
-import { useParams } from "@tanstack/react-router";
+import { useParams, useNavigate } from "@tanstack/react-router";
 import { Sidebar, SidebarItem } from "@nouvelle/ui";
 import { FileText, List, CalendarDays, User } from "lucide-react";
+import { useAuth } from "../../lib/auth-context";
 
 export function GettingStartedPage() {
   const { pageId } = useParams({ strict: false });
+  const { user, logout } = useAuth();
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    logout();
+    navigate({ to: "/login" });
+  };
 
   return (
     <div className="flex h-screen bg-background">
@@ -11,6 +19,7 @@ export function GettingStartedPage() {
       <Sidebar
         workspaceName="My Workspace"
         icon={<span className="text-lg">👋</span>}
+        onLogout={handleLogout}
       >
         {/* Private Section */}
         <div className="mb-2">
@@ -37,7 +46,7 @@ export function GettingStartedPage() {
 
       {/* Main Content */}
       <div className="flex-1 overflow-auto">
-        <div className="max-w-4xl mx-auto px-12 py-8">
+        <div className="max-w-4xl mx-auto px-16 py-12">
           {/* Page Header */}
           <div className="mb-8">
             <div className="flex items-center gap-2 mb-4">
@@ -46,6 +55,27 @@ export function GettingStartedPage() {
             <h1 className="text-4xl font-semibold text-foreground mb-4">
               Getting Started
             </h1>
+          </div>
+
+          {/* User & Workspace Information */}
+          <div className="mb-8 p-6 bg-muted/50 rounded-lg border border-border">
+            <h2 className="text-xl font-semibold text-foreground mb-4">
+              Workspace Information
+            </h2>
+            <div className="grid gap-3 text-sm">
+              <div className="flex items-center gap-2">
+                <span className="text-muted-foreground font-medium w-32">Workspace:</span>
+                <span className="text-foreground">My Workspace</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <span className="text-muted-foreground font-medium w-32">User Email:</span>
+                <span className="text-foreground">{user?.email || 'Not available'}</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <span className="text-muted-foreground font-medium w-32">User ID:</span>
+                <span className="text-foreground font-mono text-xs">{user?.id || 'Not available'}</span>
+              </div>
+            </div>
           </div>
 
           {/* Placeholder Content */}
