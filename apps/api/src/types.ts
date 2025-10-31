@@ -16,6 +16,13 @@ export interface JWTPayload {
   email: string;
 }
 
+export interface RefreshTokenStore {
+  userId: string;
+  token: string;
+  expiresAt: Date;
+  createdAt: Date;
+}
+
 export interface AuthContext {
   user?: User;
 }

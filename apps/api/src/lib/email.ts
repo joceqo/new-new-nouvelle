@@ -1,6 +1,14 @@
 import { Resend } from 'resend';
 
-const resend = new Resend(process.env.RESEND_API_KEY);
+// Lazy-load Resend client only when needed
+let resend: Resend | null = null;
+
+function getResendClient(): Resend {
+  if (!resend) {
+    resend = new Resend(process.env.RESEND_API_KEY);
+  }
+  return resend;
+}
 
 export async function sendOTPEmail(email: string, code: string): Promise<void> {
   const isDev = process.env.NODE_ENV !== 'production';
@@ -15,7 +23,7 @@ export async function sendOTPEmail(email: string, code: string): Promise<void> {
   }
 
   try {
-    await resend.emails.send({
+    await getResendClient().emails.send({
       from: process.env.FROM_EMAIL || 'noreply@yourdomain.com',
       to: email,
       subject: 'Your Nouvelle verification code',

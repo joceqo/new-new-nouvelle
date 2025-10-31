@@ -97,8 +97,9 @@ export const SidebarHeader: React.FC<SidebarHeaderProps> = ({
             {/* Dropdown Chevron (shown on hover) */}
             <IconWrapper
               icon={ChevronDown}
+              size="xs"
               className={cn(
-                "h-3 w-3 shrink-0 transition-all duration-200",
+                "shrink-0 transition-all duration-200",
                 "text-[var(--sidebar-header-icon)]",
                 "opacity-0 group-hover/header:opacity-100",
                 isDropdownOpen && "rotate-180 opacity-100"
@@ -116,7 +117,7 @@ export const SidebarHeader: React.FC<SidebarHeaderProps> = ({
                 }}
                 className="w-full flex items-center gap-2 px-3 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-colors rounded-md"
               >
-                <LogOut className="h-4 w-4" />
+                <IconWrapper icon={LogOut} size="sm" />
                 <span>Logout</span>
               </button>
             </div>
@@ -128,32 +129,36 @@ export const SidebarHeader: React.FC<SidebarHeaderProps> = ({
           {onCreateNewPage && (
             <IconWrapper
               icon={SquarePen}
+              size="sm"
+              interactive
               onClick={(e) => {
                 e.stopPropagation();
                 onCreateNewPage();
               }}
               className={cn(
-                "h-4 w-4 rounded-sm p-0.5",
+                "rounded-sm",
                 "text-[var(--sidebar-header-icon)]",
                 "hover:text-[var(--sidebar-header-icon-hover)]",
                 "hover:bg-[var(--sidebar-action-bg-hover)]",
-                "cursor-pointer transition-colors"
+                "cursor-pointer"
               )}
             />
           )}
           {onToggleSidebar && (
             <IconWrapper
               icon={ChevronsLeft}
+              size="sm"
+              interactive
               onClick={(e) => {
                 e.stopPropagation();
                 onToggleSidebar();
               }}
               className={cn(
-                "h-4 w-4 rounded-sm p-0.5",
+                "rounded-sm",
                 "text-[var(--sidebar-header-icon)]",
                 "hover:text-[var(--sidebar-header-icon-hover)]",
                 "hover:bg-[var(--sidebar-action-bg-hover)]",
-                "cursor-pointer transition-colors"
+                "cursor-pointer"
               )}
             />
           )}

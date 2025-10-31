@@ -1,18 +1,52 @@
 import { Elysia, t } from 'elysia';
 import { jwt } from '@elysiajs/jwt';
+import { rateLimit } from 'elysia-rate-limit';
 import { generateOTP, storeOTP, verifyOTP } from '../lib/otp';
 import { sendOTPEmail } from '../lib/email';
 import { findOrCreateUser, findUserById } from '../lib/users';
+import {
+  generateRefreshToken,
+  storeRefreshToken,
+  verifyRefreshToken,
+  revokeRefreshToken,
+} from '../lib/refresh-tokens';
+import { trackSuccess, trackFailure } from '../lib/metrics';
 
 export function createAuthRoutes() {
-  return new Elysia({ prefix: '/auth' })
+  // Validate JWT_SECRET is set
+  const jwtSecret = process.env.JWT_SECRET;
+  if (!jwtSecret) {
+    throw new Error(
+      'JWT_SECRET environment variable is required. Please set it in your .env file.'
+    );
+  }
+
+  // Get token expiry from environment or use defaults
+  const accessTokenExpiry = process.env.ACCESS_TOKEN_EXPIRY || '1h'; // Shorter for better security
+  const refreshTokenExpiry = process.env.REFRESH_TOKEN_EXPIRY || '30d';
+
+  const isTest = process.env.NODE_ENV === 'test';
+
+  const app = new Elysia({ prefix: '/auth' })
     .use(
       jwt({
         name: 'jwt',
-        secret: process.env.JWT_SECRET || 'super-secret-key-change-in-production',
-        exp: '7d', // Token expires in 7 days
+        secret: jwtSecret,
+        exp: accessTokenExpiry, // Now configurable, default 1 hour
       })
-    )
+    );
+
+  // Apply rate limiting only in non-test environments
+  if (!isTest) {
+    app.use(
+      rateLimit({
+        duration: 15 * 60 * 1000, // 15 minutes
+        max: 5, // 5 requests per 15 minutes
+      })
+    );
+  }
+
+  return app
   .post(
     '/send-code',
     async ({ body, set, jwt }) => {
@@ -30,8 +64,20 @@ export function createAuthRoutes() {
         const code = generateOTP();
         storeOTP(email, code);
 
+        // Track OTP generation
+        trackSuccess('otp.generated', {
+          email,
+          metadata: { emailDomain: email.split('@')[1] },
+        });
+
         // Send OTP via email
-        await sendOTPEmail(email, code);
+        try {
+          await sendOTPEmail(email, code);
+          trackSuccess('otp.sent', { email });
+        } catch (emailError) {
+          trackFailure('otp.sent', 'Email sending failed', { email });
+          throw emailError;
+        }
 
         // In development, also generate a magic link for convenience
         const isDev = process.env.NODE_ENV !== 'production';
@@ -74,17 +120,43 @@ export function createAuthRoutes() {
         const isValid = verifyOTP(email, code);
 
         if (!isValid) {
+          trackFailure('otp.verification', 'Invalid or expired code', { email });
           set.status = 401;
           return { error: 'Invalid or expired verification code' };
         }
 
+        trackSuccess('otp.verification', { email });
+
         // Find or create user
         const user = findOrCreateUser(email);
 
-        // Generate JWT token
+        trackSuccess('auth.login', {
+          userId: user.id,
+          email: user.email,
+          metadata: { method: 'otp' },
+        });
+
+        // Generate JWT access token
         const token = await jwt.sign({
           userId: user.id,
           email: user.email,
+        });
+
+        trackSuccess('token.generated', {
+          userId: user.id,
+          email: user.email,
+          metadata: { tokenType: 'access', expiresIn: accessTokenExpiry },
+        });
+
+        // Generate refresh token
+        const refreshToken = generateRefreshToken();
+        const refreshExpiryDays = parseInt(refreshTokenExpiry.replace('d', ''), 10) || 30;
+        storeRefreshToken(user.id, refreshToken, refreshExpiryDays);
+
+        trackSuccess('token.generated', {
+          userId: user.id,
+          email: user.email,
+          metadata: { tokenType: 'refresh', expiresIn: refreshTokenExpiry },
         });
 
         // Log clickable URL in development
@@ -95,12 +167,14 @@ export function createAuthRoutes() {
           console.log('✅ User authenticated:', user.email);
           console.log('🔗 Clickable test URL:');
           console.log(`   http://localhost:${port}/auth/me?token=${token}`);
+          console.log('🔄 Refresh token:', refreshToken);
           console.log('=================================\n');
         }
 
         return {
           success: true,
           token,
+          refreshToken,
           user: {
             id: user.id,
             email: user.email,
@@ -116,6 +190,83 @@ export function createAuthRoutes() {
       body: t.Object({
         email: t.String(),
         code: t.String(),
+      }),
+    }
+  )
+  .post(
+    '/refresh',
+    async ({ body, set, jwt }) => {
+      try {
+        const { refreshToken } = body;
+
+        // Verify refresh token
+        const userId = verifyRefreshToken(refreshToken);
+
+        if (!userId) {
+          trackFailure('token.refresh', 'Invalid or expired refresh token', {});
+          set.status = 401;
+          return { error: 'Invalid or expired refresh token' };
+        }
+
+        // Get user
+        const user = findUserById(userId);
+
+        if (!user) {
+          trackFailure('token.refresh', 'User not found', { userId });
+          set.status = 401;
+          return { error: 'User not found' };
+        }
+
+        trackSuccess('token.refresh', {
+          userId: user.id,
+          email: user.email,
+          metadata: { tokenRotation: true },
+        });
+
+        // Generate new access token
+        const newAccessToken = await jwt.sign({
+          userId: user.id,
+          email: user.email,
+        });
+
+        trackSuccess('token.generated', {
+          userId: user.id,
+          email: user.email,
+          metadata: { tokenType: 'access', source: 'refresh', expiresIn: accessTokenExpiry },
+        });
+
+        // Optionally rotate refresh token (recommended for better security)
+        const newRefreshToken = generateRefreshToken();
+        const refreshExpiryDays = parseInt(refreshTokenExpiry.replace('d', ''), 10) || 30;
+
+        // Revoke old refresh token and store new one
+        revokeRefreshToken(refreshToken);
+        storeRefreshToken(user.id, newRefreshToken, refreshExpiryDays);
+
+        trackSuccess('token.generated', {
+          userId: user.id,
+          email: user.email,
+          metadata: { tokenType: 'refresh', source: 'refresh', expiresIn: refreshTokenExpiry },
+        });
+
+        return {
+          success: true,
+          token: newAccessToken,
+          refreshToken: newRefreshToken,
+          user: {
+            id: user.id,
+            email: user.email,
+          },
+        };
+      } catch (error) {
+        console.error('Refresh token error:', error);
+        set.status = 401;
+        return { error: 'Failed to refresh token' };
+      }
+    },
+    {
+      body: t.Object({
+        refreshToken: t.String(),
       }),
     }
   )
@@ -155,9 +306,15 @@ export function createAuthRoutes() {
         email: user.email,
       });
 
+      // Generate refresh token
+      const refreshToken = generateRefreshToken();
+      const refreshExpiryDays = parseInt(refreshTokenExpiry.replace('d', ''), 10) || 30;
+      storeRefreshToken(user.id, refreshToken, refreshExpiryDays);
+
       return {
         success: true,
         token: authToken,
+        refreshToken,
         user: {
           id: user.id,
           email: user.email,
@@ -171,8 +328,9 @@ export function createAuthRoutes() {
   })
   .get('/me', async ({ headers, query, set, jwt }) => {
     try {
-      // Accept token from query string (for dev convenience) or Authorization header
-      let token = query.token;
+      // Accept token from query string in development only (for dev convenience)
+      const isDev = process.env.NODE_ENV !== 'production';
+      let token = isDev ? query.token : undefined;
 
       if (!token) {
         const authorization = headers['authorization'];
@@ -209,7 +367,52 @@ export function createAuthRoutes() {
       set.status = 401;
       return { error: 'Unauthorized' };
     }
-  });
-}
+  })
+  .post(
+    '/logout',
+    async ({ body, set, headers }) => {
+      try {
+        const { refreshToken } = body;
 
-export const authRoutes = createAuthRoutes();
+        // Get user from access token to track logout
+        const authHeader = headers.authorization;
+        let userId: string | undefined;
+        let email: string | undefined;
+
+        if (authHeader) {
+          try {
+            const token = authHeader.replace('Bearer ', '');
+            const payload = await (globalThis as any).jwt.verify(token);
+            userId = payload.userId;
+            email = payload.email;
+          } catch {
+            // Ignore token verification errors during logout
+          }
+        }
+
+        // Revoke the refresh token
+        revokeRefreshToken(refreshToken);
+
+        trackSuccess('auth.logout', {
+          userId,
+          email,
+          metadata: { tokenRevoked: true },
+        });
+
+        return {
+          success: true,
+          message: 'Logged out successfully',
+        };
+      } catch (error) {
+        console.error('Logout error:', error);
+        set.status = 500;
+        return { error: 'Failed to logout' };
+      }
+    },
+    {
+      body: t.Object({
+        refreshToken: t.String(),
+      }),
+    }
+  );
+}

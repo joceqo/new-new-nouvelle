@@ -1,6 +1,6 @@
 import { Elysia } from 'elysia';
 import { cors } from '@elysiajs/cors';
-import { authRoutes } from './routes/auth';
+import { createAuthRoutes } from './routes/auth';
 
 const PORT = process.env.PORT || 3001;
 
@@ -39,7 +39,7 @@ const app = new Elysia()
     status: 'healthy',
     timestamp: new Date().toISOString(),
   }))
-  .use(authRoutes)
+  .use(createAuthRoutes())
   .onError(({ code, error, set }) => {
     console.error('Error:', code, error);
 

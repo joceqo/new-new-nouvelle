@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { ArrowLeft, ChevronDown, Briefcase, Home, GraduationCap } from "lucide-react";
-import { Button } from "@nouvelle/ui";
+import { Button, IconWrapper } from "@nouvelle/ui";
 
 type UseCase = "work" | "personal" | "school";
 
@@ -60,7 +60,7 @@ export function OnboardingUseCase({ onNext, onBack }: OnboardingUseCaseProps) {
           }`}
           aria-label="Go back"
         >
-          <ArrowLeft className="h-5 w-5" />
+          <IconWrapper icon={ArrowLeft} size="md" />
         </button>
 
         {/* Language Picker */}
@@ -73,7 +73,13 @@ export function OnboardingUseCase({ onNext, onBack }: OnboardingUseCaseProps) {
             <option value="en">English</option>
             <option value="fr">Français</option>
           </select>
-          <ChevronDown className="h-4 w-4 text-gray-700 absolute right-0 top-1/2 -translate-y-1/2 pointer-events-none" />
+          <div className="absolute right-0 top-1/2 -translate-y-1/2 pointer-events-none">
+            <IconWrapper
+              icon={ChevronDown}
+              size="sm"
+              className="text-gray-700"
+            />
+          </div>
         </div>
       </div>
 
@@ -110,9 +116,11 @@ export function OnboardingUseCase({ onNext, onBack }: OnboardingUseCaseProps) {
                     <div className={`p-3 rounded-lg ${
                       isSelected ? "bg-blue-100" : "bg-gray-100"
                     }`}>
-                      <Icon className={`h-6 w-6 ${
-                        isSelected ? "text-blue-600" : "text-gray-600"
-                      }`} />
+                      <IconWrapper
+                        icon={Icon}
+                        size="lg"
+                        className={isSelected ? "text-blue-600" : "text-gray-600"}
+                      />
                     </div>
                     <div className="flex-1">
                       <h3 className="text-lg font-medium text-gray-900 mb-1">

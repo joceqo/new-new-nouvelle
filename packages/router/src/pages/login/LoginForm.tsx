@@ -11,6 +11,7 @@ import {
   Alert,
   AlertDescription,
   InputOTP,
+  IconWrapper,
 } from "@nouvelle/ui";
 import { Loader2, Mail, CheckCircle, ArrowLeft } from "lucide-react";
 import { authApiClient } from "../../lib/api-client";
@@ -105,7 +106,13 @@ export function LoginForm() {
                 <div className="space-y-2">
                   <Label htmlFor="email">Email</Label>
                   <div className="relative">
-                    <Mail className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                    <div className="absolute left-3 top-3">
+                      <IconWrapper
+                        icon={Mail}
+                        size="sm"
+                        className="text-muted-foreground"
+                      />
+                    </div>
                     <Input
                       id="email"
                       type="email"
@@ -129,7 +136,11 @@ export function LoginForm() {
                 <Button type="submit" className="w-full" disabled={loading}>
                   {loading ? (
                     <>
-                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                      <IconWrapper
+                        icon={Loader2}
+                        size="sm"
+                        className="mr-2 animate-spin"
+                      />
                       Sending code...
                     </>
                   ) : (
@@ -149,7 +160,12 @@ export function LoginForm() {
             {step === "code-sent" && (
               <form onSubmit={handleCodeSubmit} className="space-y-6">
                 <div className="flex items-center justify-center py-4">
-                  <CheckCircle className="h-12 w-12 text-green-500" />
+                  <IconWrapper
+                    icon={CheckCircle}
+                    size="lg"
+                    className="text-green-500"
+                    style={{ fontSize: '48px' }}
+                  />
                 </div>
                 <div className="text-center space-y-2">
                   <h3 className="font-medium">Check your email</h3>
@@ -198,7 +214,11 @@ export function LoginForm() {
                 >
                   {loading ? (
                     <>
-                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                      <IconWrapper
+                        icon={Loader2}
+                        size="sm"
+                        className="mr-2 animate-spin"
+                      />
                       Verifying...
                     </>
                   ) : (
@@ -217,7 +237,7 @@ export function LoginForm() {
                   }}
                   disabled={loading}
                 >
-                  <ArrowLeft className="mr-2 h-4 w-4" />
+                  <IconWrapper icon={ArrowLeft} size="sm" className="mr-2" />
                   Use a different email
                 </Button>
               </form>

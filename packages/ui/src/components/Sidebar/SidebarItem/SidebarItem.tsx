@@ -156,37 +156,40 @@ export const SidebarItem = React.forwardRef<HTMLDivElement, SidebarItemProps>(
             align="center"
             gap="1"
             className="shrink-0 opacity-0 transition-opacity duration-150 group-hover/item:opacity-100"
-            style={{ fontSize: "16px" }}
           >
             {onMore && (
               <IconWrapper
                 icon={MoreHorizontal}
+                size="sm"
+                interactive
                 onClick={(e) => {
                   e.stopPropagation();
                   onMore(e);
                 }}
                 className={cn(
-                  "rounded-sm p-0.5",
+                  "rounded-sm",
                   "text-[var(--sidebar-action-color)]",
                   "hover:text-[var(--sidebar-action-hover-color)]",
                   "hover:bg-[var(--sidebar-action-bg-hover)]",
-                  "transition-colors cursor-pointer"
+                  "cursor-pointer"
                 )}
               />
             )}
             {onAdd && (
               <IconWrapper
                 icon={Plus}
+                size="sm"
+                interactive
                 onClick={(e) => {
                   e.stopPropagation();
                   onAdd(e);
                 }}
                 className={cn(
-                  "rounded-sm p-0.5",
+                  "rounded-sm",
                   "text-[var(--sidebar-action-color)]",
                   "hover:text-[var(--sidebar-action-hover-color)]",
                   "hover:bg-[var(--sidebar-action-bg-hover)]",
-                  "transition-colors cursor-pointer"
+                  "cursor-pointer"
                 )}
               />
             )}
