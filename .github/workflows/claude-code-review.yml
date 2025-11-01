@@ -40,7 +40,32 @@ jobs:
             REPO: ${{ github.repository }}
             PR NUMBER: ${{ github.event.pull_request.number }}
 
-            Please review this pull request and provide feedback on:
+            ## Review Format
+
+            Start your review with:
+
+            ### Proposed PR Title
+            Suggest a clear, concise commit/PR title (50-72 chars) that summarizes the changes.
+            Format: `<type>: <description>` (e.g., "feat: add refresh token support", "fix: resolve auth race condition")
+
+            ### Summary
+            Provide a 2-3 sentence high-level summary of what this PR accomplishes.
+
+            ### File-by-File Analysis
+            **Adaptive Detail:**
+            - **If PR is small** (≤ 5 files, < 200 lines changed): Provide quick per-file explanation
+              Example:
+              - `src/auth.ts`: Added JWT verification middleware
+              - `src/types.ts`: Added User interface
+            - **If PR is large** (> 5 files or > 200 lines): Skip per-file breakdown, focus on overall architecture/patterns
+              Example:
+              - Migrates authentication from in-memory to Convex database
+              - Updates all auth routes to use async/await
+              - Adds structured logging with Pino
+
+            ---
+
+            Then review the pull request and provide feedback on:
             - Code quality and best practices
             - Potential bugs or issues
             - Performance considerations
@@ -80,6 +105,29 @@ jobs:
             - ⚠️ **Warn** if components exceed 200 lines (consider splitting)
             - ⚠️ **Warn** if using inline styles instead of design system
             - ⚠️ **Warn** if animations are too fast (< 150ms) or too slow (> 400ms)
+
+            ---
+
+            ## Review Conclusion
+
+            End your review with:
+
+            ### Verdict
+            - ✅ **Approve**: Ready to merge (minor suggestions only)
+            - ⚠️ **Approve with Comments**: Merge after addressing non-blocking issues
+            - 🔄 **Request Changes**: Must fix critical issues before merge
+            - ❌ **Reject**: Fundamental problems requiring major rework
+
+            ### Action Items
+            If there are issues to fix, provide a prioritized checklist:
+            - [ ] Critical: Issue description
+            - [ ] Important: Issue description
+            - [ ] Nice to have: Issue description
+
+            ### Estimated Effort
+            Give a rough estimate: "~15 minutes", "~1 hour", "~half day", etc.
+
+            ---
 
             Use the repository's CLAUDE.md for guidance on style and conventions. Be constructive and helpful in your feedback.
 
