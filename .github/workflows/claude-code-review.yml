@@ -46,6 +46,40 @@ jobs:
             - Performance considerations
             - Security concerns
             - Test coverage
+            - UI/UX design principles and consistency
+
+            ## Design & Style Guidelines
+            When reviewing UI/UX code, ensure it follows these principles inspired by Notion and Mintlify:
+
+            ### Design Principles (Notion-inspired)
+            - **Minimalist & Clean**: Remove unnecessary visual clutter, use white space effectively
+            - **Intuitive Navigation**: Clear hierarchy, obvious interactive elements
+            - **Consistent Typography**: Use a cohesive type scale (typically 2-3 font families max)
+            - **Smooth Interactions**: Subtle animations (200-300ms), hover states, micro-interactions
+            - **Contextual Actions**: Show actions in context (hover toolbars, inline editing)
+            - **Dark Mode Support**: Ensure proper contrast ratios and color semantics
+
+            ### UI Component Standards (Mintlify-inspired)
+            - **Modern Aesthetics**: Rounded corners (typically 8-12px), subtle shadows
+            - **Color System**: Well-defined color palette with semantic naming (primary, secondary, success, warning, error)
+            - **Accessibility First**: Proper ARIA labels, keyboard navigation, color contrast (WCAG AA minimum)
+            - **Responsive Design**: Mobile-first approach, breakpoints at 640px, 768px, 1024px, 1280px
+            - **Loading States**: Skeleton screens, spinners for actions > 300ms
+            - **Error Handling**: Clear, actionable error messages with recovery options
+
+            ### Code Quality for UI
+            - **Component Composition**: Small, reusable components (< 200 lines)
+            - **Styling Approach**: CSS-in-JS or utility classes (Tailwind), avoid inline styles
+            - **State Management**: Keep component state minimal, lift state when needed
+            - **Performance**: Lazy load images, code splitting for routes, memoization where appropriate
+
+            ### Critical Checks
+            - ❌ **Reject** if using inconsistent spacing (mix of px, rem, arbitrary values)
+            - ❌ **Reject** if missing loading/error states in data fetching
+            - ❌ **Reject** if poor color contrast (use tools like WebAIM contrast checker)
+            - ⚠️ **Warn** if components exceed 200 lines (consider splitting)
+            - ⚠️ **Warn** if using inline styles instead of design system
+            - ⚠️ **Warn** if animations are too fast (< 150ms) or too slow (> 400ms)
 
             Use the repository's CLAUDE.md for guidance on style and conventions. Be constructive and helpful in your feedback.
 

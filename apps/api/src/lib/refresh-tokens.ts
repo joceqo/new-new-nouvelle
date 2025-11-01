@@ -1,8 +1,8 @@
 import { randomBytes } from 'crypto';
-import { RefreshTokenStore } from '../types';
+import { authLogger } from './logger';
+import { convexClient, api } from './convex-client';
 
-// In-memory refresh token storage (replace with Redis/database in production)
-const refreshTokenStore = new Map<string, RefreshTokenStore>();
+const CLEANUP_INTERVAL_MS = 60 * 60 * 1000; // 1 hour
 
 /**
  * Generate a cryptographically secure refresh token
@@ -17,17 +17,16 @@ export function generateRefreshToken(): string {
  * @param token - Refresh token
  * @param expiryDays - Number of days until expiration (default: 30)
  */
-export function storeRefreshToken(
+export async function storeRefreshToken(
   userId: string,
   token: string,
   expiryDays: number = 30
-): void {
-  const expiresAt = new Date(Date.now() + expiryDays * 24 * 60 * 60 * 1000);
-  refreshTokenStore.set(token, {
+): Promise<void> {
+  const expiresAt = Date.now() + expiryDays * 24 * 60 * 60 * 1000;
+  await convexClient.mutation(api.refreshTokens.store, {
     userId,
     token,
     expiresAt,
-    createdAt: new Date(),
   });
 }
 
@@ -36,16 +35,21 @@ export function storeRefreshToken(
  * @param token - Refresh token to verify
  * @returns User ID if valid, null otherwise
  */
-export function verifyRefreshToken(token: string): string | null {
-  const stored = refreshTokenStore.get(token);
+export async function verifyRefreshToken(token: string): Promise<string | null> {
+  const stored = await convexClient.query(api.refreshTokens.getByToken, { token });
 
   if (!stored) {
     return null;
   }
 
+  // Check if revoked
+  if (stored.revoked) {
+    return null;
+  }
+
   // Check if expired
-  if (stored.expiresAt < new Date()) {
-    refreshTokenStore.delete(token);
+  if (stored.expiresAt < Date.now()) {
+    await convexClient.mutation(api.refreshTokens.deleteToken, { token });
     return null;
   }
 
@@ -56,33 +60,31 @@ export function verifyRefreshToken(token: string): string | null {
  * Revoke a refresh token (e.g., on logout)
  * @param token - Refresh token to revoke
  */
-export function revokeRefreshToken(token: string): void {
-  refreshTokenStore.delete(token);
+export async function revokeRefreshToken(token: string): Promise<void> {
+  await convexClient.mutation(api.refreshTokens.revoke, { token });
 }
 
 /**
  * Revoke all refresh tokens for a user
  * @param userId - User ID
  */
-export function revokeAllUserRefreshTokens(userId: string): void {
-  for (const [token, stored] of refreshTokenStore.entries()) {
-    if (stored.userId === userId) {
-      refreshTokenStore.delete(token);
-    }
-  }
+export async function revokeAllUserRefreshTokens(userId: string): Promise<void> {
+  await convexClient.mutation(api.refreshTokens.revokeAllForUser, { userId });
 }
 
 /**
  * Clear expired refresh tokens
  */
-export function clearExpiredRefreshTokens(): void {
-  const now = new Date();
-  for (const [token, stored] of refreshTokenStore.entries()) {
-    if (stored.expiresAt < now) {
-      refreshTokenStore.delete(token);
+export async function clearExpiredRefreshTokens(): Promise<void> {
+  try {
+    const count = await convexClient.mutation(api.refreshTokens.clearExpired, {});
+    if (count > 0) {
+      authLogger.info({ count }, 'Cleared expired refresh tokens');
     }
+  } catch (error) {
+    authLogger.error({ err: error }, 'Failed to clear expired refresh tokens');
   }
 }
 
 // Clear expired refresh tokens every hour
-setInterval(clearExpiredRefreshTokens, 60 * 60 * 1000);
+setInterval(clearExpiredRefreshTokens, CLEANUP_INTERVAL_MS);

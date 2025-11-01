@@ -11,6 +11,7 @@ import {
   revokeRefreshToken,
 } from '../lib/refresh-tokens';
 import { trackSuccess, trackFailure } from '../lib/metrics';
+import { authLogger } from '../lib/logger';
 
 export function createAuthRoutes() {
   // Validate JWT_SECRET is set
@@ -62,7 +63,7 @@ export function createAuthRoutes() {
 
         // Generate and store OTP
         const code = generateOTP();
-        storeOTP(email, code);
+        await storeOTP(email, code);
 
         // Track OTP generation
         trackSuccess('otp.generated', {
@@ -99,7 +100,7 @@ export function createAuthRoutes() {
 
         return { success: true, message: 'Verification code sent' };
       } catch (error) {
-        console.error('Send code error:', error);
+        authLogger.error({ err: error, email: body.email }, 'Send code error');
         set.status = 500;
         return { error: 'Failed to send verification code' };
       }
@@ -117,7 +118,7 @@ export function createAuthRoutes() {
         const { email, code } = body;
 
         // Verify OTP
-        const isValid = verifyOTP(email, code);
+        const isValid = await verifyOTP(email, code);
 
         if (!isValid) {
           trackFailure('otp.verification', 'Invalid or expired code', { email });
@@ -128,7 +129,7 @@ export function createAuthRoutes() {
         trackSuccess('otp.verification', { email });
 
         // Find or create user
-        const user = findOrCreateUser(email);
+        const user = await findOrCreateUser(email);
 
         trackSuccess('auth.login', {
           userId: user.id,
@@ -151,7 +152,7 @@ export function createAuthRoutes() {
         // Generate refresh token
         const refreshToken = generateRefreshToken();
         const refreshExpiryDays = parseInt(refreshTokenExpiry.replace('d', ''), 10) || 30;
-        storeRefreshToken(user.id, refreshToken, refreshExpiryDays);
+        await storeRefreshToken(user.id, refreshToken, refreshExpiryDays);
 
         trackSuccess('token.generated', {
           userId: user.id,
@@ -181,7 +182,7 @@ export function createAuthRoutes() {
           },
         };
       } catch (error) {
-        console.error('Verify code error:', error);
+        authLogger.error({ err: error, email: body.email }, 'Verify code error');
         set.status = 500;
         return { error: 'Failed to verify code' };
       }
@@ -200,7 +201,7 @@ export function createAuthRoutes() {
         const { refreshToken } = body;
 
         // Verify refresh token
-        const userId = verifyRefreshToken(refreshToken);
+        const userId = await verifyRefreshToken(refreshToken);
 
         if (!userId) {
           trackFailure('token.refresh', 'Invalid or expired refresh token', {});
@@ -209,7 +210,7 @@ export function createAuthRoutes() {
         }
 
         // Get user
-        const user = findUserById(userId);
+        const user = await findUserById(userId);
 
         if (!user) {
           trackFailure('token.refresh', 'User not found', { userId });
@@ -240,8 +241,8 @@ export function createAuthRoutes() {
         const refreshExpiryDays = parseInt(refreshTokenExpiry.replace('d', ''), 10) || 30;
 
         // Revoke old refresh token and store new one
-        revokeRefreshToken(refreshToken);
-        storeRefreshToken(user.id, newRefreshToken, refreshExpiryDays);
+        await revokeRefreshToken(refreshToken);
+        await storeRefreshToken(user.id, newRefreshToken, refreshExpiryDays);
 
         trackSuccess('token.generated', {
           userId: user.id,
@@ -259,7 +260,7 @@ export function createAuthRoutes() {
           },
         };
       } catch (error) {
-        console.error('Refresh token error:', error);
+        authLogger.error({ err: error, refreshToken: body.refreshToken }, 'Refresh token error');
         set.status = 401;
         return { error: 'Failed to refresh token' };
       }
@@ -290,7 +291,7 @@ export function createAuthRoutes() {
       const { email, code } = payload;
 
       // Verify OTP
-      const isValid = verifyOTP(email, code);
+      const isValid = await verifyOTP(email, code);
 
       if (!isValid) {
         set.status = 401;
@@ -298,7 +299,7 @@ export function createAuthRoutes() {
       }
 
       // Find or create user
-      const user = findOrCreateUser(email);
+      const user = await findOrCreateUser(email);
 
       // Generate JWT token for authentication
       const authToken = await jwt.sign({
@@ -309,7 +310,7 @@ export function createAuthRoutes() {
       // Generate refresh token
       const refreshToken = generateRefreshToken();
       const refreshExpiryDays = parseInt(refreshTokenExpiry.replace('d', ''), 10) || 30;
-      storeRefreshToken(user.id, refreshToken, refreshExpiryDays);
+      await storeRefreshToken(user.id, refreshToken, refreshExpiryDays);
 
       return {
         success: true,
@@ -321,7 +322,7 @@ export function createAuthRoutes() {
         },
       };
     } catch (error) {
-      console.error('Magic link verification error:', error);
+      authLogger.error({ err: error, token: query.token }, 'Magic link verification error');
       set.status = 401;
       return { error: 'Invalid or expired link' };
     }
@@ -348,7 +349,7 @@ export function createAuthRoutes() {
         return { error: 'Invalid token' };
       }
 
-      const user = findUserById(payload.userId);
+      const user = await findUserById(payload.userId);
 
       if (!user) {
         set.status = 401;
@@ -363,7 +364,7 @@ export function createAuthRoutes() {
         },
       };
     } catch (error) {
-      console.error('Get user error:', error);
+      authLogger.error({ err: error }, 'Get user error');
       set.status = 401;
       return { error: 'Unauthorized' };
     }
@@ -391,7 +392,7 @@ export function createAuthRoutes() {
         }
 
         // Revoke the refresh token
-        revokeRefreshToken(refreshToken);
+        await revokeRefreshToken(refreshToken);
 
         trackSuccess('auth.logout', {
           userId,
@@ -404,7 +405,7 @@ export function createAuthRoutes() {
           message: 'Logged out successfully',
         };
       } catch (error) {
-        console.error('Logout error:', error);
+        authLogger.error({ err: error, refreshToken: body.refreshToken }, 'Logout error');
         set.status = 500;
         return { error: 'Failed to logout' };
       }

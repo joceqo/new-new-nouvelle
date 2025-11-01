@@ -19,6 +19,7 @@ export interface SendCodeResponse {
 export interface VerifyCodeResponse {
   success: boolean;
   token?: string;
+  refreshToken?: string;
   user?: User;
   error?: string;
 }

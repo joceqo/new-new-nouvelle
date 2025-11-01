@@ -14,9 +14,13 @@
   "dependencies": {
     "@elysiajs/cors": "^1.1.1",
     "@elysiajs/jwt": "^1.1.1",
+    "@nouvelle/convex": "workspace:*",
+    "convex": "^1.16.5",
     "dotenv": "^17.2.3",
     "elysia": "^1.1.27",
     "elysia-rate-limit": "^4.4.2",
+    "pino": "^10.1.0",
+    "pino-pretty": "^13.1.2",
     "resend": "^4.0.1"
   },
   "devDependencies": {

@@ -1,27 +1,29 @@
 import { randomInt } from 'crypto';
-import { OTPStore } from '../types';
 import { trackFailure } from './metrics';
+import { otpLogger } from './logger';
+import { convexClient, api } from './convex-client';
 
-// In-memory OTP storage (replace with Redis in production)
-const otpStore = new Map<string, OTPStore>();
+const OTP_EXPIRY_MS = 10 * 60 * 1000; // 10 minutes
+const CLEANUP_INTERVAL_MS = 60 * 1000; // 1 minute
 
 export function generateOTP(): string {
   // Use cryptographically secure random number generation
   return randomInt(100000, 1000000).toString().padStart(6, '0');
 }
 
-export function storeOTP(email: string, code: string): void {
-  const expiresAt = new Date(Date.now() + 10 * 60 * 1000); // 10 minutes
-  otpStore.set(email.toLowerCase(), {
-    email,
+export async function storeOTP(email: string, code: string): Promise<void> {
+  const expiresAt = Date.now() + OTP_EXPIRY_MS;
+  await convexClient.mutation(api.otps.store, {
+    email: email.toLowerCase(),
     code,
     expiresAt,
-    attempts: 0,
   });
 }
 
-export function verifyOTP(email: string, code: string): boolean {
-  const stored = otpStore.get(email.toLowerCase());
+export async function verifyOTP(email: string, code: string): Promise<boolean> {
+  const stored = await convexClient.query(api.otps.getByEmail, {
+    email: email.toLowerCase(),
+  });
 
   if (!stored) {
     trackFailure('otp.verification.detail', 'No OTP found for email', { email });
@@ -29,12 +31,12 @@ export function verifyOTP(email: string, code: string): boolean {
   }
 
   // Check if expired
-  if (stored.expiresAt < new Date()) {
+  if (stored.expiresAt < Date.now()) {
     trackFailure('otp.verification.detail', 'OTP expired', {
       email,
-      metadata: { expiresAt: stored.expiresAt.toISOString() },
+      metadata: { expiresAt: new Date(stored.expiresAt).toISOString() },
     });
-    otpStore.delete(email.toLowerCase());
+    await convexClient.mutation(api.otps.deleteOtp, { email: email.toLowerCase() });
     return false;
   }
 
@@ -44,35 +46,37 @@ export function verifyOTP(email: string, code: string): boolean {
       email,
       metadata: { attempts: stored.attempts },
     });
-    otpStore.delete(email.toLowerCase());
+    await convexClient.mutation(api.otps.deleteOtp, { email: email.toLowerCase() });
     return false;
   }
 
   // Increment attempts
-  stored.attempts++;
+  await convexClient.mutation(api.otps.incrementAttempts, { email: email.toLowerCase() });
 
   // Verify code
   if (stored.code !== code) {
     trackFailure('otp.verification.detail', 'Invalid code', {
       email,
-      metadata: { attempts: stored.attempts },
+      metadata: { attempts: stored.attempts + 1 },
     });
     return false;
   }
 
   // Success - remove from store
-  otpStore.delete(email.toLowerCase());
+  await convexClient.mutation(api.otps.deleteOtp, { email: email.toLowerCase() });
   return true;
 }
 
-export function clearExpiredOTPs(): void {
-  const now = new Date();
-  for (const [email, stored] of otpStore.entries()) {
-    if (stored.expiresAt < now) {
-      otpStore.delete(email);
+export async function clearExpiredOTPs(): Promise<void> {
+  try {
+    const count = await convexClient.mutation(api.otps.clearExpired, {});
+    if (count > 0) {
+      otpLogger.info({ count }, 'Cleared expired OTPs');
     }
+  } catch (error) {
+    otpLogger.error({ err: error }, 'Failed to clear expired OTPs');
   }
 }
 
 // Clear expired OTPs every minute
-setInterval(clearExpiredOTPs, 60 * 1000);
+setInterval(clearExpiredOTPs, CLEANUP_INTERVAL_MS);
