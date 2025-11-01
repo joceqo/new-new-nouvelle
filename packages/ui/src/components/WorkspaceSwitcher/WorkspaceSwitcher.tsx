@@ -64,8 +64,8 @@ export const WorkspaceSwitcher = React.forwardRef<HTMLDivElement, WorkspaceSwitc
             <button
               className={cn(
                 "flex w-full items-center gap-2 rounded-md px-2 py-1.5 text-sm",
-                "hover:bg-gray-100 transition-colors",
-                "focus:outline-none focus:ring-2 focus:ring-gray-200"
+                "hover:bg-sidebar-accent transition-colors",
+                "focus:outline-none focus-visible:ring-2 focus-visible:ring-sidebar-ring"
               )}
             >
               <Avatar
@@ -74,11 +74,11 @@ export const WorkspaceSwitcher = React.forwardRef<HTMLDivElement, WorkspaceSwitc
                 size="sm"
                 className="shrink-0"
               />
-              <span className="flex-1 truncate text-left font-medium">
+              <span className="flex-1 truncate text-left font-medium text-sidebar-foreground">
                 {activeWorkspace?.name || 'Select workspace'}
               </span>
               <ChevronDown className={cn(
-                "h-4 w-4 text-gray-500 transition-transform",
+                "h-4 w-4 text-muted-foreground transition-transform",
                 open && "rotate-180"
               )} />
             </button>
@@ -90,7 +90,7 @@ export const WorkspaceSwitcher = React.forwardRef<HTMLDivElement, WorkspaceSwitc
           >
             {/* Workspace Header */}
             {activeWorkspace && (
-              <div className="p-4 border-b">
+              <div className="p-4 border-b border-border">
                 <div className="flex items-start gap-3">
                   <Avatar
                     src={activeWorkspace.icon}
@@ -98,10 +98,10 @@ export const WorkspaceSwitcher = React.forwardRef<HTMLDivElement, WorkspaceSwitc
                     size="default"
                   />
                   <div className="flex-1 min-w-0">
-                    <h3 className="font-semibold text-sm truncate">
+                    <h3 className="font-semibold text-sm truncate text-foreground">
                       {activeWorkspace.name}
                     </h3>
-                    <p className="text-xs text-gray-500 mt-0.5">
+                    <p className="text-xs text-muted-foreground mt-0.5">
                       {getPlanDisplay(activeWorkspace)}
                     </p>
                   </div>
@@ -144,8 +144,8 @@ export const WorkspaceSwitcher = React.forwardRef<HTMLDivElement, WorkspaceSwitc
 
             {/* User Email */}
             {userEmail && (
-              <div className="px-4 py-3 border-b">
-                <p className="text-xs text-gray-500 mb-2">{userEmail}</p>
+              <div className="px-4 py-3 border-b border-border">
+                <p className="text-xs text-muted-foreground">{userEmail}</p>
               </div>
             )}
 

@@ -133,15 +133,15 @@ export const WorkspaceSettingsDialog = React.forwardRef<HTMLDivElement, Workspac
             <form onSubmit={handleUpdate}>
               <DialogBody className="space-y-4">
                 {/* Current Workspace Info */}
-                <div className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg">
+                <div className="flex items-center gap-3 p-3 bg-muted rounded-lg">
                   <Avatar
                     src={workspace.icon}
                     fallback={workspace.name}
                     size="default"
                   />
                   <div className="flex-1 min-w-0">
-                    <p className="font-medium truncate">{workspace.name}</p>
-                    <p className="text-xs text-gray-500">
+                    <p className="font-medium truncate text-foreground">{workspace.name}</p>
+                    <p className="text-xs text-muted-foreground">
                       {workspace.plan || 'Free'} Plan • {workspace.memberCount || 1} member(s)
                     </p>
                   </div>
@@ -175,13 +175,14 @@ export const WorkspaceSettingsDialog = React.forwardRef<HTMLDivElement, Workspac
                         disabled={isLoading || !canEdit}
                         className={`
                           flex items-center justify-center h-10 w-10 rounded-md text-xl
-                          transition-all hover:bg-gray-100
+                          transition-all hover:bg-accent
+                          focus:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2
+                          disabled:opacity-50 disabled:pointer-events-none
                           ${
                             selectedIcon === icon
-                              ? "bg-blue-100 ring-2 ring-blue-500"
-                              : "bg-gray-50"
+                              ? "bg-primary/10 ring-2 ring-primary"
+                              : "bg-muted"
                           }
-                          ${(!canEdit) ? "opacity-50 cursor-not-allowed" : ""}
                         `}
                       >
                         {icon}
@@ -191,15 +192,15 @@ export const WorkspaceSettingsDialog = React.forwardRef<HTMLDivElement, Workspac
                 </div>
 
                 {!canEdit && (
-                  <div className="rounded-md bg-yellow-50 p-3 text-sm text-yellow-800">
+                  <div className="rounded-md bg-yellow-500/10 p-3 text-sm text-yellow-700 dark:text-yellow-400 border border-yellow-500/20">
                     Only owners and admins can edit workspace settings.
                   </div>
                 )}
 
                 {/* Delete Section */}
                 {canDelete && (
-                  <div className="pt-4 border-t space-y-2">
-                    <Label className="text-red-600">
+                  <div className="pt-4 border-t border-border space-y-2">
+                    <Label className="text-destructive">
                       <Trash2 className="inline h-4 w-4 mr-1" />
                       Danger zone
                     </Label>
@@ -217,7 +218,7 @@ export const WorkspaceSettingsDialog = React.forwardRef<HTMLDivElement, Workspac
 
                 {/* Error Message */}
                 {error && (
-                  <div className="rounded-md bg-red-50 p-3 text-sm text-red-800">
+                  <div className="rounded-md bg-destructive/10 p-3 text-sm text-destructive border border-destructive/20">
                     {error}
                   </div>
                 )}
@@ -243,11 +244,11 @@ export const WorkspaceSettingsDialog = React.forwardRef<HTMLDivElement, Workspac
             /* Delete Confirmation */
             <div>
               <DialogBody className="space-y-4">
-                <div className="flex items-start gap-3 p-4 bg-red-50 rounded-lg border border-red-200">
-                  <AlertTriangle className="h-5 w-5 text-red-600 mt-0.5 shrink-0" />
+                <div className="flex items-start gap-3 p-4 bg-destructive/10 rounded-lg border border-destructive/20">
+                  <AlertTriangle className="h-5 w-5 text-destructive mt-0.5 shrink-0" />
                   <div className="space-y-1">
-                    <p className="font-medium text-red-900">Delete workspace permanently?</p>
-                    <p className="text-sm text-red-800">
+                    <p className="font-medium text-destructive">Delete workspace permanently?</p>
+                    <p className="text-sm text-destructive/90">
                       This action cannot be undone. All workspace data, pages, and settings will be permanently deleted.
                     </p>
                   </div>
@@ -268,7 +269,7 @@ export const WorkspaceSettingsDialog = React.forwardRef<HTMLDivElement, Workspac
                 </div>
 
                 {error && (
-                  <div className="rounded-md bg-red-50 p-3 text-sm text-red-800">
+                  <div className="rounded-md bg-destructive/10 p-3 text-sm text-destructive border border-destructive/20">
                     {error}
                   </div>
                 )}

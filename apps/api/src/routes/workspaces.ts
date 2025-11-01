@@ -2,8 +2,15 @@ import { Elysia, t } from 'elysia';
 import { jwt } from '@elysiajs/jwt';
 import { convexClient, api } from '../lib/convex-client';
 import { authLogger } from '../lib/logger';
-import { generateRefreshToken } from '../lib/refresh-tokens';
-import { sendWorkspaceInviteEmail } from '../lib/email';
+import {
+  generateInviteToken,
+  validateWorkspaceName,
+  validateWorkspaceSlug,
+  sanitizeWorkspaceName,
+  sanitizeWorkspaceIcon,
+  generateSlugFromName,
+  getInviteExpiryTimestamp,
+} from '../lib/workspace-utils';
 
 export function createWorkspaceRoutes() {
   const jwtSecret = process.env.JWT_SECRET;
@@ -122,16 +129,37 @@ export function createWorkspaceRoutes() {
     })
     .post(
       '/',
-      async ({ body, userId }) => {
+      async ({ body, userId, set }) => {
         try {
           const { name, icon, slug } = body;
 
-          // Generate unique slug if not provided
-          const finalSlug = slug || `${name.replace(/[^a-z0-9]/gi, '-').toLowerCase()}-${Date.now().toString(36)}`;
+          // Sanitize inputs
+          const sanitizedName = sanitizeWorkspaceName(name);
+          const sanitizedIcon = sanitizeWorkspaceIcon(icon);
+
+          // Validate workspace name
+          const nameValidation = validateWorkspaceName(sanitizedName);
+          if (!nameValidation.valid) {
+            set.status = 400;
+            return { error: nameValidation.error };
+          }
+
+          // Generate or validate slug
+          let finalSlug: string;
+          if (slug) {
+            const slugValidation = validateWorkspaceSlug(slug);
+            if (!slugValidation.valid) {
+              set.status = 400;
+              return { error: slugValidation.error };
+            }
+            finalSlug = slug;
+          } else {
+            finalSlug = generateSlugFromName(sanitizedName);
+          }
 
           const workspaceId = await convexClient.mutation(api.workspaces.create, {
-            name,
-            icon,
+            name: sanitizedName,
+            icon: sanitizedIcon,
             slug: finalSlug,
             ownerId: userId as any,
           });
@@ -142,6 +170,13 @@ export function createWorkspaceRoutes() {
           };
         } catch (error) {
           authLogger.error({ err: error, userId, body }, 'Create workspace error');
+
+          // Handle duplicate slug error
+          if (error instanceof Error && error.message.includes('duplicate') || error.message.includes('unique')) {
+            set.status = 409;
+            return { error: 'A workspace with this slug already exists' };
+          }
+
           throw new Error('Failed to create workspace');
         }
       },
@@ -170,14 +205,47 @@ export function createWorkspaceRoutes() {
             return { error: 'Only owners and admins can update workspace settings' };
           }
 
+          // Sanitize and validate inputs
+          const updates: any = {};
+
+          if (body.name !== undefined) {
+            const sanitizedName = sanitizeWorkspaceName(body.name);
+            const nameValidation = validateWorkspaceName(sanitizedName);
+            if (!nameValidation.valid) {
+              set.status = 400;
+              return { error: nameValidation.error };
+            }
+            updates.name = sanitizedName;
+          }
+
+          if (body.icon !== undefined) {
+            updates.icon = sanitizeWorkspaceIcon(body.icon);
+          }
+
+          if (body.slug !== undefined) {
+            const slugValidation = validateWorkspaceSlug(body.slug);
+            if (!slugValidation.valid) {
+              set.status = 400;
+              return { error: slugValidation.error };
+            }
+            updates.slug = body.slug;
+          }
+
           await convexClient.mutation(api.workspaces.update, {
             workspaceId: workspaceId as any,
-            ...body,
+            ...updates,
           });
 
           return { success: true };
         } catch (error) {
           authLogger.error({ err: error, userId, workspaceId: params.workspaceId }, 'Update workspace error');
+
+          // Handle duplicate slug error
+          if (error instanceof Error && (error.message.includes('duplicate') || error.message.includes('unique'))) {
+            set.status = 409;
+            return { error: 'A workspace with this slug already exists' };
+          }
+
           throw new Error('Failed to update workspace');
         }
       },
@@ -249,6 +317,13 @@ export function createWorkspaceRoutes() {
           const { workspaceId } = params;
           const { email } = body;
 
+          // Validate email format
+          const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+          if (!emailRegex.test(email)) {
+            set.status = 400;
+            return { error: 'Invalid email address' };
+          }
+
           // Check if user can invite (owner or admin)
           const role = await convexClient.query(api.workspace_members.getRole, {
             workspaceId: workspaceId as any,
@@ -260,37 +335,37 @@ export function createWorkspaceRoutes() {
             return { error: 'Only owners and admins can invite members' };
           }
 
-          // Generate invite token
-          const token = generateRefreshToken(); // Reuse token generation
-          const expiresAt = Date.now() + 7 * 24 * 60 * 60 * 1000; // 7 days
+          // Generate cryptographically secure invite token
+          const token = generateInviteToken();
+          const expiresAt = getInviteExpiryTimestamp();
 
           // Create invite
           const inviteId = await convexClient.mutation(api.workspace_invites.create, {
             workspaceId: workspaceId as any,
             invitedBy: userId as any,
-            email: email.toLowerCase(),
+            email: email.toLowerCase().trim(),
             token,
             expiresAt,
           });
 
-          // Send invite email (implement this in email.ts)
+          // Get workspace for invite email
           const workspace = await convexClient.query(api.workspaces.getById, {
             workspaceId: workspaceId as any,
           });
 
           if (workspace) {
-            try {
-              const frontendUrl = process.env.FRONTEND_URL || 'http://localhost:3000';
-              const inviteLink = `${frontendUrl}/invite/${token}`;
+            const frontendUrl = process.env.FRONTEND_URL || 'http://localhost:3000';
+            const inviteLink = `${frontendUrl}/invite/${token}`;
 
-              // TODO: Implement sendWorkspaceInviteEmail function
-              // await sendWorkspaceInviteEmail(email, workspace.name, inviteLink);
+            // Log invite creation (email sending not yet implemented)
+            authLogger.info({ inviteLink, email, workspaceId, workspaceName: workspace.name }, 'Workspace invite created');
 
-              authLogger.info({ inviteLink, email, workspaceId }, 'Workspace invite created');
-            } catch (emailError) {
-              authLogger.error({ err: emailError, email }, 'Failed to send invite email');
-              // Don't fail the request if email fails
-            }
+            // TODO: Implement email sending
+            // try {
+            //   await sendWorkspaceInviteEmail(email, workspace.name, inviteLink);
+            // } catch (emailError) {
+            //   authLogger.error({ err: emailError, email }, 'Failed to send invite email');
+            // }
           }
 
           return {
@@ -332,6 +407,10 @@ export function createWorkspaceRoutes() {
     )
     .get('/invites/pending', async ({ userEmail }) => {
       try {
+        if (!userEmail || typeof userEmail !== 'string') {
+          throw new Error('Invalid user email');
+        }
+
         const invites = await convexClient.query(api.workspace_invites.listByEmail, {
           email: userEmail.toLowerCase(),
         });

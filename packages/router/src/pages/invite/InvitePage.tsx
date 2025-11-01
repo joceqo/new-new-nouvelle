@@ -48,6 +48,8 @@ export function InvitePage() {
   useEffect(() => {
     if (!isAuthenticated || !authToken || authLoading) return;
 
+    let redirectTimeout: NodeJS.Timeout | null = null;
+
     const acceptInvite = async () => {
       try {
         const result = await workspaceApiClient.acceptInvite(params.token, authToken);
@@ -66,7 +68,7 @@ export function InvitePage() {
           switchWorkspace(result.workspaceId);
 
           // Redirect to home after a brief delay
-          setTimeout(() => {
+          redirectTimeout = setTimeout(() => {
             navigate({ to: "/" });
           }, 2000);
         }
@@ -78,6 +80,13 @@ export function InvitePage() {
     };
 
     acceptInvite();
+
+    // Cleanup function to clear timeout if component unmounts
+    return () => {
+      if (redirectTimeout) {
+        clearTimeout(redirectTimeout);
+      }
+    };
   }, [isAuthenticated, authToken, authLoading, params.token, refreshWorkspaces, switchWorkspace, navigate]);
 
   if (authLoading || status === "checking_auth") {

@@ -100,11 +100,13 @@ export const CreateWorkspaceDialog = React.forwardRef<HTMLDivElement, CreateWork
                       disabled={isLoading}
                       className={`
                         flex items-center justify-center h-10 w-10 rounded-md text-xl
-                        transition-all hover:bg-gray-100
+                        transition-all hover:bg-accent
+                        focus:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2
+                        disabled:opacity-50 disabled:pointer-events-none
                         ${
                           selectedIcon === icon
-                            ? "bg-blue-100 ring-2 ring-blue-500"
-                            : "bg-gray-50"
+                            ? "bg-primary/10 ring-2 ring-primary"
+                            : "bg-muted"
                         }
                       `}
                     >
@@ -116,7 +118,7 @@ export const CreateWorkspaceDialog = React.forwardRef<HTMLDivElement, CreateWork
 
               {/* Error Message */}
               {error && (
-                <div className="rounded-md bg-red-50 p-3 text-sm text-red-800">
+                <div className="rounded-md bg-destructive/10 p-3 text-sm text-destructive border border-destructive/20">
                   {error}
                 </div>
               )}

@@ -129,7 +129,7 @@ export const InviteMembersDialog = React.forwardRef<HTMLDivElement, InviteMember
 
               {/* Success Message */}
               {success && (
-                <div className="rounded-md bg-green-50 p-3 text-sm text-green-800 flex items-center gap-2">
+                <div className="rounded-md bg-green-500/10 p-3 text-sm text-green-700 dark:text-green-400 flex items-center gap-2 border border-green-500/20">
                   <Check className="h-4 w-4" />
                   {success}
                 </div>
@@ -137,7 +137,7 @@ export const InviteMembersDialog = React.forwardRef<HTMLDivElement, InviteMember
 
               {/* Error Message */}
               {error && (
-                <div className="rounded-md bg-red-50 p-3 text-sm text-red-800">
+                <div className="rounded-md bg-destructive/10 p-3 text-sm text-destructive border border-destructive/20">
                   {error}
                 </div>
               )}
@@ -145,7 +145,7 @@ export const InviteMembersDialog = React.forwardRef<HTMLDivElement, InviteMember
 
             {/* Invite Link */}
             {inviteLink && (
-              <div className="space-y-2 pt-4 border-t">
+              <div className="space-y-2 pt-4 border-t border-border">
                 <Label>
                   <Link2 className="inline h-4 w-4 mr-1" />
                   Shareable invite link
@@ -175,16 +175,16 @@ export const InviteMembersDialog = React.forwardRef<HTMLDivElement, InviteMember
                     )}
                   </Button>
                 </div>
-                <p className="text-xs text-gray-500">
+                <p className="text-xs text-muted-foreground">
                   Anyone with this link can join your workspace. Link expires in 7 days.
                 </p>
               </div>
             )}
 
             {/* Info */}
-            <div className="rounded-md bg-blue-50 p-3 text-sm text-blue-800">
+            <div className="rounded-md bg-blue-500/10 p-3 text-sm text-blue-700 dark:text-blue-400 border border-blue-500/20">
               <p className="font-medium mb-1">Member permissions</p>
-              <p className="text-xs">
+              <p className="text-xs opacity-90">
                 New members will join as <Badge variant="info" className="ml-1">Member</Badge> with standard access to workspace content.
               </p>
             </div>

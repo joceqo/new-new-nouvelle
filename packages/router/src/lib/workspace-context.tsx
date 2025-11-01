@@ -5,11 +5,16 @@ import { useAuth } from './auth-context';
 
 interface WorkspaceContextValue extends WorkspaceState {
   switchWorkspace: (workspaceId: string) => void;
-  createWorkspace: (name: string, icon?: string) => Promise<string | null>;
+  createWorkspace: (name: string, icon?: string) => Promise<{ success: boolean; workspaceId?: string; error?: string }>;
   refreshWorkspaces: () => Promise<void>;
-  updateWorkspace: (workspaceId: string, updates: { name?: string; icon?: string }) => Promise<boolean>;
-  deleteWorkspace: (workspaceId: string) => Promise<boolean>;
+  updateWorkspace: (workspaceId: string, updates: { name?: string; icon?: string }) => Promise<{ success: boolean; error?: string }>;
+  deleteWorkspace: (workspaceId: string) => Promise<{ success: boolean; error?: string }>;
   inviteMember: (workspaceId: string, email: string) => Promise<{ success: boolean; inviteLink?: string; error?: string }>;
+  clearError: () => void;
+}
+
+interface WorkspaceStateExtended extends WorkspaceState {
+  error: string | null;
 }
 
 const WorkspaceContext = createContext<WorkspaceContextValue | undefined>(undefined);
@@ -18,10 +23,11 @@ const ACTIVE_WORKSPACE_KEY = 'nouvelle_active_workspace_id';
 
 export function WorkspaceProvider({ children }: { children: React.ReactNode }) {
   const { token, isAuthenticated } = useAuth();
-  const [state, setState] = useState<WorkspaceState>({
+  const [state, setState] = useState<WorkspaceStateExtended>({
     workspaces: [],
     activeWorkspace: null,
     isLoading: true,
+    error: null,
   });
 
   // Load workspaces from API
@@ -91,8 +97,12 @@ export function WorkspaceProvider({ children }: { children: React.ReactNode }) {
   }, []);
 
   // Create new workspace
-  const createWorkspace = useCallback(async (name: string, icon?: string): Promise<string | null> => {
-    if (!token) return null;
+  const createWorkspace = useCallback(async (name: string, icon?: string): Promise<{ success: boolean; workspaceId?: string; error?: string }> => {
+    if (!token) {
+      const errorMsg = 'Not authenticated';
+      setState(prev => ({ ...prev, error: errorMsg }));
+      return { success: false, error: errorMsg };
+    }
 
     try {
       const response = await workspaceApiClient.createWorkspace(name, token, icon);
@@ -100,13 +110,18 @@ export function WorkspaceProvider({ children }: { children: React.ReactNode }) {
       if (response.success && response.workspaceId) {
         // Reload workspaces to get the new one
         await loadWorkspaces();
-        return response.workspaceId;
+        setState(prev => ({ ...prev, error: null }));
+        return { success: true, workspaceId: response.workspaceId };
       }
 
-      return null;
+      const errorMsg = 'Failed to create workspace';
+      setState(prev => ({ ...prev, error: errorMsg }));
+      return { success: false, error: errorMsg };
     } catch (error) {
-      console.error('Create workspace error:', error);
-      return null;
+      const errorMsg = error instanceof Error ? error.message : 'Failed to create workspace';
+      console.error('Create workspace error:', errorMsg, error);
+      setState(prev => ({ ...prev, error: errorMsg }));
+      return { success: false, error: errorMsg };
     }
   }, [token, loadWorkspaces]);
 
@@ -119,8 +134,12 @@ export function WorkspaceProvider({ children }: { children: React.ReactNode }) {
   const updateWorkspace = useCallback(async (
     workspaceId: string,
     updates: { name?: string; icon?: string }
-  ): Promise<boolean> => {
-    if (!token) return false;
+  ): Promise<{ success: boolean; error?: string }> => {
+    if (!token) {
+      const errorMsg = 'Not authenticated';
+      setState(prev => ({ ...prev, error: errorMsg }));
+      return { success: false, error: errorMsg };
+    }
 
     try {
       const response = await workspaceApiClient.updateWorkspace(workspaceId, token, updates);
@@ -135,20 +154,29 @@ export function WorkspaceProvider({ children }: { children: React.ReactNode }) {
           activeWorkspace: prev.activeWorkspace?.id === workspaceId
             ? { ...prev.activeWorkspace, ...updates }
             : prev.activeWorkspace,
+          error: null,
         }));
-        return true;
+        return { success: true };
       }
 
-      return false;
+      const errorMsg = 'error' in response ? (response as any).error : 'Failed to update workspace';
+      setState(prev => ({ ...prev, error: errorMsg }));
+      return { success: false, error: errorMsg };
     } catch (error) {
-      console.error('Update workspace error:', error);
-      return false;
+      const errorMsg = error instanceof Error ? error.message : 'Failed to update workspace';
+      console.error('Update workspace error:', errorMsg, error);
+      setState(prev => ({ ...prev, error: errorMsg }));
+      return { success: false, error: errorMsg };
     }
   }, [token]);
 
   // Delete workspace
-  const deleteWorkspace = useCallback(async (workspaceId: string): Promise<boolean> => {
-    if (!token) return false;
+  const deleteWorkspace = useCallback(async (workspaceId: string): Promise<{ success: boolean; error?: string }> => {
+    if (!token) {
+      const errorMsg = 'Not authenticated';
+      setState(prev => ({ ...prev, error: errorMsg }));
+      return { success: false, error: errorMsg };
+    }
 
     try {
       const response = await workspaceApiClient.deleteWorkspace(workspaceId, token);
@@ -162,15 +190,20 @@ export function WorkspaceProvider({ children }: { children: React.ReactNode }) {
             ...prev,
             workspaces: newWorkspaces,
             activeWorkspace: wasActive ? (newWorkspaces[0] || null) : prev.activeWorkspace,
+            error: null,
           };
         });
-        return true;
+        return { success: true };
       }
 
-      return false;
+      const errorMsg = 'error' in response ? (response as any).error : 'Failed to delete workspace';
+      setState(prev => ({ ...prev, error: errorMsg }));
+      return { success: false, error: errorMsg };
     } catch (error) {
-      console.error('Delete workspace error:', error);
-      return false;
+      const errorMsg = error instanceof Error ? error.message : 'Failed to delete workspace';
+      console.error('Delete workspace error:', errorMsg, error);
+      setState(prev => ({ ...prev, error: errorMsg }));
+      return { success: false, error: errorMsg };
     }
   }, [token]);
 
@@ -179,15 +212,32 @@ export function WorkspaceProvider({ children }: { children: React.ReactNode }) {
     workspaceId: string,
     email: string
   ): Promise<{ success: boolean; inviteLink?: string; error?: string }> => {
-    if (!token) return { success: false, error: 'Not authenticated' };
+    if (!token) {
+      const errorMsg = 'Not authenticated';
+      setState(prev => ({ ...prev, error: errorMsg }));
+      return { success: false, error: errorMsg };
+    }
 
     try {
-      return await workspaceApiClient.inviteMember(workspaceId, email, token);
+      const result = await workspaceApiClient.inviteMember(workspaceId, email, token);
+      if (result.success) {
+        setState(prev => ({ ...prev, error: null }));
+      } else {
+        setState(prev => ({ ...prev, error: result.error || 'Failed to invite member' }));
+      }
+      return result;
     } catch (error) {
-      console.error('Invite member error:', error);
-      return { success: false, error: 'Failed to invite member' };
+      const errorMsg = error instanceof Error ? error.message : 'Failed to invite member';
+      console.error('Invite member error:', errorMsg, error);
+      setState(prev => ({ ...prev, error: errorMsg }));
+      return { success: false, error: errorMsg };
     }
   }, [token]);
+
+  // Clear error state
+  const clearError = useCallback(() => {
+    setState(prev => ({ ...prev, error: null }));
+  }, []);
 
   // Load workspaces when authenticated
   useEffect(() => {
@@ -213,6 +263,7 @@ export function WorkspaceProvider({ children }: { children: React.ReactNode }) {
         updateWorkspace,
         deleteWorkspace,
         inviteMember,
+        clearError,
       }}
     >
       {children}
