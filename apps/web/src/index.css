@@ -1,0 +1,5 @@
+@import "tailwindcss";
+
+@source "../../packages/router/**/*.{ts,tsx}";
+@source "./**/*.{ts,tsx}";
+@source "../../packages/ui/src/**/*.{ts,tsx}";

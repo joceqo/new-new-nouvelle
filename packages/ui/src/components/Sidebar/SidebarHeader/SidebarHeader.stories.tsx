@@ -30,7 +30,6 @@ export const Default: Story = {
     onToggleSidebar: () => console.log("Toggle sidebar clicked"),
     onCreateNewPage: () => console.log("Create new page clicked"),
     onLabelClick: () => console.log("Label clicked"),
-    showDivider: true,
   },
 };
 
@@ -41,7 +40,6 @@ export const WithEmoji: Story = {
     onToggleSidebar: () => console.log("Toggle sidebar clicked"),
     onCreateNewPage: () => console.log("Create new page clicked"),
     onLabelClick: () => console.log("Label clicked"),
-    showDivider: true,
   },
 };
 
@@ -69,7 +67,7 @@ export const NoDivider: Story = {
   args: {
     icon: <IconWrapper icon={Briefcase} />,
     label: "Projects",
-    showDivider: false,
+
     onToggleSidebar: () => console.log("Toggle sidebar"),
     onCreateNewPage: () => console.log("Create new page"),
   },

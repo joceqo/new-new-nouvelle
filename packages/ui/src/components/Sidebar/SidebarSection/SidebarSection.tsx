@@ -56,8 +56,9 @@ export const SidebarSection: React.FC<SidebarSectionProps> = ({
       >
         <IconWrapper
           icon={ChevronDown}
+          size="xs"
           className={cn(
-            "h-3 w-3 text-[var(--sidebar-icon-color)] transition-transform duration-200",
+            "text-[var(--sidebar-icon-color)] transition-transform duration-200",
             isCollapsed && "-rotate-90"
           )}
         />

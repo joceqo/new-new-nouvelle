@@ -66,24 +66,25 @@ export const SidebarItem = React.forwardRef<HTMLDivElement, SidebarItemProps>(
     },
     ref
   ) => {
-    const Component = href ? "a" : "div";
+    const Tag = href ? "a" : "div";
     const paddingLeft = `${0.5 + level * 1}rem`;
 
     return (
-      <Component
+      <Tag
         ref={ref as any}
         href={href}
         role={isExpandable ? "treeitem" : undefined}
         aria-expanded={isExpandable ? isExpanded : undefined}
         aria-current={isActive ? "page" : undefined}
         className={cn(
-          "group/item flex min-h-[27px] w-full items-center px-2 py-1",
-          "rounded-(--sidebar-item-radius)",
-          "bg-(--sidebar-item-bg)",
-          "hover:bg-(--sidebar-item-bg-hover)",
+          "group/item flex min-h-[27px] w-full items-center gap-2 px-2 py-1.5",
+          "rounded-[var(--sidebar-item-radius)]",
+          "bg-[var(--sidebar-item-bg)]",
+          "hover:bg-[var(--sidebar-item-bg-hover)]",
           "cursor-pointer transition-all duration-150 select-none",
-          "text-(--sidebar-item-text)",
-          isActive && "bg-(--sidebar-item-bg-active)",
+          "text-[var(--sidebar-item-text)]",
+          "whitespace-nowrap",
+          isActive && "bg-[var(--sidebar-item-bg-active)]",
           href && "no-underline",
           className
         )}
@@ -91,7 +92,12 @@ export const SidebarItem = React.forwardRef<HTMLDivElement, SidebarItemProps>(
         onClick={onClick}
       >
         {/* Icon / Toggle Area */}
-        <Flex align="center" justify="center" className="relative mr-2 h-6 w-6">
+        <Flex
+          align="center"
+          justify="center"
+          className="relative shrink-0"
+          style={{ fontSize: "18px" }}
+        >
           {isExpandable ? (
             <IconWrapper
               icon={ChevronRight}
@@ -100,17 +106,18 @@ export const SidebarItem = React.forwardRef<HTMLDivElement, SidebarItemProps>(
                 onToggleExpand?.();
               }}
               className={cn(
-                "h-3 w-3 transition-transform duration-200",
-                "text-(--sidebar-icon-color)",
-                "hover:text-(--sidebar-icon-hover)",
+                "transition-transform duration-200",
+                "text-[var(--sidebar-icon-color)]",
+                "hover:text-[var(--sidebar-icon-hover)]",
                 isExpanded && "rotate-90"
               )}
+              style={{ fontSize: "14px" }}
             />
           ) : (
             <IconWrapper
               icon={Icon}
               className={cn(
-                "h-[18px] w-[18px] text-(--sidebar-icon-color)",
+                "text-[var(--sidebar-icon-color)]",
                 iconClassName
               )}
             />
@@ -133,10 +140,10 @@ export const SidebarItem = React.forwardRef<HTMLDivElement, SidebarItemProps>(
           <Text
             size="1"
             className={cn(
-              "ml-2 rounded-(--sidebar-item-radius) px-2 py-0.5 font-medium whitespace-nowrap",
+              "shrink-0 rounded-[var(--sidebar-item-radius)] px-2 py-0.5 font-medium whitespace-nowrap",
               badgeVariant === "accent"
-                ? "bg-(--color-accent-blue-text) text-(--color-text-inverse)"
-                : "bg-(--sidebar-item-bg-active) text-(--sidebar-item-text-muted)"
+                ? "bg-[var(--color-accent-blue-text)] text-[var(--color-text-inverse)]"
+                : "bg-[var(--sidebar-item-bg-active)] text-[var(--sidebar-item-text-muted)]"
             )}
           >
             {badge}
@@ -148,43 +155,47 @@ export const SidebarItem = React.forwardRef<HTMLDivElement, SidebarItemProps>(
           <Flex
             align="center"
             gap="1"
-            className="ml-2 opacity-0 transition-opacity duration-150 group-hover/item:opacity-100"
+            className="shrink-0 opacity-0 transition-opacity duration-150 group-hover/item:opacity-100"
           >
             {onMore && (
               <IconWrapper
                 icon={MoreHorizontal}
+                size="sm"
+                interactive
                 onClick={(e) => {
                   e.stopPropagation();
                   onMore(e);
                 }}
                 className={cn(
-                  "h-4 w-4 rounded-sm p-0.5",
-                  "text-(--sidebar-action-color)",
-                  "hover:text-(--sidebar-action-hover-color)",
-                  "hover:bg-(--sidebar-action-bg-hover)",
-                  "transition-colors"
+                  "rounded-sm",
+                  "text-[var(--sidebar-action-color)]",
+                  "hover:text-[var(--sidebar-action-hover-color)]",
+                  "hover:bg-[var(--sidebar-action-bg-hover)]",
+                  "cursor-pointer"
                 )}
               />
             )}
             {onAdd && (
               <IconWrapper
                 icon={Plus}
+                size="sm"
+                interactive
                 onClick={(e) => {
                   e.stopPropagation();
                   onAdd(e);
                 }}
                 className={cn(
-                  "h-4 w-4 rounded-sm p-0.5",
-                  "text-[(--sidebar-action-color)]",
-                  "hover:text-[(--sidebar-action-hover-color)]",
-                  "hover:bg-(--sidebar-action-bg-hover)]",
-                  "transition-colors"
+                  "rounded-sm",
+                  "text-[var(--sidebar-action-color)]",
+                  "hover:text-[var(--sidebar-action-hover-color)]",
+                  "hover:bg-[var(--sidebar-action-bg-hover)]",
+                  "cursor-pointer"
                 )}
               />
             )}
           </Flex>
         )}
-      </Component>
+      </Tag>
     );
   }
 );

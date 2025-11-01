@@ -1,2 +1,12 @@
 **/node_modules
 **/target
+**/*env*
+!**/*.env.example
+
+# Build artifacts
+**/dist/
+**/tsconfig.tsbuildinfo
+
+# Turbo logs and cache
+.turbo
+**/.turbo/
