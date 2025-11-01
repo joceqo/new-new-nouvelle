@@ -1,4 +1,5 @@
 import { Resend } from 'resend';
+import { otpLogger } from './logger';
 
 // Lazy-load Resend client only when needed
 let resend: Resend | null = null;
@@ -15,10 +16,7 @@ export async function sendOTPEmail(email: string, code: string): Promise<void> {
 
   if (isDev) {
     // In development, log to console
-    console.log('\n=================================');
-    console.log('📧 OTP Code for:', email);
-    console.log('🔑 Code:', code);
-    console.log('=================================\n');
+    otpLogger.info({ email, code }, '📧 OTP Code sent (Dev Only)');
     return;
   }
 
@@ -55,7 +53,7 @@ export async function sendOTPEmail(email: string, code: string): Promise<void> {
       `,
     });
   } catch (error) {
-    console.error('Failed to send email:', error);
+    otpLogger.error({ err: error, email }, 'Failed to send email');
     throw new Error('Failed to send verification email');
   }
 }

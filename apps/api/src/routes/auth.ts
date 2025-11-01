@@ -83,7 +83,7 @@ export function createAuthRoutes() {
         // In development, also generate a magic link for convenience
         // Only log if explicitly enabled to avoid exposing tokens in logs
         const isDev = process.env.NODE_ENV !== 'production';
-        const shouldLogMagicLink = isDev && process.env.LOG_MAGIC_LINKS !== 'false';
+        const shouldLogMagicLink = isDev && process.env.LOG_MAGIC_LINKS === 'true';
 
         if (shouldLogMagicLink) {
           // Generate a signed token containing the email and OTP code
@@ -95,10 +95,7 @@ export function createAuthRoutes() {
           const frontendUrl = process.env.FRONTEND_URL || 'http://localhost:3000';
           const magicLink = `${frontendUrl}/auth/magic-link?token=${magicToken}`;
 
-          console.log('\n=================================');
-          console.log('🔗 Magic Link (Dev Only):');
-          console.log(`   ${magicLink}`);
-          console.log('=================================\n');
+          authLogger.info({ magicLink, email }, '🔗 Magic Link generated (Dev Only)');
         }
 
         return { success: true, message: 'Verification code sent' };
@@ -167,12 +164,14 @@ export function createAuthRoutes() {
         const isDev = process.env.NODE_ENV !== 'production';
         if (isDev) {
           const port = process.env.PORT || 3001;
-          console.log('\n=================================');
-          console.log('✅ User authenticated:', user.email);
-          console.log('🔗 Clickable test URL:');
-          console.log(`   http://localhost:${port}/auth/me?token=${token}`);
-          console.log('🔄 Refresh token:', refreshToken);
-          console.log('=================================\n');
+          authLogger.info(
+            {
+              email: user.email,
+              testUrl: `http://localhost:${port}/auth/me?token=${token}`,
+              refreshToken,
+            },
+            '✅ User authenticated (Dev Only)'
+          );
         }
 
         return {

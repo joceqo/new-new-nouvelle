@@ -1,5 +1,6 @@
 import { appendFileSync } from 'fs';
 import { join } from 'path';
+import { metricsLogger } from './logger';
 
 export interface MetricEvent {
   /** Event name (e.g., 'otp.generated', 'auth.success') */
@@ -75,7 +76,7 @@ class MetricsService {
 
     const metaString = metaParts.length > 0 ? ` | ${metaParts.join(', ')}` : '';
 
-    console.log(`[METRIC] ${statusSymbol} ${eventName}${metaString}`);
+    metricsLogger.info(`${statusSymbol} ${eventName}${metaString}`);
   }
 
   /**
@@ -86,7 +87,7 @@ class MetricsService {
       const line = JSON.stringify(event) + '\n';
       appendFileSync(this.filePath, line, 'utf-8');
     } catch (error) {
-      console.error('[METRICS] Failed to write to file:', error);
+      metricsLogger.error({ err: error, filePath: this.filePath }, 'Failed to write metrics to file');
     }
   }
 

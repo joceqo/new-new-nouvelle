@@ -1,6 +1,28 @@
 import { Elysia } from 'elysia';
 import { cors } from '@elysiajs/cors';
 import { createAuthRoutes } from './routes/auth';
+import { logger } from './lib/logger';
+
+// Validate critical environment variables at startup
+function validateEnvVars() {
+  const requiredVars = [
+    'CONVEX_URL',
+    'RESEND_API_KEY',
+    'FRONTEND_URL',
+  ];
+
+  const missing = requiredVars.filter(varName => !process.env[varName]);
+
+  if (missing.length > 0) {
+    console.error('❌ Missing required environment variables:');
+    missing.forEach(varName => console.error(`   - ${varName}`));
+    console.error('\nPlease set these variables in your .env file and restart the server.');
+    process.exit(1);
+  }
+}
+
+// Run validation before starting the server
+validateEnvVars();
 
 const PORT = process.env.PORT || 3001;
 
@@ -38,14 +60,17 @@ const app = new Elysia()
     }
   })
   .onStart(() => {
-    console.log(`
-╔════════════════════════════════════════════╗
-║  🚀 Nouvelle API Server running!          ║
-╚════════════════════════════════════════════╝
-📍 URL:    http://localhost:${PORT}
-🔗 Health: http://localhost:${PORT}/health
-🔐 Auth:   http://localhost:${PORT}/auth
-`);
+    logger.info(
+      {
+        port: PORT,
+        urls: {
+          base: `http://localhost:${PORT}`,
+          health: `http://localhost:${PORT}/health`,
+          auth: `http://localhost:${PORT}/auth`,
+        },
+      },
+      '🚀 Nouvelle API Server running!'
+    );
   })
   .get('/', () => ({
     message: 'Nouvelle API',
@@ -60,7 +85,7 @@ const app = new Elysia()
   }))
   .use(createAuthRoutes())
   .onError(({ code, error, set }) => {
-    console.error('Error:', code, error);
+    logger.error({ code, err: error }, 'Request error');
 
     if (code === 'VALIDATION') {
       set.status = 400;
