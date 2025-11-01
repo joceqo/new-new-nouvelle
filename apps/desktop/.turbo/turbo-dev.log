@@ -1,14 +1,0 @@
-
-> @nouvelle/desktop@0.0.0 dev /Users/jocelin/Desktop/coding/important/new-new-nouvelle/apps/desktop
-> vite & tauri dev
-
-
-  [32m[1mVITE[22m v6.4.0[39m  [2mready in [0m[1m214[22m[2m[0m ms[22m
-
-  [32m➜[39m  [1mLocal[22m:   [36mhttp://localhost:[1m1420[22m/[39m
-[2m  [32m➜[39m  [1mNetwork[22m[2m: use [22m[1m--host[22m[2m to expose[22m
-[1m[32m     Running[0m DevCommand (`cargo  run --no-default-features --color always --`)
-[1m[32m        Info[0m Watching /Users/jocelin/Desktop/coding/important/new-new-nouvelle/apps/desktop/src-tauri for changes...
-[1m[32m   Compiling[0m nouvelle-desktop v0.0.0 (/Users/jocelin/Desktop/coding/important/new-new-nouvelle/apps/desktop/src-tauri)
-[1m[36m    Building[0m [=======================> ] 386/389: nouvelle-desktop(build)                                               [1m[36m    Building[0m [=======================> ] 387/389: nouvelle-desktop                                                      [1m[36m    Building[0m [=======================> ] 388/389: nouvelle-desktop(bin)                                                 [K[1m[32m    Finished[0m ]8;;https://doc.rust-lang.org/cargo/reference/profiles.html#default-profiles\`dev` profile [unoptimized + debuginfo]]8;;\ target(s) in 3.63s
-[1m[32m     Running[0m `target/debug/nouvelle-desktop`
