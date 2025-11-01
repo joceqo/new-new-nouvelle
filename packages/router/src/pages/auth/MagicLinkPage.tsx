@@ -42,7 +42,7 @@ export function MagicLinkPage() {
           setErrorMessage(result.error || "Invalid or expired link");
         } else {
           // Login successful
-          login(result.token, result.user);
+          login(result.token, result.user, result.refreshToken);
           setStatus("success");
 
           // Redirect to onboarding after a brief delay

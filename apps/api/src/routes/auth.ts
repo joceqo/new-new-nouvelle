@@ -81,8 +81,11 @@ export function createAuthRoutes() {
         }
 
         // In development, also generate a magic link for convenience
+        // Only log if explicitly enabled to avoid exposing tokens in logs
         const isDev = process.env.NODE_ENV !== 'production';
-        if (isDev) {
+        const shouldLogMagicLink = isDev && process.env.LOG_MAGIC_LINKS !== 'false';
+
+        if (shouldLogMagicLink) {
           // Generate a signed token containing the email and OTP code
           const magicToken = await jwt.sign({
             email,

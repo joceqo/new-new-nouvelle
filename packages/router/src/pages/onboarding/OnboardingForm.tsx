@@ -33,7 +33,8 @@ export function OnboardingForm({ onBack, onComplete, selectedUseCase: _selectedU
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
-      // TODO: Implement avatar upload to backend
+      // Preview avatar locally - backend upload not yet implemented
+      // Future: Upload to storage service and save URL to user profile
       const reader = new FileReader();
       reader.onloadend = () => {
         setAvatarPreview(reader.result as string);
@@ -52,13 +53,11 @@ export function OnboardingForm({ onBack, onComplete, selectedUseCase: _selectedU
     setIsSubmitting(true);
 
     try {
-      // TODO: Send profile data to backend
-      // const formData = new FormData();
-      // formData.append('name', name);
-      // formData.append('useCase', _selectedUseCase || '');
-      // if (avatarFile) formData.append('avatar', avatarFile);
+      // Backend profile update not yet implemented
+      // Future: POST /api/users/profile with { name, avatar, language, useCase }
+      // For now, profile data is not persisted to backend
 
-      // For now, just call onComplete to proceed to next step
+      // Proceed to next step
       onComplete?.();
     } catch (error) {
       console.error("Error saving profile:", error);

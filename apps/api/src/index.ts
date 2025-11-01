@@ -18,6 +18,25 @@ const app = new Elysia()
       credentials: true,
     })
   )
+  // HTTPS enforcement in production
+  .onRequest(({ request, set }) => {
+    if (process.env.NODE_ENV === 'production') {
+      const proto = request.headers.get('x-forwarded-proto');
+      if (proto !== 'https') {
+        set.status = 403;
+        return { error: 'HTTPS required' };
+      }
+    }
+  })
+  // Security headers
+  .onAfterHandle(({ set }) => {
+    set.headers['X-Content-Type-Options'] = 'nosniff';
+    set.headers['X-Frame-Options'] = 'DENY';
+    set.headers['X-XSS-Protection'] = '1; mode=block';
+    if (process.env.NODE_ENV === 'production') {
+      set.headers['Strict-Transport-Security'] = 'max-age=31536000; includeSubDomains';
+    }
+  })
   .onStart(() => {
     console.log(`
 ╔════════════════════════════════════════════╗

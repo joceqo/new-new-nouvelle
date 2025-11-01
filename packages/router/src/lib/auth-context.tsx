@@ -129,15 +129,21 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     }
   };
 
+  // Check auth on mount
   useEffect(() => {
     checkAuth();
+  }, []);
 
-    // Set up token refresh interval (refresh every 50 minutes for 1-hour tokens)
-    const refreshInterval = setInterval(() => {
-      if (state.isAuthenticated) {
-        refreshAccessToken();
-      }
-    }, 50 * 60 * 1000); // 50 minutes
+  // Set up token refresh interval when authenticated
+  useEffect(() => {
+    if (!state.isAuthenticated) {
+      return;
+    }
+
+    // Refresh every 50 minutes for 1-hour tokens
+    const refreshInterval = setInterval(async () => {
+      await refreshAccessToken();
+    }, 50 * 60 * 1000);
 
     return () => clearInterval(refreshInterval);
   }, [state.isAuthenticated]);

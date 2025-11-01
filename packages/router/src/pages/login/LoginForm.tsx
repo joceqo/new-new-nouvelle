@@ -72,7 +72,7 @@ export function LoginForm() {
         setLoading(false);
       } else {
         // Login successful
-        login(result.token, result.user);
+        login(result.token, result.user, result.refreshToken);
         // Navigate to onboarding page
         navigate({ to: "/onboarding" });
       }
@@ -163,8 +163,7 @@ export function LoginForm() {
                   <IconWrapper
                     icon={CheckCircle}
                     size="lg"
-                    className="text-green-500"
-                    style={{ fontSize: '48px' }}
+                    className="text-green-500 text-5xl"
                   />
                 </div>
                 <div className="text-center space-y-2">

@@ -2,4 +2,10 @@
 **/target
 **/*env*
 !**/*.env.example
+
+# Build artifacts
+**/dist/
+
+# Turbo logs and cache
 .turbo
+**/.turbo/
