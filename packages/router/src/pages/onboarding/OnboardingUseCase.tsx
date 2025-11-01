@@ -1,12 +1,12 @@
 import { useState } from "react";
-import { ArrowLeft, ChevronDown, Briefcase, Home, GraduationCap } from "lucide-react";
+import { ArrowLeft, ChevronDown, Briefcase, Home, GraduationCap, type LucideIcon } from "lucide-react";
 import { Button, IconWrapper } from "@nouvelle/ui";
 
 type UseCase = "work" | "personal" | "school";
 
 interface UseCaseOption {
   id: UseCase;
-  icon: React.ComponentType<{ className?: string }>;
+  icon: LucideIcon;
   title: string;
   description: string;
 }

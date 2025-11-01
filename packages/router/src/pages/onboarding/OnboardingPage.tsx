@@ -1,5 +1,6 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "@tanstack/react-router";
+import { useAuth } from "../../lib/auth-context";
 import { OnboardingUseCase } from "./OnboardingUseCase";
 import { OnboardingForm } from "./OnboardingForm";
 import { OnboardingInterests } from "./OnboardingInterests";
@@ -9,8 +10,30 @@ type OnboardingStep = "profile" | "useCase" | "interests";
 
 export function OnboardingPage() {
   const navigate = useNavigate();
+  const { isAuthenticated, isLoading } = useAuth();
   const [currentStep, setCurrentStep] = useState<OnboardingStep>("profile");
   const [selectedUseCase, setSelectedUseCase] = useState<UseCase | null>(null);
+
+  // Redirect to login if not authenticated
+  useEffect(() => {
+    if (!isLoading && !isAuthenticated) {
+      navigate({ to: "/login" });
+    }
+  }, [isAuthenticated, isLoading, navigate]);
+
+  // Show loading while checking auth
+  if (isLoading) {
+    return (
+      <div className="flex-1 flex items-center justify-center min-h-screen">
+        <div className="text-muted-foreground">Loading...</div>
+      </div>
+    );
+  }
+
+  // Don't render if not authenticated (will redirect)
+  if (!isAuthenticated) {
+    return null;
+  }
 
   const handleProfileComplete = () => {
     setCurrentStep("useCase");

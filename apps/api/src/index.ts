@@ -1,6 +1,7 @@
 import { Elysia } from 'elysia';
 import { cors } from '@elysiajs/cors';
 import { createAuthRoutes } from './routes/auth';
+import { createWorkspaceRoutes } from './routes/workspaces';
 import { logger } from './lib/logger';
 
 // Validate critical environment variables at startup
@@ -77,6 +78,7 @@ const app = new Elysia()
     version: '1.0.0',
     endpoints: {
       auth: '/auth',
+      workspaces: '/workspaces',
     },
   }))
   .get('/health', () => ({
@@ -84,6 +86,7 @@ const app = new Elysia()
     timestamp: new Date().toISOString(),
   }))
   .use(createAuthRoutes())
+  .use(createWorkspaceRoutes())
   .onError(({ code, error, set }) => {
     logger.error({ code, err: error }, 'Request error');
 

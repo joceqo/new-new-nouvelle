@@ -39,11 +39,23 @@ export {
 
 // Export auth functionality
 export { AuthProvider, useAuth } from './lib/auth-context';
-export { authApiClient, AuthApiClient } from './lib/api-client';
+export { authApiClient, AuthApiClient, workspaceApiClient, WorkspaceApiClient } from './lib/api-client';
 export type {
   User,
   AuthState,
   SendCodeResponse,
   VerifyCodeResponse,
   GetMeResponse,
+} from './lib/types';
+
+// Export workspace functionality
+export { WorkspaceProvider, useWorkspace } from './lib/workspace-context';
+export type {
+  Workspace,
+  WorkspaceMember,
+  WorkspaceInvite,
+  WorkspaceState,
+  ListWorkspacesResponse,
+  CreateWorkspaceResponse,
+  WorkspaceDetailsResponse,
 } from './lib/types';

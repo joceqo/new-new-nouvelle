@@ -37,11 +37,61 @@ export {
   InputOTPSlot,
   type InputOTPProps,
 } from './components/ui/input-otp';
+export {
+  DropdownMenu,
+  DropdownMenuTrigger,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuLabel,
+  type DropdownMenuProps,
+  type DropdownMenuTriggerProps,
+  type DropdownMenuContentProps,
+  type DropdownMenuItemProps,
+  type DropdownMenuLabelProps,
+} from './components/ui/dropdown-menu';
+export { Avatar, avatarVariants, type AvatarProps } from './components/ui/avatar';
+export { Badge, badgeVariants, type BadgeProps } from './components/ui/badge';
+export {
+  Dialog,
+  DialogOverlay,
+  DialogContent,
+  DialogHeader,
+  DialogFooter,
+  DialogTitle,
+  DialogDescription,
+  DialogBody,
+  type DialogProps,
+  type DialogOverlayProps,
+  type DialogContentProps,
+  type DialogHeaderProps,
+  type DialogFooterProps,
+  type DialogTitleProps,
+  type DialogDescriptionProps,
+  type DialogBodyProps,
+} from './components/ui/dialog';
 
 // Export Sidebar components
 export { Sidebar, type SidebarProps } from './components/Sidebar/Sidebar/Sidebar';
 export { SidebarItem, type SidebarItemProps } from './components/Sidebar/SidebarItem/SidebarItem';
 export { SidebarHeader, type SidebarHeaderProps } from './components/Sidebar/SidebarHeader/SidebarHeader';
+
+// Export WorkspaceSwitcher component
+export { WorkspaceSwitcher, type WorkspaceSwitcherProps } from './components/WorkspaceSwitcher';
+export { WorkspaceHeader, type WorkspaceHeaderProps } from './components/WorkspaceSwitcher/WorkspaceHeader';
+
+// Export Workspace Dialogs
+export {
+  CreateWorkspaceDialog,
+  InviteMembersDialog,
+  WorkspaceSettingsDialog,
+  type CreateWorkspaceDialogProps,
+  type InviteMembersDialogProps,
+  type WorkspaceSettingsDialogProps,
+} from './components/WorkspaceDialogs';
+
+// Export IconWrapper component
+export { IconWrapper, type IconWrapperProps } from './components/IconWrapper';
 
 // Export styles (consumers should import these in their app)
 // import '@nouvelle/ui/styles/fluid-typography.css';
