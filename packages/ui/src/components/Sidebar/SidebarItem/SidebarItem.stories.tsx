@@ -16,7 +16,7 @@ import {
 import { SidebarItem } from "./SidebarItem";
 
 const meta = {
-  title: "Components/Sidebar/SidebarItem",
+  title: "Components/Domain/Sidebar/SidebarItem",
   component: SidebarItem,
   parameters: {
     layout: "padded",
@@ -133,10 +133,22 @@ export const WithActions: Story = {
 export const Nested: Story = {
   render: () => (
     <Flex direction="column" gap="0.5">
-      <SidebarItem icon={Folder} label="Parent Folder" level={0} isExpandable isExpanded />
+      <SidebarItem
+        icon={Folder}
+        label="Parent Folder"
+        level={0}
+        isExpandable
+        isExpanded
+      />
       <SidebarItem icon={FileText} label="Child Document 1" level={1} />
       <SidebarItem icon={FileText} label="Child Document 2" level={1} />
-      <SidebarItem icon={Folder} label="Nested Folder" level={1} isExpandable isExpanded />
+      <SidebarItem
+        icon={Folder}
+        label="Nested Folder"
+        level={1}
+        isExpandable
+        isExpanded
+      />
       <SidebarItem icon={FileText} label="Grandchild" level={2} />
     </Flex>
   ),
@@ -173,12 +185,7 @@ export const WithAllFeatures: Story = {
         badge="Updated"
         badgeVariant="accent"
       />
-      <SidebarItem
-        icon={FileText}
-        label="Getting Started"
-        level={1}
-        isActive
-      />
+      <SidebarItem icon={FileText} label="Getting Started" level={1} isActive />
       <SidebarItem
         icon={FileText}
         label="Advanced Topics"
@@ -203,19 +210,27 @@ export const InteractiveStates: Story = {
   render: () => (
     <Flex direction="column" gap="2">
       <div>
-        <div className="mb-1 px-2 text-xs text-[var(--sidebar-item-text-muted)]">Default State</div>
+        <div className="mb-1 px-2 text-xs text-[var(--sidebar-item-text-muted)]">
+          Default State
+        </div>
         <SidebarItem icon={FileText} label="Default Item" />
       </div>
       <div>
-        <div className="mb-1 px-2 text-xs text-[var(--sidebar-item-text-muted)]">Active State</div>
+        <div className="mb-1 px-2 text-xs text-[var(--sidebar-item-text-muted)]">
+          Active State
+        </div>
         <SidebarItem icon={FileText} label="Active Item" isActive />
       </div>
       <div>
-        <div className="mb-1 px-2 text-xs text-[var(--sidebar-item-text-muted)]">With Badge</div>
+        <div className="mb-1 px-2 text-xs text-[var(--sidebar-item-text-muted)]">
+          With Badge
+        </div>
         <SidebarItem icon={Bell} label="Notifications" badge="5" />
       </div>
       <div>
-        <div className="mb-1 px-2 text-xs text-[var(--sidebar-item-text-muted)]">With Actions (hover to see)</div>
+        <div className="mb-1 px-2 text-xs text-[var(--sidebar-item-text-muted)]">
+          With Actions (hover to see)
+        </div>
         <SidebarItem
           icon={Folder}
           label="Hover Me"
@@ -237,9 +252,10 @@ export const HoverDemo: Story = {
           💡 Hover over the items below to see interactions
         </div>
         <div className="text-xs text-[var(--sidebar-item-text-muted)]">
-          • Icons become brighter on hover<br />
-          • Action buttons appear on hover<br />
-          • Background changes on hover
+          • Icons become brighter on hover
+          <br />
+          • Action buttons appear on hover
+          <br />• Background changes on hover
         </div>
       </div>
 

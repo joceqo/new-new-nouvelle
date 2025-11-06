@@ -172,7 +172,7 @@ export function createWorkspaceRoutes() {
           authLogger.error({ err: error, userId, body }, 'Create workspace error');
 
           // Handle duplicate slug error
-          if (error instanceof Error && error.message.includes('duplicate') || error.message.includes('unique')) {
+          if (error && (error instanceof Error && (error.message.includes('duplicate') || error.message.includes('unique')))) {
             set.status = 409;
             return { error: 'A workspace with this slug already exists' };
           }

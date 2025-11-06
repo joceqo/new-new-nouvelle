@@ -48,7 +48,7 @@ export function InvitePage() {
   useEffect(() => {
     if (!isAuthenticated || !authToken || authLoading) return;
 
-    let redirectTimeout: NodeJS.Timeout | null = null;
+    let redirectTimeout: number | null = null;
 
     const acceptInvite = async () => {
       try {

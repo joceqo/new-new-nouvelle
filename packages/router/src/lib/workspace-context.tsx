@@ -37,6 +37,7 @@ export function WorkspaceProvider({ children }: { children: React.ReactNode }) {
         workspaces: [],
         activeWorkspace: null,
         isLoading: false,
+        error: null,
       });
       return;
     }
@@ -57,6 +58,7 @@ export function WorkspaceProvider({ children }: { children: React.ReactNode }) {
           workspaces,
           activeWorkspace,
           isLoading: false,
+          error: null,
         });
 
         // Save the active workspace ID
@@ -68,6 +70,7 @@ export function WorkspaceProvider({ children }: { children: React.ReactNode }) {
           workspaces: [],
           activeWorkspace: null,
           isLoading: false,
+          error: null,
         });
       }
     } catch (error) {
@@ -76,6 +79,7 @@ export function WorkspaceProvider({ children }: { children: React.ReactNode }) {
         workspaces: [],
         activeWorkspace: null,
         isLoading: false,
+        error: error instanceof Error ? error.message : 'Failed to load workspaces',
       });
     }
   }, [token, isAuthenticated]);
@@ -248,6 +252,7 @@ export function WorkspaceProvider({ children }: { children: React.ReactNode }) {
         workspaces: [],
         activeWorkspace: null,
         isLoading: false,
+        error: null,
       });
       localStorage.removeItem(ACTIVE_WORKSPACE_KEY);
     }

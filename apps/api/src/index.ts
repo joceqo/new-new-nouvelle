@@ -26,6 +26,7 @@ function validateEnvVars() {
 validateEnvVars();
 
 const PORT = process.env.PORT || 3001;
+const LOG_HTTP_REQUESTS = process.env.LOG_HTTP_REQUESTS === 'true';
 
 const app = new Elysia()
   .use(
@@ -41,8 +42,22 @@ const app = new Elysia()
       credentials: true,
     })
   )
-  // HTTPS enforcement in production
-  .onRequest(({ request, set }) => {
+  // Combined request middleware: HTTPS enforcement + HTTP logging
+  .onRequest(({ request, set, store }) => {
+    // Log incoming request if enabled
+    if (LOG_HTTP_REQUESTS) {
+      (store as any).requestStart = Date.now();
+      logger.info(
+        {
+          method: request.method,
+          url: request.url,
+          headers: Object.fromEntries(request.headers.entries()),
+        },
+        `→ ${request.method} ${new URL(request.url).pathname}`
+      );
+    }
+
+    // HTTPS enforcement in production
     if (process.env.NODE_ENV === 'production') {
       const proto = request.headers.get('x-forwarded-proto');
       if (proto !== 'https') {
@@ -51,13 +66,29 @@ const app = new Elysia()
       }
     }
   })
-  // Security headers
-  .onAfterHandle(({ set }) => {
+  // Security headers + Response logging
+  .onAfterHandle(({ request, set, store }) => {
+    // Add security headers
     set.headers['X-Content-Type-Options'] = 'nosniff';
     set.headers['X-Frame-Options'] = 'DENY';
     set.headers['X-XSS-Protection'] = '1; mode=block';
     if (process.env.NODE_ENV === 'production') {
       set.headers['Strict-Transport-Security'] = 'max-age=31536000; includeSubDomains';
+    }
+
+    // Log response if enabled
+    if (LOG_HTTP_REQUESTS) {
+      const duration = Date.now() - ((store as any).requestStart || Date.now());
+      const pathname = new URL(request.url).pathname;
+      logger.info(
+        {
+          method: request.method,
+          url: request.url,
+          status: set.status,
+          duration: `${duration}ms`,
+        },
+        `← ${request.method} ${pathname} ${set.status} (${duration}ms)`
+      );
     }
   })
   .onStart(() => {

@@ -1,27 +1,28 @@
 // Export the router instance
-export { router } from './router';
-export type { Router } from './router';
+export { router } from "./router";
+export type { Router } from "./router";
 
 // Export route tree
-export { routeTree } from './route-tree';
-export type { RouteTree } from './route-tree';
+export { routeTree } from "./route-tree";
+export type { RouteTree } from "./route-tree";
 
 // Export individual routes (useful for features that need to reference specific routes)
 export {
   rootRoute,
+  appRoute,
   indexRoute,
   aboutRoute,
   documentRoute,
   editorRoute,
-} from './route-tree';
+  loginRoute,
+  onboardingRoute,
+  magicLinkRoute,
+  gettingStartedRoute,
+  inviteRoute,
+} from "./route-tree";
 
 // Export types for consumers
-export type {
-  RouteIds,
-  RouteById,
-  RouteParams,
-  RouteSearch,
-} from './types';
+export type { RouteIds, RouteById, RouteParams, RouteSearch } from "./types";
 
 // Re-export commonly used TanStack Router utilities
 export {
@@ -35,21 +36,26 @@ export {
   useRouterState,
   useMatch,
   useMatches,
-} from '@tanstack/react-router';
+} from "@tanstack/react-router";
 
 // Export auth functionality
-export { AuthProvider, useAuth } from './lib/auth-context';
-export { authApiClient, AuthApiClient, workspaceApiClient, WorkspaceApiClient } from './lib/api-client';
+export { AuthProvider, useAuth } from "./lib/auth-context";
+export {
+  authApiClient,
+  AuthApiClient,
+  workspaceApiClient,
+  WorkspaceApiClient,
+} from "./lib/api-client";
 export type {
   User,
   AuthState,
   SendCodeResponse,
   VerifyCodeResponse,
   GetMeResponse,
-} from './lib/types';
+} from "./lib/types";
 
 // Export workspace functionality
-export { WorkspaceProvider, useWorkspace } from './lib/workspace-context';
+export { WorkspaceProvider, useWorkspace } from "./lib/workspace-context";
 export type {
   Workspace,
   WorkspaceMember,
@@ -58,4 +64,7 @@ export type {
   ListWorkspacesResponse,
   CreateWorkspaceResponse,
   WorkspaceDetailsResponse,
-} from './lib/types';
+} from "./lib/types";
+
+// Export page functionality
+export { PageProvider, usePage, type Page } from "./lib/page-context";

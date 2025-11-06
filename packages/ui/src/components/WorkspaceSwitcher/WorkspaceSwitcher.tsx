@@ -10,7 +10,6 @@ import {
   DropdownMenuLabel,
 } from '../ui/dropdown-menu';
 import { Avatar } from '../ui/avatar';
-import { Badge } from '../ui/badge';
 import { Button } from '../ui/button';
 
 export interface Workspace {

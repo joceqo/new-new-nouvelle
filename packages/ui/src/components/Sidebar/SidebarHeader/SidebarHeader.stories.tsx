@@ -5,7 +5,7 @@ import { SidebarHeader } from "./SidebarHeader";
 import { useState } from "react";
 
 const meta = {
-  title: "Components/Sidebar/SidebarHeader",
+  title: "Components/Domain/Sidebar/SidebarHeader",
   component: SidebarHeader,
   parameters: {
     layout: "padded",

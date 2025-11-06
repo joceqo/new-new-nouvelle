@@ -1,10 +1,9 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import { Sidebar } from "./Sidebar";
+import { Workspace } from "../../WorkspaceSwitcher/WorkspaceHeader";
 import { SidebarSection } from "../SidebarSection/SidebarSection";
 import { SidebarItem } from "../SidebarItem/SidebarItem";
-import { IconWrapper } from "@/components/IconWrapper";
 import {
-  Home,
   FileText,
   Wrench,
   Building2,
@@ -16,7 +15,7 @@ import {
 import { Flex, Text } from "@radix-ui/themes";
 
 const meta = {
-  title: "Components/Sidebar/Sidebar",
+  title: "Components/Domain/Sidebar/Sidebar",
   component: Sidebar,
   parameters: {
     layout: "fullscreen",
@@ -27,23 +26,55 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
+// Sample workspace data
+const workspaces: Workspace[] = [
+  {
+    id: "1",
+    name: "My Workspace",
+    icon: "m",
+    plan: "pro",
+    role: "owner",
+    memberCount: 5,
+  },
+  {
+    id: "2",
+    name: "Design Team",
+    icon: "🎨",
+    plan: "team",
+    role: "admin",
+    memberCount: 12,
+  },
+  {
+    id: "3",
+    name: "Documentation",
+    icon: "📚",
+    plan: "free",
+    role: "member",
+    memberCount: 3,
+  },
+];
+
 export const Default: Story = {
   args: {
-    icon: <IconWrapper icon={Home} />,
-    workspaceName: "My Workspace",
+    workspaces,
+    activeWorkspace: workspaces[0],
+    onWorkspaceChange: (id: string) => console.log("Workspace changed:", id),
+    onCreateWorkspace: () => console.log("Create workspace"),
+    onNewPage: () => console.log("Create new page"),
     onToggleSidebar: () => console.log("Toggle sidebar"),
-    onCreateNewPage: () => console.log("Create new page"),
-    onWorkspaceClick: () => console.log("Workspace clicked"),
+    isSidebarCollapsed: false,
   },
 };
 
 export const WithContent: Story = {
   args: {
-    icon: <span>🏠</span>,
-    workspaceName: "My Workspace",
+    workspaces,
+    activeWorkspace: workspaces[0],
+    onWorkspaceChange: (id: string) => console.log("Workspace changed:", id),
+    onCreateWorkspace: () => console.log("Create workspace"),
+    onNewPage: () => console.log("Create new page"),
     onToggleSidebar: () => console.log("Toggle sidebar"),
-    onCreateNewPage: () => console.log("Create new page"),
-    onWorkspaceClick: () => console.log("Workspace clicked"),
+    isSidebarCollapsed: false,
     children: (
       <Flex direction="column" gap="3">
         {/* Favorites Section */}
@@ -78,17 +109,9 @@ export const WithContent: Story = {
             level={1}
           />
 
-          <SidebarItem
-            icon={Box}
-            label="Components & UI System"
-            level={1}
-          />
+          <SidebarItem icon={Box} label="Components & UI System" level={1} />
 
-          <SidebarItem
-            icon={BookOpen}
-            label="Developer Guide"
-            level={1}
-          />
+          <SidebarItem icon={BookOpen} label="Developer Guide" level={1} />
 
           <SidebarItem
             icon={Rocket}
@@ -96,11 +119,7 @@ export const WithContent: Story = {
             level={1}
           />
 
-          <SidebarItem
-            icon={Zap}
-            label="Features & Functionality"
-            level={1}
-          />
+          <SidebarItem icon={Zap} label="Features & Functionality" level={1} />
         </SidebarSection>
       </Flex>
     ),
@@ -109,11 +128,13 @@ export const WithContent: Story = {
 
 export const WithNestedItems: Story = {
   args: {
-    icon: <span>📚</span>,
-    workspaceName: "Documentation",
+    workspaces,
+    activeWorkspace: workspaces[2], // Documentation workspace
+    onWorkspaceChange: (id: string) => console.log("Workspace changed:", id),
+    onCreateWorkspace: () => console.log("Create workspace"),
+    onNewPage: () => console.log("Create new page"),
     onToggleSidebar: () => console.log("Toggle sidebar"),
-    onCreateNewPage: () => console.log("Create new page"),
-    onWorkspaceClick: () => console.log("Workspace clicked"),
+    isSidebarCollapsed: false,
     children: (
       <Flex direction="column" gap="3">
         <SidebarSection title="Projects" defaultCollapsed={false}>
@@ -129,16 +150,8 @@ export const WithNestedItems: Story = {
             level={1}
             isActive
           />
-          <SidebarItem
-            icon={FileText}
-            label="Installation"
-            level={1}
-          />
-          <SidebarItem
-            icon={FileText}
-            label="Configuration"
-            level={1}
-          />
+          <SidebarItem icon={FileText} label="Installation" level={1} />
+          <SidebarItem icon={FileText} label="Configuration" level={1} />
 
           <SidebarItem
             icon={FileText}
