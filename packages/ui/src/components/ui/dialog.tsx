@@ -61,8 +61,8 @@ export const DialogOverlay = React.forwardRef<HTMLDivElement, DialogOverlayProps
       <div
         ref={ref}
         className={cn(
-          "fixed inset-0 z-50 bg-black/50 backdrop-blur-sm",
-          "animate-in fade-in-0",
+          "fixed inset-0 z-50 bg-[var(--color-overlay-light)] backdrop-blur-sm",
+          "animate-in fade-in-0 duration-150",
           className
         )}
         onClick={() => onOpenChange(false)}
@@ -88,8 +88,8 @@ export const DialogContent = React.forwardRef<HTMLDivElement, DialogContentProps
           <div
             ref={ref}
             className={cn(
-              "relative w-full max-w-lg rounded-xl bg-white shadow-lg",
-              "animate-in fade-in-0 zoom-in-95",
+              "relative w-full max-w-lg rounded-xl bg-[var(--color-bg-base)] border border-[var(--color-border)] shadow-2xl",
+              "animate-in fade-in-0 zoom-in-95 duration-150",
               className
             )}
             onClick={(e) => e.stopPropagation()}
@@ -98,7 +98,7 @@ export const DialogContent = React.forwardRef<HTMLDivElement, DialogContentProps
             {children}
             <button
               onClick={() => onOpenChange(false)}
-              className="absolute right-4 top-4 rounded-sm opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none"
+              className="absolute right-4 top-4 rounded p-1 text-[var(--color-icon-default)] hover:bg-[var(--color-hover-subtle)] hover:text-[var(--color-icon-hover)] transition-all duration-150 focus:outline-none focus:ring-2 focus:ring-[var(--palette-blue-text)] focus:ring-offset-1 disabled:pointer-events-none"
             >
               <X className="h-4 w-4" />
               <span className="sr-only">Close</span>
@@ -136,7 +136,7 @@ export const DialogFooter = React.forwardRef<HTMLDivElement, DialogFooterProps>(
   ({ children, className, ...props }, ref) => (
     <div
       ref={ref}
-      className={cn("flex items-center justify-end gap-2 px-6 py-4 border-t", className)}
+      className={cn("flex items-center justify-end gap-2 px-6 py-4 border-t border-[var(--color-divider)]", className)}
       {...props}
     >
       {children}
@@ -153,7 +153,7 @@ export const DialogTitle = React.forwardRef<HTMLHeadingElement, DialogTitleProps
   ({ children, className, ...props }, ref) => (
     <h2
       ref={ref}
-      className={cn("text-lg font-semibold leading-none tracking-tight", className)}
+      className={cn("text-base font-semibold leading-none tracking-tight text-[var(--color-text-primary)]", className)}
       {...props}
     >
       {children}
@@ -168,7 +168,7 @@ export interface DialogDescriptionProps extends React.HTMLAttributes<HTMLParagra
 
 export const DialogDescription = React.forwardRef<HTMLParagraphElement, DialogDescriptionProps>(
   ({ children, className, ...props }, ref) => (
-    <p ref={ref} className={cn("text-sm text-gray-500", className)} {...props}>
+    <p ref={ref} className={cn("text-sm text-[var(--color-text-emphasis-medium)]", className)} {...props}>
       {children}
     </p>
   )
