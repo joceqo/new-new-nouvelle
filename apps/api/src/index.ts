@@ -1,10 +1,18 @@
 import { Elysia } from 'elysia';
 import { cors } from '@elysiajs/cors';
 import { createAuthRoutes } from './routes/auth';
+import { createWorkspaceRoutes } from './routes/workspaces';
 import { logger } from './lib/logger';
 
 // Validate critical environment variables at startup
 function validateEnvVars() {
+  // Skip validation in test mode
+  const isTest = process.env.NODE_ENV === 'test' || process.env.TEST_MODE === 'true';
+  if (isTest) {
+    logger.info('⚠️  Running in TEST MODE - skipping environment variable validation');
+    return;
+  }
+
   const requiredVars = [
     'CONVEX_URL',
     'RESEND_API_KEY',
@@ -25,6 +33,7 @@ function validateEnvVars() {
 validateEnvVars();
 
 const PORT = process.env.PORT || 3001;
+const LOG_HTTP_REQUESTS = process.env.LOG_HTTP_REQUESTS === 'true';
 
 const app = new Elysia()
   .use(
@@ -40,8 +49,22 @@ const app = new Elysia()
       credentials: true,
     })
   )
-  // HTTPS enforcement in production
-  .onRequest(({ request, set }) => {
+  // Combined request middleware: HTTPS enforcement + HTTP logging
+  .onRequest(({ request, set, store }) => {
+    // Log incoming request if enabled
+    if (LOG_HTTP_REQUESTS) {
+      (store as any).requestStart = Date.now();
+      logger.info(
+        {
+          method: request.method,
+          url: request.url,
+          headers: Object.fromEntries(request.headers.entries()),
+        },
+        `→ ${request.method} ${new URL(request.url).pathname}`
+      );
+    }
+
+    // HTTPS enforcement in production
     if (process.env.NODE_ENV === 'production') {
       const proto = request.headers.get('x-forwarded-proto');
       if (proto !== 'https') {
@@ -50,13 +73,29 @@ const app = new Elysia()
       }
     }
   })
-  // Security headers
-  .onAfterHandle(({ set }) => {
+  // Security headers + Response logging
+  .onAfterHandle(({ request, set, store }) => {
+    // Add security headers
     set.headers['X-Content-Type-Options'] = 'nosniff';
     set.headers['X-Frame-Options'] = 'DENY';
     set.headers['X-XSS-Protection'] = '1; mode=block';
     if (process.env.NODE_ENV === 'production') {
       set.headers['Strict-Transport-Security'] = 'max-age=31536000; includeSubDomains';
+    }
+
+    // Log response if enabled
+    if (LOG_HTTP_REQUESTS) {
+      const duration = Date.now() - ((store as any).requestStart || Date.now());
+      const pathname = new URL(request.url).pathname;
+      logger.info(
+        {
+          method: request.method,
+          url: request.url,
+          status: set.status,
+          duration: `${duration}ms`,
+        },
+        `← ${request.method} ${pathname} ${set.status} (${duration}ms)`
+      );
     }
   })
   .onStart(() => {
@@ -77,6 +116,7 @@ const app = new Elysia()
     version: '1.0.0',
     endpoints: {
       auth: '/auth',
+      workspaces: '/workspaces',
     },
   }))
   .get('/health', () => ({
@@ -84,6 +124,7 @@ const app = new Elysia()
     timestamp: new Date().toISOString(),
   }))
   .use(createAuthRoutes())
+  .use(createWorkspaceRoutes())
   .onError(({ code, error, set }) => {
     logger.error({ code, err: error }, 'Request error');
 

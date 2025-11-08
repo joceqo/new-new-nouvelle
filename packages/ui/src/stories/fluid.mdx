@@ -1,0 +1,222 @@
+import { Meta } from "@storybook/addon-docs/blocks";
+import { Flex, Box, Heading, Text, Container, Card } from "@radix-ui/themes";
+
+<Meta title="Example/Fluid Example" />
+
+# Fluid Layouts with Radix Flex
+
+This implementation uses **Approach 1** - overriding Radix UI Themes spacing tokens with \`clamp()\` values.
+This means **all Flex components automatically get fluid spacing** without any extra code!
+
+## How It Works
+
+The fluid-typography.css file overrides Radix spacing tokens:
+
+```css
+:root,
+.radix-themes {
+  --space-1: clamp(0.25rem, 0.2rem + 0.25vw, 0.375rem);
+  --space-2: clamp(0.5rem, 0.4rem + 0.5vw, 0.75rem);
+  --space-3: clamp(0.75rem, 0.6rem + 0.75vw, 1.125rem);
+  /* ... all the way to --space-9 */
+}
+```
+
+## Example
+
+<Flex direction="column" gap="9">
+  <Container size="4">
+    <Flex direction="column" gap="5" py="6">
+      <Heading size="8" weight="bold">
+        Fluid Layout Showcase
+      </Heading>
+
+      <Text size="4" color="gray">
+        All examples below use Radix Flex with fluid spacing tokens. Resize
+        your browser to see everything scale smoothly!
+      </Text>
+    </Flex>
+  </Container>
+
+  <Flex direction="column" gap="8">
+    <Box>
+      <Container size="4" mb="4">
+        <Text size="2" weight="bold" color="gray">
+          HERO SECTION
+        </Text>
+      </Container>
+
+      <Flex direction="column" gap="6" py="8" align="center" style={{ background: "var(--gray-2)" }}>
+        <Heading size="8" weight="bold">
+          Fluid Layout Hero
+        </Heading>
+
+        <Text size="4" align="center" color="gray">
+          All spacing on this page scales smoothly with the viewport
+        </Text>
+
+        <Flex gap="4" wrap="wrap" justify="center">
+          <Box
+            p="3"
+            style={{
+            background: "var(--accent-9)",
+            color: "white",
+            borderRadius: "6px",
+          }}
+          >
+            <Text size="2" weight="bold">
+              Get Started
+            </Text>
+          </Box>
+
+          <Box
+            p="3"
+            style={{
+            background: "var(--gray-4)",
+            borderRadius: "6px",
+          }}
+          >
+            <Text size="2" weight="bold">
+              Learn More
+            </Text>
+          </Box>
+        </Flex>
+      </Flex>
+    </Box>
+
+    <Box>
+      <Container size="4" mb="4">
+        <Text size="2" weight="bold" color="gray">
+          CARD GRID
+        </Text>
+      </Container>
+
+      <Container size="4">
+        <Flex direction={{ initial: "column", sm: "row" }} gap="5" wrap="wrap" p="6">
+          {["Design", "Development", "Marketing"].map((title) => (
+                      <Box
+                        key={title}
+                        flexGrow="1"
+                        style={{
+                          flexBasis: "clamp(250px, 30vw, 350px)", // Fluid card width
+                          minWidth: 0, // Prevent flex overflow
+                        }}
+                      >
+                        <Card>
+                          <Flex direction="column" gap="3">
+                            <Heading size="6" weight="bold">
+                              {title}
+                            </Heading>
+                            <Text size="3" color="gray">
+                              This card has fluid width and spacing that adapts to the
+                              viewport size.
+                            </Text>
+                          </Flex>
+                        </Card>
+                      </Box>
+                    ))}
+        </Flex>
+      </Container>
+    </Box>
+
+    <Box>
+      <Container size="4" mb="4">
+        <Text size="2" weight="bold" color="gray">
+          TWO-COLUMN LAYOUT
+        </Text>
+      </Container>
+
+      <Container size="4">
+        <Flex direction={{ initial: 'column', md: 'row' }} gap="6" p="6">
+          <Box flexGrow="2" p="5" style={{ background: 'var(--gray-2)', borderRadius: '8px' }}>
+            <Flex direction="column" gap="4">
+              <Heading size="6" weight="bold">
+                Main Content
+              </Heading>
+
+              <Text size="3">
+                This layout uses fluid spacing tokens. The gap between columns and
+                all padding scales smoothly as you resize the browser window.
+              </Text>
+
+              <Text size="3" color="gray">
+                Notice how everything flows naturally from mobile to desktop without
+                any jarring breakpoint jumps.
+              </Text>
+            </Flex>
+          </Box>
+
+          <Box flexGrow="1" p="5" style={{ background: 'var(--gray-2)', borderRadius: '8px' }}>
+            <Flex direction="column" gap="3">
+              <Heading size="5" weight="bold">
+                Sidebar
+              </Heading>
+
+              <Text size="2" color="gray">
+                Secondary content with its own fluid spacing.
+              </Text>
+            </Flex>
+          </Box>
+        </Flex>
+      </Container>
+    </Box>
+
+    <Box>
+      <Container size="4" mb="4">
+        <Text size="2" weight="bold" color="gray">
+          NESTED LAYOUTS
+        </Text>
+      </Container>
+
+      <Container size="4">
+        <Flex direction="column" gap="7" p="6">
+          <Heading size="7" weight="bold">
+            Nested Layouts
+          </Heading>
+
+          <Flex direction="column" gap="5">
+            <Card>
+              <Flex direction="column" gap="4">
+                <Heading size="5">Section 1</Heading>
+
+                <Flex gap="3" wrap="wrap">
+                  {[1, 2, 3, 4].map((i) => (
+                                  <Box
+                                    key={i}
+                                    p="4"
+                                    style={{
+                                      background: 'var(--accent-3)',
+                                      borderRadius: '6px',
+                                      flexBasis: 'clamp(150px, 20vw, 200px)',
+                                    }}
+                                  >
+                                    <Text size="2" weight="bold">
+                                      Item {i}
+                                    </Text>
+                                  </Box>
+                                ))}
+                </Flex>
+              </Flex>
+            </Card>
+
+            <Card>
+              <Flex direction="column" gap="4">
+                <Heading size="5">Section 2</Heading>
+
+                <Flex gap="3" direction={{ initial: 'column', sm: 'row' }}>
+                  <Box flexGrow="1" p="3" style={{ background: 'var(--gray-3)', borderRadius: '6px' }}>
+                    <Text size="2">Nested item A</Text>
+                  </Box>
+
+                  <Box flexGrow="1" p="3" style={{ background: 'var(--gray-3)', borderRadius: '6px' }}>
+                    <Text size="2">Nested item B</Text>
+                  </Box>
+                </Flex>
+              </Flex>
+            </Card>
+          </Flex>
+        </Flex>
+      </Container>
+    </Box>
+  </Flex>
+</Flex>

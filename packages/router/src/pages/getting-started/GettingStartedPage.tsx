@@ -1,51 +1,35 @@
 import { useParams, useNavigate } from "@tanstack/react-router";
-import { Sidebar, SidebarItem } from "@nouvelle/ui";
-import { FileText, List, CalendarDays, User } from "lucide-react";
 import { useAuth } from "../../lib/auth-context";
+import { useEffect } from "react";
 
 export function GettingStartedPage() {
   const { pageId } = useParams({ strict: false });
-  const { user, logout } = useAuth();
+  const { user, isAuthenticated, isLoading } = useAuth();
   const navigate = useNavigate();
 
-  const handleLogout = () => {
-    logout();
-    navigate({ to: "/login" });
-  };
+  // Redirect to login if not authenticated
+  useEffect(() => {
+    if (!isLoading && !isAuthenticated) {
+      navigate({ to: "/login" });
+    }
+  }, [isAuthenticated, isLoading, navigate]);
+
+  // Show loading while checking auth
+  if (isLoading) {
+    return (
+      <div className="flex-1 flex items-center justify-center">
+        <div className="text-muted-foreground">Loading...</div>
+      </div>
+    );
+  }
+
+  // Don't render if not authenticated (will redirect)
+  if (!isAuthenticated) {
+    return null;
+  }
 
   return (
-    <div className="flex h-screen bg-background">
-      {/* Sidebar */}
-      <Sidebar
-        workspaceName="My Workspace"
-        icon={<span className="text-lg">👋</span>}
-        onLogout={handleLogout}
-      >
-        {/* Private Section */}
-        <div className="mb-2">
-          <div className="px-2 mb-1">
-            <span className="text-xs font-semibold text-gray-500 uppercase tracking-wider">
-              Private
-            </span>
-          </div>
-          <SidebarItem icon={FileText} label="Getting Started" isActive />
-          <SidebarItem icon={List} label="To Do List" />
-          <SidebarItem icon={CalendarDays} label="Weekly To-do List" />
-        </div>
-
-        {/* Shared Section */}
-        <div>
-          <div className="px-2 mb-1">
-            <span className="text-xs font-semibold text-gray-500 uppercase tracking-wider">
-              Shared
-            </span>
-          </div>
-          <SidebarItem icon={User} label="Start collaborating" />
-        </div>
-      </Sidebar>
-
-      {/* Main Content */}
-      <div className="flex-1 overflow-auto">
+    <div className="flex-1 overflow-auto">
         <div className="max-w-4xl mx-auto px-16 py-12">
           {/* Page Header */}
           <div className="mb-8">
@@ -95,7 +79,6 @@ export function GettingStartedPage() {
             </div>
           </div>
         </div>
-      </div>
     </div>
   );
 }

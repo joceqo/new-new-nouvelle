@@ -10,7 +10,7 @@ import {
   AlertDescription,
 } from "@nouvelle/ui";
 import { Loader2, CheckCircle, AlertCircle } from "lucide-react";
-import { authApiClient } from "../../lib/api-client";
+import { authApiClient, workspaceApiClient } from "../../lib/api-client";
 import { useAuth } from "../../lib/auth-context";
 
 type MagicLinkSearch = {
@@ -45,9 +45,21 @@ export function MagicLinkPage() {
           login(result.token, result.user, result.refreshToken);
           setStatus("success");
 
-          // Redirect to onboarding after a brief delay
+          // Check if user has workspaces to determine redirect
+          const workspacesResponse = await workspaceApiClient.listWorkspaces(result.token);
+          const hasWorkspaces = workspacesResponse.success &&
+                                workspacesResponse.workspaces &&
+                                workspacesResponse.workspaces.length > 0;
+
+          // Redirect after a brief delay
           setTimeout(() => {
-            navigate({ to: "/onboarding" });
+            if (hasWorkspaces) {
+              // User has workspaces, redirect to main app
+              navigate({ to: "/getting-started/$pageId", params: { pageId: "home" } });
+            } else {
+              // New user, redirect to onboarding
+              navigate({ to: "/onboarding" });
+            }
           }, 1000);
         }
       } catch (error) {
@@ -88,7 +100,7 @@ export function MagicLinkPage() {
                 <div className="text-center space-y-2">
                   <h3 className="font-medium">Authentication successful!</h3>
                   <p className="text-sm text-muted-foreground">
-                    Redirecting to onboarding...
+                    Redirecting...
                   </p>
                 </div>
               </div>

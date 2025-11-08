@@ -1,0 +1,13 @@
+{
+  "plugins": [
+    "remark-preset-lint-recommended",
+    "remark-preset-lint-consistent"
+  ],
+  "settings": {
+    "bullet": "-",
+    "emphasis": "_",
+    "fences": true,
+    "indent": 2,
+    "incrementListMarker": true
+  }
+}

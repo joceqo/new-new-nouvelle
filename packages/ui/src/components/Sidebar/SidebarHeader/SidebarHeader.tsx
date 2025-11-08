@@ -39,7 +39,10 @@ export const SidebarHeader: React.FC<SidebarHeaderProps> = ({
   // Close dropdown when clicking outside
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(event.target as Node)
+      ) {
         setIsDropdownOpen(false);
       }
     };
@@ -60,7 +63,7 @@ export const SidebarHeader: React.FC<SidebarHeaderProps> = ({
         align="center"
         justify="between"
         className={cn(
-          "group/header mb-1 w-full px-2 py-2",
+          "group/header mb-1 px-2 py-2",
           "rounded-[var(--sidebar-item-radius)]",
           "bg-[var(--sidebar-header-bg)]",
           "hover:bg-[var(--sidebar-header-hover-bg)]",
@@ -72,10 +75,7 @@ export const SidebarHeader: React.FC<SidebarHeaderProps> = ({
           <Flex
             align="center"
             gap="2"
-            className={cn(
-              "min-w-0 flex-1 cursor-pointer",
-              "select-none"
-            )}
+            className={cn("min-w-0 flex-1 cursor-pointer", "select-none")}
             onClick={() => setIsDropdownOpen(!isDropdownOpen)}
           >
             {/* Workspace Icon */}
@@ -109,13 +109,13 @@ export const SidebarHeader: React.FC<SidebarHeaderProps> = ({
 
           {/* Dropdown Menu */}
           {isDropdownOpen && onLogout && (
-            <div className="absolute left-0 top-full mt-1 w-48 rounded-md border border-gray-200 bg-white shadow-lg z-50">
+            <div className="absolute top-full left-0 z-50 mt-1 w-48 rounded-md border border-gray-200 bg-white shadow-lg">
               <button
                 onClick={() => {
                   onLogout();
                   setIsDropdownOpen(false);
                 }}
-                className="w-full flex items-center gap-2 px-3 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-colors rounded-md"
+                className="flex w-full items-center gap-2 rounded-md px-3 py-2 text-sm text-gray-700 transition-colors hover:bg-gray-100"
               >
                 <IconWrapper icon={LogOut} size="sm" />
                 <span>Logout</span>

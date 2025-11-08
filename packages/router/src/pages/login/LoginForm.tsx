@@ -6,7 +6,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@nouvelle/ui";
-import { authApiClient } from "../../lib/api-client";
+import { authApiClient, workspaceApiClient } from "../../lib/api-client";
 import { useAuth } from "../../lib/auth-context";
 import { useNavigate } from "@tanstack/react-router";
 import { EmailStep } from "./EmailStep";
@@ -67,8 +67,20 @@ export function LoginForm() {
       } else {
         // Login successful
         login(result.token, result.user, result.refreshToken);
-        // Navigate to onboarding page
-        navigate({ to: "/onboarding" });
+
+        // Check if user has workspaces to determine redirect
+        const workspacesResponse = await workspaceApiClient.listWorkspaces(result.token);
+        const hasWorkspaces = workspacesResponse.success &&
+                              workspacesResponse.workspaces &&
+                              workspacesResponse.workspaces.length > 0;
+
+        if (hasWorkspaces) {
+          // User has workspaces, redirect to main app
+          navigate({ to: "/getting-started/$pageId", params: { pageId: "home" } });
+        } else {
+          // New user, redirect to onboarding
+          navigate({ to: "/onboarding" });
+        }
       }
     } catch (err) {
       setError("Verification failed. Please try again.");

@@ -1,5 +1,6 @@
 import { User } from '../types';
 import { convexClient, api } from './convex-client';
+import { isTestMode, mockFindUserById, mockFindOrCreateUser } from './test-mocks';
 
 export async function findUserByEmail(email: string): Promise<User | undefined> {
   const user = await convexClient.query(api.users.getByEmail, {
@@ -18,6 +19,17 @@ export async function findUserByEmail(email: string): Promise<User | undefined> 
 }
 
 export async function findUserById(id: string): Promise<User | undefined> {
+  // Use mock in test mode
+  if (isTestMode()) {
+    const mockUser = await mockFindUserById(id);
+    if (!mockUser) return undefined;
+    return {
+      id: mockUser.id,
+      email: mockUser.email,
+      createdAt: new Date(),
+    };
+  }
+
   const user = await convexClient.query(api.users.getById, { userId: id as any });
 
   if (!user) {
@@ -32,9 +44,38 @@ export async function findUserById(id: string): Promise<User | undefined> {
 }
 
 export async function findOrCreateUser(email: string): Promise<User> {
+  // Use mock in test mode
+  if (isTestMode()) {
+    const mockUser = await mockFindOrCreateUser(email);
+    return {
+      id: mockUser.id,
+      email: mockUser.email,
+      createdAt: new Date(),
+    };
+  }
   const userId = await convexClient.mutation(api.users.createOrUpdate, {
     email: email.toLowerCase(),
   });
+
+  // Check if user has any workspaces
+  const workspaces = await convexClient.query(api.workspaces.listByUser, {
+    userId: userId as any,
+  });
+
+  // If user has no workspaces, create a personal workspace
+  if (workspaces.length === 0) {
+    // Generate a slug from email (e.g., "john-doe" from "john.doe@example.com")
+    const emailName = email.split('@')[0];
+    const slug = emailName.replace(/[^a-z0-9]/gi, '-').toLowerCase();
+    const timestamp = Date.now().toString(36); // Add timestamp for uniqueness
+
+    await convexClient.mutation(api.workspaces.create, {
+      name: `${emailName}'s Workspace`,
+      ownerId: userId as any,
+      slug: `${slug}-${timestamp}`,
+      icon: '👤', // Default workspace icon
+    });
+  }
 
   // Fetch the user to return full data
   const user = await findUserById(userId);

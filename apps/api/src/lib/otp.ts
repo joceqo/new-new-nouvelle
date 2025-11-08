@@ -2,6 +2,7 @@ import { randomInt } from 'crypto';
 import { trackFailure } from './metrics';
 import { otpLogger } from './logger';
 import { convexClient, api } from './convex-client';
+import { isTestMode, mockStoreOTP, mockVerifyOTP, mockClearExpiredOTPs } from './test-mocks';
 
 const OTP_EXPIRY_MS = 10 * 60 * 1000; // 10 minutes
 const CLEANUP_INTERVAL_MS = 60 * 1000; // 1 minute
@@ -12,6 +13,11 @@ export function generateOTP(): string {
 }
 
 export async function storeOTP(email: string, code: string): Promise<void> {
+  // Use mock in test mode
+  if (isTestMode()) {
+    return mockStoreOTP(email, code);
+  }
+
   const expiresAt = Date.now() + OTP_EXPIRY_MS;
   await convexClient.mutation(api.otps.store, {
     email: email.toLowerCase(),
@@ -21,6 +27,10 @@ export async function storeOTP(email: string, code: string): Promise<void> {
 }
 
 export async function verifyOTP(email: string, code: string): Promise<boolean> {
+  // Use mock in test mode
+  if (isTestMode()) {
+    return mockVerifyOTP(email, code);
+  }
   const stored = await convexClient.query(api.otps.getByEmail, {
     email: email.toLowerCase(),
   });
@@ -68,6 +78,11 @@ export async function verifyOTP(email: string, code: string): Promise<boolean> {
 }
 
 export async function clearExpiredOTPs(): Promise<void> {
+  // Use mock in test mode
+  if (isTestMode()) {
+    return mockClearExpiredOTPs();
+  }
+
   try {
     const count = await convexClient.mutation(api.otps.clearExpired, {});
     if (count > 0) {

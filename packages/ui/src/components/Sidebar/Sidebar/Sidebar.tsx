@@ -1,41 +1,64 @@
-import { SidebarHeader } from "../SidebarHeader/SidebarHeader";
 import { SidebarItem } from "../SidebarItem/SidebarItem";
+import {
+  WorkspaceHeader,
+  Workspace,
+} from "../../WorkspaceSwitcher/WorkspaceHeader";
 import { Flex, ScrollArea, Separator } from "@radix-ui/themes";
 import { Search, Home, Sparkles, Inbox, User, Trash2 } from "lucide-react";
 import React from "react";
 
 export interface SidebarProps {
-  icon?: React.ReactNode;
-  workspaceName?: string;
-  onToggleSidebar?: () => void;
-  onCreateNewPage?: () => void;
-  onWorkspaceClick?: () => void;
-  onLogout?: () => void;
   children?: React.ReactNode;
+  isSidebarCollapsed?: boolean;
+
+  // WorkspaceHeader props
+  workspaces: Workspace[];
+  activeWorkspace: Workspace | null;
+  onWorkspaceChange: (workspaceId: string) => void;
+  onCreateWorkspace?: () => void;
+  onWorkspaceSettings?: (workspaceId: string) => void;
+  onInviteMembers?: (workspaceId: string) => void;
+  onLogout?: () => void;
+  userEmail?: string;
+  onNewPage?: () => void;
+  onToggleSidebar?: () => void;
 }
 
 export const Sidebar: React.FC<SidebarProps> = ({
-  icon,
-  workspaceName = "My Workspace",
-  onToggleSidebar = () => {},
-  onCreateNewPage = () => {},
-  onWorkspaceClick = () => {},
-  onLogout,
   children,
+  isSidebarCollapsed = false,
+  workspaces,
+  activeWorkspace,
+  onWorkspaceChange,
+  onCreateWorkspace,
+  onWorkspaceSettings,
+  onInviteMembers,
+  onLogout,
+  userEmail,
+  onNewPage,
+  onToggleSidebar,
 }) => {
   return (
     <Flex
+      asChild
       direction="column"
-      className="h-screen w-64 px-5 py-5 bg-[var(--sidebar-bg)] text-[var(--sidebar-item-text)]"
+      className="h-screen w-64 bg-[var(--sidebar-bg)] px-5 py-5 text-[var(--sidebar-item-text)]"
     >
-      {/* Header */}
-      <SidebarHeader
-        icon={icon}
-        label={workspaceName}
-        onToggleSidebar={onToggleSidebar}
-        onCreateNewPage={onCreateNewPage}
-        onLabelClick={onWorkspaceClick}
+      <aside data-testid="sidebar">
+      {/* WorkspaceHeader */}
+      <WorkspaceHeader
+        workspaces={workspaces}
+        activeWorkspace={activeWorkspace}
+        onWorkspaceChange={onWorkspaceChange}
+        onCreateWorkspace={onCreateWorkspace}
+        onWorkspaceSettings={onWorkspaceSettings}
+        onInviteMembers={onInviteMembers}
         onLogout={onLogout}
+        userEmail={userEmail}
+        onNewPage={onNewPage}
+        onToggleSidebar={onToggleSidebar}
+        isSidebarCollapsed={isSidebarCollapsed}
+        className="-mx-5 -mt-5 mb-3"
       />
 
       {/* Navigation Links */}
@@ -66,6 +89,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
         <SidebarItem icon={User} label="Profile" />
         <SidebarItem icon={Trash2} label="Trash" badge="11" />
       </Flex>
+      </aside>
     </Flex>
   );
 };
