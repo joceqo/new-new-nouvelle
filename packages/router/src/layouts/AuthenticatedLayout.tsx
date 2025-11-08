@@ -118,7 +118,7 @@ export function AuthenticatedLayout() {
         userEmail={user?.email}
         onLogout={logout}
         onSearchClick={() => setShowCommand(true)}
-        onHomeClick={() => navigate({ to: "/" })}
+        onHomeClick={() => navigate({ to: "/home" })}
         onInboxClick={() => setShowInbox(true)}
       >
         {/* Pages Section */}
@@ -196,7 +196,7 @@ export function AuthenticatedLayout() {
 
           {!commandQuery && (
             <CommandGroup heading="Quick Actions">
-              <CommandItem onSelect={() => navigate({ to: "/" })}>
+              <CommandItem onSelect={() => navigate({ to: "/home" })}>
                 <Home className="mr-2 h-4 w-4" />
                 <span>Go to Home</span>
               </CommandItem>

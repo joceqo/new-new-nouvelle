@@ -5,6 +5,7 @@ import { MagicLinkPage } from "./pages/auth/MagicLinkPage";
 import { GettingStartedPage } from "./pages/getting-started/GettingStartedPage";
 import { InvitePage } from "./pages/invite/InvitePage";
 import { PageView } from "./pages/page/PageView";
+import { HomePage } from "./pages/home/HomePage";
 import { RootLayout, AuthenticatedLayout } from "./layouts";
 
 // Root route - base layout wrapper for all routes
@@ -57,6 +58,13 @@ export const inviteRoute = createRoute({
 });
 
 // Authenticated routes (with sidebar)
+// Home route - default landing page for authenticated users
+export const homeRoute = createRoute({
+  getParentRoute: () => appRoute,
+  path: "/home",
+  component: HomePage,
+});
+
 // Getting Started route
 export const gettingStartedRoute = createRoute({
   getParentRoute: () => appRoute,
@@ -102,6 +110,7 @@ export const routeTree = rootRoute.addChildren([
   inviteRoute,
   // Authenticated routes under /app layout
   appRoute.addChildren([
+    homeRoute,
     gettingStartedRoute,
     aboutRoute,
     documentRoute,
