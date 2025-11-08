@@ -77,11 +77,11 @@ export const SidebarItem = React.forwardRef<HTMLDivElement, SidebarItemProps>(
         aria-expanded={isExpandable ? isExpanded : undefined}
         aria-current={isActive ? "page" : undefined}
         className={cn(
-          "group/item flex min-h-[27px] w-full items-center gap-2 px-2 py-1.5",
+          "group/item flex min-h-[27px] w-full items-center gap-2 px-2 py-1",
           "rounded-[var(--sidebar-item-radius)]",
           "bg-[var(--sidebar-item-bg)]",
           "hover:bg-[var(--sidebar-item-bg-hover)]",
-          "cursor-pointer transition-all duration-150 select-none",
+          "cursor-pointer transition-colors duration-150 select-none",
           "text-[var(--sidebar-item-text)]",
           "whitespace-nowrap",
           isActive && "bg-[var(--sidebar-item-bg-active)]",
@@ -167,11 +167,11 @@ export const SidebarItem = React.forwardRef<HTMLDivElement, SidebarItemProps>(
                   onMore(e);
                 }}
                 className={cn(
-                  "rounded-sm",
+                  "rounded p-0.5",
                   "text-[var(--sidebar-action-color)]",
                   "hover:text-[var(--sidebar-action-hover-color)]",
                   "hover:bg-[var(--sidebar-action-bg-hover)]",
-                  "cursor-pointer"
+                  "cursor-pointer transition-all duration-150"
                 )}
               />
             )}
@@ -185,11 +185,11 @@ export const SidebarItem = React.forwardRef<HTMLDivElement, SidebarItemProps>(
                   onAdd(e);
                 }}
                 className={cn(
-                  "rounded-sm",
+                  "rounded p-0.5",
                   "text-[var(--sidebar-action-color)]",
                   "hover:text-[var(--sidebar-action-hover-color)]",
                   "hover:bg-[var(--sidebar-action-bg-hover)]",
-                  "cursor-pointer"
+                  "cursor-pointer transition-all duration-150"
                 )}
               />
             )}
