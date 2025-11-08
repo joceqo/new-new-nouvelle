@@ -100,6 +100,14 @@ export const pageRoute = createRoute({
   component: PageView,
 });
 
+// Notion-style catch-all page route
+// Matches any URL like /Getting-Started-abc123 or /abc123
+export const notionPageRoute = createRoute({
+  getParentRoute: () => appRoute,
+  path: "/$pageSlug",
+  component: PageView,
+});
+
 // Create the route tree
 export const routeTree = rootRoute.addChildren([
   // Public routes
@@ -116,6 +124,7 @@ export const routeTree = rootRoute.addChildren([
     documentRoute,
     editorRoute,
     pageRoute,
+    notionPageRoute, // Catch-all must be last
   ]),
 ]);
 
