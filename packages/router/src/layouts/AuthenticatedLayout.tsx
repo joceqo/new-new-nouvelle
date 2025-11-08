@@ -5,11 +5,19 @@ import {
   InviteMembersDialog,
   WorkspaceSettingsDialog,
   PageTree,
+  Command,
+  CommandInput,
+  CommandList,
+  CommandEmpty,
+  CommandGroup,
+  CommandItem,
+  Inbox,
 } from "@nouvelle/ui";
 import { useAuth } from "../lib/auth-context";
 import { useWorkspace } from "../lib/workspace-context";
 import { usePage } from "../lib/page-context";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { Search, FileText, Home, Settings } from "lucide-react";
 
 export function AuthenticatedLayout() {
   const navigate = useNavigate();
@@ -33,6 +41,11 @@ export function AuthenticatedLayout() {
   const [selectedWorkspaceId, setSelectedWorkspaceId] = useState<string | null>(
     null
   );
+
+  // Command and Inbox states
+  const [showCommand, setShowCommand] = useState(false);
+  const [showInbox, setShowInbox] = useState(false);
+  const [commandQuery, setCommandQuery] = useState("");
 
   // Handlers
   const handleCreateWorkspace = async (name: string, icon?: string) => {
@@ -74,6 +87,24 @@ export function AuthenticatedLayout() {
     (w) => w.id === selectedWorkspaceId
   );
 
+  // Cmd+K shortcut for command palette
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if ((e.metaKey || e.ctrlKey) && e.key === "k") {
+        e.preventDefault();
+        setShowCommand(true);
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, []);
+
+  // Filter pages based on search query
+  const filteredPages = pages.filter((page) =>
+    page.title.toLowerCase().includes(commandQuery.toLowerCase())
+  );
+
   return (
     <div className="flex h-screen bg-background" data-testid="authenticated-layout">
       {/* Sidebar */}
@@ -86,12 +117,14 @@ export function AuthenticatedLayout() {
         onInviteMembers={handleInviteMembers}
         userEmail={user?.email}
         onLogout={logout}
+        onSearchClick={() => setShowCommand(true)}
+        onHomeClick={() => navigate({ to: "/" })}
+        onInboxClick={() => setShowInbox(true)}
       >
         {/* Pages Section */}
         <PageTree
           title="Pages"
           pages={pages}
-          showSearch={true}
           onPageSelect={(pageId: string) =>
             navigate({ to: "/page/$pageId", params: { pageId } })
           }
@@ -131,6 +164,57 @@ export function AuthenticatedLayout() {
         onUpdateWorkspace={handleUpdateWorkspace}
         onDeleteWorkspace={handleDeleteWorkspace}
       />
+
+      {/* Command Palette */}
+      <Command open={showCommand} onOpenChange={setShowCommand}>
+        <CommandInput
+          placeholder="Search pages..."
+          value={commandQuery}
+          onChange={(e) => setCommandQuery(e.target.value)}
+        />
+        <CommandList>
+          {filteredPages.length === 0 && commandQuery && (
+            <CommandEmpty>No pages found</CommandEmpty>
+          )}
+
+          {filteredPages.length > 0 && (
+            <CommandGroup heading="Pages">
+              {filteredPages.map((page) => (
+                <CommandItem
+                  key={page.id}
+                  onSelect={() => {
+                    navigate({ to: "/page/$pageId", params: { pageId: page.id } });
+                    setCommandQuery("");
+                  }}
+                >
+                  <FileText className="mr-2 h-4 w-4" />
+                  <span>{page.title}</span>
+                </CommandItem>
+              ))}
+            </CommandGroup>
+          )}
+
+          {!commandQuery && (
+            <CommandGroup heading="Quick Actions">
+              <CommandItem onSelect={() => navigate({ to: "/" })}>
+                <Home className="mr-2 h-4 w-4" />
+                <span>Go to Home</span>
+              </CommandItem>
+              <CommandItem onSelect={() => createPage("Untitled")}>
+                <FileText className="mr-2 h-4 w-4" />
+                <span>Create new page</span>
+              </CommandItem>
+              <CommandItem onSelect={() => setShowSettingsDialog(true)}>
+                <Settings className="mr-2 h-4 w-4" />
+                <span>Workspace settings</span>
+              </CommandItem>
+            </CommandGroup>
+          )}
+        </CommandList>
+      </Command>
+
+      {/* Inbox Sheet */}
+      <Inbox open={showInbox} onOpenChange={setShowInbox} />
     </div>
   );
 }

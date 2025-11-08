@@ -22,6 +22,11 @@ export interface SidebarProps {
   userEmail?: string;
   onNewPage?: () => void;
   onToggleSidebar?: () => void;
+
+  // Navigation callbacks
+  onSearchClick?: () => void;
+  onHomeClick?: () => void;
+  onInboxClick?: () => void;
 }
 
 export const Sidebar: React.FC<SidebarProps> = ({
@@ -37,6 +42,9 @@ export const Sidebar: React.FC<SidebarProps> = ({
   userEmail,
   onNewPage,
   onToggleSidebar,
+  onSearchClick,
+  onHomeClick,
+  onInboxClick,
 }) => {
   return (
     <Flex
@@ -63,15 +71,27 @@ export const Sidebar: React.FC<SidebarProps> = ({
 
       {/* Navigation Links */}
       <Flex direction="column" gap="1" mb="3">
-        <SidebarItem icon={Search} label="Search" />
-        <SidebarItem icon={Home} label="Home" isActive />
+        <SidebarItem
+          icon={Search}
+          label="Search"
+          onClick={onSearchClick}
+        />
+        <SidebarItem
+          icon={Home}
+          label="Home"
+          onClick={onHomeClick}
+        />
         <SidebarItem
           icon={Sparkles}
           label="Notion AI"
           badge="New"
           badgeVariant="accent"
         />
-        <SidebarItem icon={Inbox} label="Inbox" />
+        <SidebarItem
+          icon={Inbox}
+          label="Inbox"
+          onClick={onInboxClick}
+        />
       </Flex>
 
       <Separator size="4" mb="3" />

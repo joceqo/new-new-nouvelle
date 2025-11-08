@@ -65,6 +65,40 @@ export {
   type DialogDescriptionProps,
   type DialogBodyProps,
 } from "./components/ui/dialog";
+export {
+  Command,
+  CommandInput,
+  CommandList,
+  CommandEmpty,
+  CommandGroup,
+  CommandItem,
+  CommandSeparator,
+  CommandShortcut,
+  type CommandProps,
+  type CommandInputProps,
+  type CommandListProps,
+  type CommandEmptyProps,
+  type CommandGroupProps,
+  type CommandItemProps,
+  type CommandSeparatorProps,
+  type CommandShortcutProps,
+} from "./components/ui/command";
+export {
+  Sheet,
+  SheetOverlay,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+  SheetDescription,
+  SheetBody,
+  type SheetProps,
+  type SheetOverlayProps,
+  type SheetContentProps,
+  type SheetHeaderProps,
+  type SheetTitleProps,
+  type SheetDescriptionProps,
+  type SheetBodyProps,
+} from "./components/ui/sheet";
 
 // Export Sidebar components
 export {
@@ -109,6 +143,12 @@ export { IconWrapper, type IconWrapperProps } from "./components/IconWrapper";
 
 // Export PageTree components
 export { PageTree, PageTreeItem, type Page } from "./components/PageTree";
+
+// Export Home component
+export { Home, type HomeProps, type RecentPage } from "./components/Home/Home";
+
+// Export Inbox component
+export { Inbox, type InboxProps } from "./components/Inbox/Inbox";
 
 // Export styles (consumers should import these in their app)
 // import '@nouvelle/ui/styles/fluid-typography.css';
