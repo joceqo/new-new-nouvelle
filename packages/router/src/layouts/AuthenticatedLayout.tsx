@@ -1,6 +1,7 @@
 import { Outlet, useNavigate } from "@tanstack/react-router";
 import {
   Sidebar,
+  InboxSheet,
   CreateWorkspaceDialog,
   InviteMembersDialog,
   WorkspaceSettingsDialog,
@@ -11,14 +12,13 @@ import {
   CommandEmpty,
   CommandGroup,
   CommandItem,
-  Inbox,
 } from "@nouvelle/ui";
 import { useAuth } from "../lib/auth-context";
 import { useWorkspace } from "../lib/workspace-context";
 import { usePage } from "../lib/page-context";
 import { createPageSlug } from "../lib/notion-url";
 import { useState, useEffect } from "react";
-import { Search, FileText, Home, Settings } from "lucide-react";
+import { FileText, Home, Settings } from "lucide-react";
 
 export function AuthenticatedLayout() {
   const navigate = useNavigate();
@@ -90,6 +90,9 @@ export function AuthenticatedLayout() {
 
   // Helper function to navigate to a page with Notion-style URL
   const navigateToPage = (pageId: string) => {
+    // Close inbox when navigating to a page
+    setShowInbox(false);
+    
     // Find the page in the tree (flattened search)
     const findPageById = (pages: any[], id: string): any => {
       for (const page of pages) {
@@ -109,9 +112,22 @@ export function AuthenticatedLayout() {
     }
   };
 
-  // Cmd+K shortcut for command palette
+  // Toggle inbox (for sidebar item click)
+  const handleInboxToggle = () => {
+    setShowInbox(!showInbox);
+  };
+
+  // Close inbox when clicking main content
+  const handleMainContentClick = () => {
+    if (showInbox) {
+      setShowInbox(false);
+    }
+  };
+
+  // Keyboard shortcuts
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
+      // Cmd+K for command palette
       if ((e.metaKey || e.ctrlKey) && e.key === "k") {
         e.preventDefault();
         setShowCommand(true);
@@ -128,39 +144,50 @@ export function AuthenticatedLayout() {
   );
 
   return (
-    <div className="flex h-screen bg-background" data-testid="authenticated-layout">
-      {/* Sidebar */}
-      <Sidebar
-        workspaces={workspaces}
-        activeWorkspace={activeWorkspace}
-        onWorkspaceChange={switchWorkspace}
-        onCreateWorkspace={() => setShowCreateDialog(true)}
-        onWorkspaceSettings={handleWorkspaceSettings}
-        onInviteMembers={handleInviteMembers}
-        userEmail={user?.email}
-        onLogout={logout}
-        onSearchClick={() => setShowCommand(true)}
-        onHomeClick={() => navigate({ to: "/home" })}
-        onInboxClick={() => setShowInbox(true)}
-      >
-        {/* Pages Section */}
-        <PageTree
-          title="Pages"
-          pages={pages}
-          onPageSelect={navigateToPage}
-          onPageCreate={(parentId?: string) => createPage("Untitled", parentId)}
-          onToggleFavorite={(pageId: string) => toggleFavorite(pageId)}
-          onPageDelete={(pageId: string) => deletePage(pageId)}
-          onPageRename={(pageId: string) => {
-            const newTitle = prompt("Enter new title:");
-            if (newTitle) updatePage(pageId, { title: newTitle });
+    <div
+      className="h-screen bg-background"
+      data-testid="authenticated-layout"
+    >
+      <div className="flex h-full">
+        {/* Fixed Sidebar */}
+        <Sidebar
+          workspaces={workspaces}
+          activeWorkspace={activeWorkspace}
+          onWorkspaceChange={switchWorkspace}
+          onCreateWorkspace={() => setShowCreateDialog(true)}
+          onWorkspaceSettings={handleWorkspaceSettings}
+          onInviteMembers={handleInviteMembers}
+          userEmail={user?.email}
+          onLogout={logout}
+          onSearchClick={() => {
+            setShowInbox(false); // Close inbox when opening search
+            setShowCommand(true);
           }}
-        />
-      </Sidebar>
+          onHomeClick={() => {
+            setShowInbox(false); // Close inbox when going home
+            navigate({ to: "/home" });
+          }}
+          onInboxClick={handleInboxToggle} // Toggle inbox instead of just opening
+        >
+          {/* Pages Section */}
+          <PageTree
+            title="Pages"
+            pages={pages}
+            onPageSelect={navigateToPage}
+            onPageCreate={(parentId?: string) => createPage("Untitled", parentId)}
+            onToggleFavorite={(pageId: string) => toggleFavorite(pageId)}
+            onPageDelete={(pageId: string) => deletePage(pageId)}
+            onPageRename={(pageId: string) => {
+              const newTitle = prompt("Enter new title:");
+              if (newTitle) updatePage(pageId, { title: newTitle });
+            }}
+          />
+        </Sidebar>
 
-      {/* Main Content */}
-      <div className="flex-1 overflow-auto">
-        <Outlet />
+        {/* Main Content - stays in place */}
+        <div className="flex-1 overflow-auto" onClick={handleMainContentClick}>
+          <Outlet />
+        </div>
       </div>
 
       {/* Workspace Dialogs */}
@@ -233,8 +260,8 @@ export function AuthenticatedLayout() {
         </CommandList>
       </Command>
 
-      {/* Inbox Sheet */}
-      <Inbox open={showInbox} onOpenChange={setShowInbox} />
+      {/* Floating Inbox Sheet */}
+      <InboxSheet open={showInbox} onOpenChange={setShowInbox} />
     </div>
   );
 }

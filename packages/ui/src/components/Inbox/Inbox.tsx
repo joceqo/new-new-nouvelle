@@ -3,14 +3,12 @@
  * "You're all caught up" message with blue checkmark
  */
 
-import * as React from "react";
 import { CheckCircle2 } from "lucide-react";
 import {
   Sheet,
   SheetContent,
   SheetHeader,
   SheetTitle,
-  SheetDescription,
   SheetBody,
 } from "../ui/sheet";
 
@@ -21,20 +19,20 @@ export interface InboxProps {
 
 export function Inbox({ open, onOpenChange }: InboxProps) {
   return (
-    <Sheet open={open} onOpenChange={onOpenChange} side="right">
-      <SheetContent>
+    <Sheet open={open} onOpenChange={onOpenChange} side="left">
+      <SheetContent className="left-64">
         <SheetHeader>
           <SheetTitle>Inbox</SheetTitle>
         </SheetHeader>
 
         <SheetBody>
           {/* All caught up message */}
-          <div className="flex flex-col items-center justify-center h-full text-center py-12">
-            <CheckCircle2 className="w-16 h-16 text-[var(--palette-blue-text)] mb-4" />
-            <h3 className="text-lg font-semibold text-[var(--color-text-primary)] mb-2">
+          <div className="flex h-full flex-col items-center justify-center py-12 text-center">
+            <CheckCircle2 className="mb-4 h-16 w-16 text-[var(--palette-blue-text)]" />
+            <h3 className="mb-2 text-lg font-semibold text-[var(--color-text-primary)]">
               You're all caught up
             </h3>
-            <p className="text-sm text-[var(--color-text-emphasis-medium)] max-w-sm">
+            <p className="max-w-sm text-sm text-[var(--color-text-emphasis-medium)]">
               You'll be notified here for @mentions, page activity, and more
             </p>
           </div>

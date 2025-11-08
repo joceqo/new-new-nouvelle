@@ -106,6 +106,10 @@ export {
   type SidebarProps,
 } from "./components/Sidebar/Sidebar/Sidebar";
 export {
+  SidebarSheet,
+  type SidebarSheetProps,
+} from "./components/SidebarSheet/SidebarSheet";
+export {
   SidebarItem,
   type SidebarItemProps,
 } from "./components/Sidebar/SidebarItem/SidebarItem";
@@ -149,6 +153,8 @@ export { Home, type HomeProps, type RecentPage } from "./components/Home/Home";
 
 // Export Inbox component
 export { Inbox, type InboxProps } from "./components/Inbox/Inbox";
+export { InlineInbox, type InlineInboxProps } from "./components/Inbox/InlineInbox";
+export { InboxSheet, type InboxSheetProps } from "./components/InboxSheet/InboxSheet";
 
 // Export styles (consumers should import these in their app)
 // import '@nouvelle/ui/styles/fluid-typography.css';
