@@ -5,7 +5,7 @@
 
 import * as React from "react";
 import { X } from "lucide-react";
-import { cn } from "../../lib/utils";
+import { cn } from "@/lib/utils";
 
 export interface SheetProps {
   open: boolean;

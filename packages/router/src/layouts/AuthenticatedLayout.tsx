@@ -165,6 +165,7 @@ export function AuthenticatedLayout() {
             navigate({ to: "/home" });
           }}
           onInboxClick={handleInboxToggle} // Toggle inbox instead of just opening
+          onToggleSidebar={() => {}}
         >
           {/* Pages Section */}
           <PageTree
@@ -190,26 +191,32 @@ export function AuthenticatedLayout() {
       </div>
 
       {/* Workspace Dialogs */}
-      <CreateWorkspaceDialog
-        open={showCreateDialog}
-        onOpenChange={setShowCreateDialog}
-        onCreateWorkspace={handleCreateWorkspace}
-      />
+      {showCreateDialog && (
+        <CreateWorkspaceDialog
+          open={showCreateDialog}
+          onOpenChange={setShowCreateDialog}
+          onCreateWorkspace={handleCreateWorkspace}
+        />
+      )}
 
-      <InviteMembersDialog
-        open={showInviteDialog}
-        onOpenChange={setShowInviteDialog}
-        workspaceName={selectedWorkspace?.name || ""}
-        onInviteMember={handleInviteMember}
-      />
+      {showInviteDialog && (
+        <InviteMembersDialog
+          open={showInviteDialog}
+          onOpenChange={setShowInviteDialog}
+          workspaceName={selectedWorkspace?.name || ""}
+          onInviteMember={handleInviteMember}
+        />
+      )}
 
-      <WorkspaceSettingsDialog
-        open={showSettingsDialog}
-        onOpenChange={setShowSettingsDialog}
-        workspace={selectedWorkspace || null}
-        onUpdateWorkspace={handleUpdateWorkspace}
-        onDeleteWorkspace={handleDeleteWorkspace}
-      />
+      {showSettingsDialog && (
+        <WorkspaceSettingsDialog
+          open={showSettingsDialog}
+          onOpenChange={setShowSettingsDialog}
+          workspace={selectedWorkspace || null}
+          onUpdateWorkspace={handleUpdateWorkspace}
+          onDeleteWorkspace={handleDeleteWorkspace}
+        />
+      )}
 
       {/* Command Palette */}
       <Command open={showCommand} onOpenChange={setShowCommand}>

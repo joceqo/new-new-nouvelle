@@ -1,8 +1,8 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import { Sidebar } from "./Sidebar";
-import { Workspace } from "../../WorkspaceSwitcher/WorkspaceHeader";
-import { SidebarSection } from "../SidebarSection/SidebarSection";
-import { SidebarItem } from "../SidebarItem/SidebarItem";
+import { Sidebar } from "@/components/Sidebar/Sidebar/Sidebar";
+import { Workspace } from "@/components/Sidebar/WorkspaceSwitcher/WorkspaceHeader";
+import { SidebarSection } from "@/components/Sidebar/SidebarSection/SidebarSection";
+import { SidebarItem } from "@/components/Sidebar/SidebarItem/SidebarItem";
 import {
   FileText,
   Wrench,

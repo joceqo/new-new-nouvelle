@@ -5,7 +5,7 @@
 
 import * as React from "react";
 import { Clock } from "lucide-react";
-import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 export interface RecentPage {
   id: string;

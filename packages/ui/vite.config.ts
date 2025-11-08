@@ -13,7 +13,9 @@ export default defineConfig({
     dts({
       include: ['src/**/*'],
       exclude: ['**/*.stories.tsx', '**/*.test.tsx'],
-      rollupTypes: true,
+      compilerOptions: {
+        declarationMap: true,
+      },
     }),
   ],
   resolve: {

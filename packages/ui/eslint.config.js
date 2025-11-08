@@ -1,5 +1,6 @@
-import tailwindcss from "eslint-plugin-tailwindcss";
 import tsParser from "@typescript-eslint/parser";
+import importPlugin from "eslint-plugin-import";
+import noRelativeImportPaths from "eslint-plugin-no-relative-import-paths";
 
 export default [
   {
@@ -15,31 +16,29 @@ export default [
       },
     },
     plugins: {
-      tailwindcss,
+      import: importPlugin,
+      "no-relative-import-paths": noRelativeImportPaths,
     },
     rules: {
-      // Tailwind CSS v4 rules (beta support)
-      "tailwindcss/classnames-order": "warn",
-      "tailwindcss/enforces-negative-arbitrary-values": "warn",
-      "tailwindcss/enforces-shorthand": "warn",
-      "tailwindcss/migration-from-tailwind-2": "off",
-      "tailwindcss/no-arbitrary-value": "off",
-      "tailwindcss/no-contradicting-classname": "off", // May have false positives in v4
-      "tailwindcss/no-custom-classname": "off",
-      "tailwindcss/no-unnecessary-arbitrary-value": "warn",
+      // Import rules with TypeScript path alias support
+      "import/no-unresolved": "error",
+      "import/named": "error",
+      "import/namespace": "error",
+      "import/default": "error",
+      "import/export": "error",
+
+      // Enforce using @/ alias instead of relative imports (auto-fixable)
+      "no-relative-import-paths/no-relative-import-paths": [
+        "warn",
+        { "allowSameFolder": false, "rootDir": "src", "prefix": "@" }
+      ],
     },
     settings: {
-      tailwindcss: {
-        callees: ["cn", "clsx", "classnames"],
-        // Tailwind v4 uses CSS-based config, not tailwind.config.js
-        config: false, // Disable config file requirement
-        cssFiles: ["src/**/*.css", "src/index.css"],
-        cssFilesRefreshRate: 5_000,
-        removeDuplicates: true,
-        skipClassAttribute: false,
-        whitelist: [],
-        tags: [],
-        classRegex: "^class(Name)?$",
+      "import/resolver": {
+        typescript: {
+          alwaysTryTypes: true,
+          project: "./tsconfig.json",
+        },
       },
     },
   },

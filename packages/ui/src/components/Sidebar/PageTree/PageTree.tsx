@@ -1,4 +1,4 @@
-import { PageTreeItem, type Page } from "./PageTreeItem";
+import { PageTreeItem, type Page } from "@/components/Sidebar/PageTree/PageTreeItem";
 import { Plus } from "lucide-react";
 
 interface PageTreeProps {

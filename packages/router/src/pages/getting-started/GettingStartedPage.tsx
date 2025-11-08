@@ -1,11 +1,41 @@
 import { useParams, useNavigate } from "@tanstack/react-router";
 import { useAuth } from "../../lib/auth-context";
+import { useWorkspace } from "../../lib/workspace-context";
+import { usePage } from "../../lib/page-context";
+import { usePageTitle } from "../../lib/use-page-title";
 import { useEffect } from "react";
+import { extractPageId } from "../../lib/notion-url";
 
 export function GettingStartedPage() {
-  const { pageId } = useParams({ strict: false });
+  const { pageId: rawPageId } = useParams({ strict: false });
   const { user, isAuthenticated, isLoading } = useAuth();
+  const { activeWorkspace } = useWorkspace();
+  const { pages } = usePage();
   const navigate = useNavigate();
+
+  // Extract the actual ID from the slug (handles both "id" and "Title-id" formats)
+  const pageId = rawPageId ? extractPageId(rawPageId) : null;
+
+  // Find the page in the tree (flattened search)
+  const findPageById = (pages: any[], id: string): any => {
+    for (const page of pages) {
+      if (page.id === id) return page;
+      if (page.children) {
+        const found = findPageById(page.children, id);
+        if (found) return found;
+      }
+    }
+    return null;
+  };
+
+  const page = pageId ? findPageById(pages, pageId) : null;
+
+  // Update browser/window title - use page data if available, otherwise fallback
+  usePageTitle({
+    title: page?.title || "Getting Started",
+    icon: page?.icon,
+    suffix: activeWorkspace?.name,
+  });
 
   // Redirect to login if not authenticated
   useEffect(() => {
@@ -33,11 +63,13 @@ export function GettingStartedPage() {
         <div className="max-w-4xl mx-auto px-16 py-12">
           {/* Page Header */}
           <div className="mb-8">
-            <div className="flex items-center gap-2 mb-4">
-              <span className="text-5xl">👋</span>
-            </div>
+            {page?.icon && (
+              <div className="flex items-center gap-2 mb-4">
+                <span className="text-5xl">{page.icon}</span>
+              </div>
+            )}
             <h1 className="text-4xl font-semibold text-foreground mb-4">
-              Getting Started
+              {page?.title || "Getting Started"}
             </h1>
           </div>
 

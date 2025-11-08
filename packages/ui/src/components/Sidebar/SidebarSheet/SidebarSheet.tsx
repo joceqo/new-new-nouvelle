@@ -4,8 +4,8 @@
  */
 
 import * as React from "react";
-import { cn } from "../../lib/utils";
-import { Sidebar, type SidebarProps } from "../Sidebar/Sidebar/Sidebar";
+import { cn } from "@/lib/utils";
+import { Sidebar, type SidebarProps } from "@/components/Sidebar/Sidebar/Sidebar";
 
 export interface SidebarSheetProps extends Omit<SidebarProps, "className"> {
   open: boolean;

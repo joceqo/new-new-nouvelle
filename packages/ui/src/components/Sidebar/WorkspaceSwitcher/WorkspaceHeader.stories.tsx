@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import { WorkspaceHeader, Workspace } from "./WorkspaceHeader";
+import { WorkspaceHeader, Workspace } from "@/components/Sidebar/WorkspaceSwitcher/WorkspaceHeader";
 
 const meta = {
   title: "Components/Domain/WorkspaceSwitcher/WorkspaceHeader",
