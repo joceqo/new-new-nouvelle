@@ -1,5 +1,6 @@
 import { User } from '../types';
 import { convexClient, api } from './convex-client';
+import { isTestMode, mockFindUserById, mockFindOrCreateUser } from './test-mocks';
 
 export async function findUserByEmail(email: string): Promise<User | undefined> {
   const user = await convexClient.query(api.users.getByEmail, {
@@ -18,6 +19,17 @@ export async function findUserByEmail(email: string): Promise<User | undefined> 
 }
 
 export async function findUserById(id: string): Promise<User | undefined> {
+  // Use mock in test mode
+  if (isTestMode()) {
+    const mockUser = await mockFindUserById(id);
+    if (!mockUser) return undefined;
+    return {
+      id: mockUser.id,
+      email: mockUser.email,
+      createdAt: new Date(),
+    };
+  }
+
   const user = await convexClient.query(api.users.getById, { userId: id as any });
 
   if (!user) {
@@ -32,6 +44,15 @@ export async function findUserById(id: string): Promise<User | undefined> {
 }
 
 export async function findOrCreateUser(email: string): Promise<User> {
+  // Use mock in test mode
+  if (isTestMode()) {
+    const mockUser = await mockFindOrCreateUser(email);
+    return {
+      id: mockUser.id,
+      email: mockUser.email,
+      createdAt: new Date(),
+    };
+  }
   const userId = await convexClient.mutation(api.users.createOrUpdate, {
     email: email.toLowerCase(),
   });

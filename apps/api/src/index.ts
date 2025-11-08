@@ -6,6 +6,13 @@ import { logger } from './lib/logger';
 
 // Validate critical environment variables at startup
 function validateEnvVars() {
+  // Skip validation in test mode
+  const isTest = process.env.NODE_ENV === 'test' || process.env.TEST_MODE === 'true';
+  if (isTest) {
+    logger.info('⚠️  Running in TEST MODE - skipping environment variable validation');
+    return;
+  }
+
   const requiredVars = [
     'CONVEX_URL',
     'RESEND_API_KEY',

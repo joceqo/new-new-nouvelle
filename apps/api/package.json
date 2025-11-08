@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "bun --watch src/index.ts",
+    "dev:test": "bun --watch --env-file=.env.test src/index.ts",
     "build": "tsc",
     "start": "bun src/index.ts",
     "typecheck": "tsc --noEmit",

@@ -2,12 +2,12 @@ import { test, expect } from "./fixtures/auth.fixture";
 
 test.describe("Page System - UI Presence", () => {
   test("authenticated user sees main app layout", async ({
-    authenticatedPage,
+    authenticatedPageWithWorkspace,
   }) => {
-    await authenticatedPage.waitForTimeout(1000);
+    await authenticatedPageWithWorkspace.waitForTimeout(1000);
 
     // Should see sidebar or navigation
-    const hasSidebar = await authenticatedPage
+    const hasSidebar = await authenticatedPageWithWorkspace
       .locator('aside, nav, [data-testid="sidebar"]')
       .count();
     console.log("Has sidebar/nav:", hasSidebar > 0);
@@ -15,25 +15,23 @@ test.describe("Page System - UI Presence", () => {
     expect(hasSidebar).toBeGreaterThan(0);
   });
 
-  test("can see page tree or pages section", async ({ authenticatedPage }) => {
-    await authenticatedPage.waitForTimeout(1000);
+  test("can see page tree or pages section", async ({ authenticatedPageWithWorkspace }) => {
+    await authenticatedPageWithWorkspace.waitForTimeout(1000);
 
     // Look for pages UI
-    const hasPages = await authenticatedPage
-      .locator(
-        '[data-testid="page-tree"], text="Pages", text="Getting Started"'
-      )
+    const hasPages = await authenticatedPageWithWorkspace
+      .locator('[data-testid="page-tree"]')
       .count();
 
     console.log("Has pages section:", hasPages > 0);
     expect(hasPages).toBeGreaterThan(0);
   });
 
-  test("can interact with page navigation", async ({ authenticatedPage }) => {
-    await authenticatedPage.waitForTimeout(1000);
+  test("can interact with page navigation", async ({ authenticatedPageWithWorkspace }) => {
+    await authenticatedPageWithWorkspace.waitForTimeout(1000);
 
     // Find any page links
-    const pageLinks = await authenticatedPage
+    const pageLinks = await authenticatedPageWithWorkspace
       .locator(
         'a:has-text("Getting Started"), a:has-text("Page"), button:has-text("Getting Started")'
       )
@@ -41,9 +39,9 @@ test.describe("Page System - UI Presence", () => {
 
     if ((await pageLinks.count()) > 0) {
       await pageLinks.click();
-      await authenticatedPage.waitForTimeout(500);
+      await authenticatedPageWithWorkspace.waitForTimeout(500);
 
-      console.log("Clicked on page, current URL:", authenticatedPage.url());
+      console.log("Clicked on page, current URL:", authenticatedPageWithWorkspace.url());
     }
 
     // Test passes if we can navigate
@@ -52,16 +50,16 @@ test.describe("Page System - UI Presence", () => {
 });
 
 test.describe("Page System - Search and Creation", () => {
-  test("can find search or creation UI", async ({ authenticatedPage }) => {
-    await authenticatedPage.waitForTimeout(1000);
+  test("can find search or creation UI", async ({ authenticatedPageWithWorkspace }) => {
+    await authenticatedPageWithWorkspace.waitForTimeout(1000);
 
     // Look for search input
-    const hasSearch = await authenticatedPage
+    const hasSearch = await authenticatedPageWithWorkspace
       .locator('input[placeholder*="Search" i], [data-testid="page-search"]')
       .count();
 
     // Look for create button
-    const hasCreate = await authenticatedPage
+    const hasCreate = await authenticatedPageWithWorkspace
       .locator(
         'button:has-text("+"), button:has-text("New"), button:has-text("Create"), [data-testid="create-page"]'
       )
@@ -73,16 +71,16 @@ test.describe("Page System - Search and Creation", () => {
     expect(hasSearch + hasCreate).toBeGreaterThan(0);
   });
 
-  test("search functionality exists", async ({ authenticatedPage }) => {
-    await authenticatedPage.waitForTimeout(1000);
+  test("search functionality exists", async ({ authenticatedPageWithWorkspace }) => {
+    await authenticatedPageWithWorkspace.waitForTimeout(1000);
 
-    const searchInput = authenticatedPage
+    const searchInput = authenticatedPageWithWorkspace
       .locator('input[placeholder*="Search" i], [data-testid="page-search"]')
       .first();
 
     if ((await searchInput.count()) > 0) {
       await searchInput.fill("test");
-      await authenticatedPage.waitForTimeout(500);
+      await authenticatedPageWithWorkspace.waitForTimeout(500);
       console.log("Search input works");
     }
 
@@ -91,17 +89,17 @@ test.describe("Page System - Search and Creation", () => {
 });
 
 test.describe("Page System - Mock Data Verification", () => {
-  test("can see mock pages", async ({ authenticatedPage }) => {
-    await authenticatedPage.waitForTimeout(2000);
+  test("can see mock pages", async ({ authenticatedPageWithWorkspace }) => {
+    await authenticatedPageWithWorkspace.waitForTimeout(2000);
 
     // Check for mock data pages
-    const hasGettingStarted = await authenticatedPage
+    const hasGettingStarted = await authenticatedPageWithWorkspace
       .locator('text="Getting Started"')
       .count();
-    const hasProjectPlanning = await authenticatedPage
+    const hasProjectPlanning = await authenticatedPageWithWorkspace
       .locator('text="Project Planning"')
       .count();
-    const hasMeetingNotes = await authenticatedPage
+    const hasMeetingNotes = await authenticatedPageWithWorkspace
       .locator('text="Meeting Notes"')
       .count();
 
@@ -116,19 +114,19 @@ test.describe("Page System - Mock Data Verification", () => {
     ).toBeGreaterThan(0);
   });
 
-  test("pages are clickable", async ({ authenticatedPage }) => {
-    await authenticatedPage.waitForTimeout(2000);
+  test("pages are clickable", async ({ authenticatedPageWithWorkspace }) => {
+    await authenticatedPageWithWorkspace.waitForTimeout(2000);
 
-    const gettingStarted = authenticatedPage
+    const gettingStarted = authenticatedPageWithWorkspace
       .locator('text="Getting Started"')
       .first();
 
     if ((await gettingStarted.count()) > 0) {
-      const initialUrl = authenticatedPage.url();
+      const initialUrl = authenticatedPageWithWorkspace.url();
       await gettingStarted.click();
-      await authenticatedPage.waitForTimeout(1000);
+      await authenticatedPageWithWorkspace.waitForTimeout(1000);
 
-      const newUrl = authenticatedPage.url();
+      const newUrl = authenticatedPageWithWorkspace.url();
       console.log(
         "Navigation worked:",
         initialUrl !== newUrl || newUrl.includes("page")
@@ -145,27 +143,27 @@ test.describe("Page System - Mock Data Verification", () => {
 });
 
 test.describe("Page System - Interactions", () => {
-  test("can hover over pages", async ({ authenticatedPage }) => {
-    await authenticatedPage.waitForTimeout(2000);
+  test("can hover over pages", async ({ authenticatedPageWithWorkspace }) => {
+    await authenticatedPageWithWorkspace.waitForTimeout(2000);
 
-    const pageItem = authenticatedPage
+    const pageItem = authenticatedPageWithWorkspace
       .locator('text="Getting Started"')
       .first();
 
     if ((await pageItem.count()) > 0) {
       await pageItem.hover();
-      await authenticatedPage.waitForTimeout(300);
+      await authenticatedPageWithWorkspace.waitForTimeout(300);
       console.log("Hover worked");
     }
 
     expect(true).toBe(true);
   });
 
-  test("UI responds to interactions", async ({ authenticatedPage }) => {
-    await authenticatedPage.waitForTimeout(2000);
+  test("UI responds to interactions", async ({ authenticatedPageWithWorkspace }) => {
+    await authenticatedPageWithWorkspace.waitForTimeout(2000);
 
     // Try clicking various UI elements
-    const buttons = await authenticatedPage.locator("button").all();
+    const buttons = await authenticatedPageWithWorkspace.locator("button").all();
     console.log("Found buttons:", buttons.length);
 
     expect(buttons.length).toBeGreaterThan(0);

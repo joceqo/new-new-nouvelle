@@ -40,9 +40,11 @@ export const Sidebar: React.FC<SidebarProps> = ({
 }) => {
   return (
     <Flex
+      asChild
       direction="column"
       className="h-screen w-64 bg-[var(--sidebar-bg)] px-5 py-5 text-[var(--sidebar-item-text)]"
     >
+      <aside data-testid="sidebar">
       {/* WorkspaceHeader */}
       <WorkspaceHeader
         workspaces={workspaces}
@@ -87,6 +89,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
         <SidebarItem icon={User} label="Profile" />
         <SidebarItem icon={Trash2} label="Trash" badge="11" />
       </Flex>
+      </aside>
     </Flex>
   );
 };

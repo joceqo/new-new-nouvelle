@@ -57,7 +57,7 @@ export function PageTree({
   const filteredPages = filterPages(pages, searchQuery);
 
   return (
-    <div className="flex flex-col h-full">
+    <div className="flex flex-col h-full" data-testid="page-tree">
       {/* Header */}
       <div className="px-2 py-2 flex items-center justify-between">
         <span className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">

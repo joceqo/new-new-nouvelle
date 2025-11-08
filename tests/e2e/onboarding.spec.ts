@@ -69,17 +69,17 @@ test.describe("Onboarding Flow", () => {
 
 test.describe("Workspace Management", () => {
   test("authenticated user can access workspace", async ({
-    authenticatedPage,
+    authenticatedPageWithWorkspace,
   }) => {
-    // User is authenticated and should see workspace UI
-    await authenticatedPage.waitForTimeout(1000);
+    // User is authenticated with a workspace and should see workspace UI
+    await authenticatedPageWithWorkspace.waitForTimeout(1000);
 
     // Should see navigation or workspace elements
-    const hasNav = await authenticatedPage
+    const hasNav = await authenticatedPageWithWorkspace
       .locator('nav, aside, [role="navigation"]')
       .count();
-    const hasWorkspaceUI = await authenticatedPage
-      .locator('[data-testid="workspace"], text=/workspace/i')
+    const hasWorkspaceUI = await authenticatedPageWithWorkspace
+      .locator('[data-testid="workspace"]')
       .count();
 
     console.log("Has navigation:", hasNav > 0);

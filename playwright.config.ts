@@ -68,13 +68,13 @@ export default defineConfig({
   /* Run your local dev server before starting the tests */
   webServer: [
     {
-      command: "cd apps/api && pnpm run dev",
+      command: "pnpm --filter=@nouvelle/api dev:test",
       url: "http://localhost:3001/health",
       reuseExistingServer: !process.env.CI,
       timeout: 120 * 1000,
     },
     {
-      command: "cd apps/web && pnpm run dev",
+      command: "pnpm --filter=@nouvelle/web dev",
       url: "http://localhost:5173",
       reuseExistingServer: !process.env.CI,
       timeout: 120 * 1000,

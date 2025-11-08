@@ -1,6 +1,12 @@
 import { randomBytes } from 'crypto';
 import { authLogger } from './logger';
 import { convexClient, api } from './convex-client';
+import {
+  isTestMode,
+  mockStoreRefreshToken,
+  mockVerifyRefreshToken,
+  mockRevokeRefreshToken,
+} from './test-mocks';
 
 const CLEANUP_INTERVAL_MS = 60 * 60 * 1000; // 1 hour
 
@@ -22,6 +28,11 @@ export async function storeRefreshToken(
   token: string,
   expiryDays: number = 30
 ): Promise<void> {
+  // Use mock in test mode
+  if (isTestMode()) {
+    return mockStoreRefreshToken(userId, token, expiryDays);
+  }
+
   const expiresAt = Date.now() + expiryDays * 24 * 60 * 60 * 1000;
   await convexClient.mutation(api.refreshTokens.store, {
     userId,
@@ -36,6 +47,11 @@ export async function storeRefreshToken(
  * @returns User ID if valid, null otherwise
  */
 export async function verifyRefreshToken(token: string): Promise<string | null> {
+  // Use mock in test mode
+  if (isTestMode()) {
+    return mockVerifyRefreshToken(token);
+  }
+
   const stored = await convexClient.query(api.refreshTokens.getByToken, { token });
 
   if (!stored) {
@@ -61,6 +77,11 @@ export async function verifyRefreshToken(token: string): Promise<string | null> 
  * @param token - Refresh token to revoke
  */
 export async function revokeRefreshToken(token: string): Promise<void> {
+  // Use mock in test mode
+  if (isTestMode()) {
+    return mockRevokeRefreshToken(token);
+  }
+
   await convexClient.mutation(api.refreshTokens.revoke, { token });
 }
 

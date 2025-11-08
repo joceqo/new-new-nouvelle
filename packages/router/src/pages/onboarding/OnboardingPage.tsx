@@ -61,15 +61,15 @@ export function OnboardingPage() {
 
   if (currentStep === "profile") {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-gray-50 to-gray-100 p-4">
+      <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-gray-50 to-gray-100 p-4" data-testid="onboarding-page">
         <OnboardingForm onComplete={handleProfileComplete} selectedUseCase={selectedUseCase} />
       </div>
     );
   }
 
   if (currentStep === "useCase") {
-    return <OnboardingUseCase onNext={handleUseCaseSelect} onBack={handleBackToProfile} />;
+    return <div data-testid="onboarding-page"><OnboardingUseCase onNext={handleUseCaseSelect} onBack={handleBackToProfile} /></div>;
   }
 
-  return <OnboardingInterests onNext={handleInterestsComplete} onBack={handleBackToUseCase} />;
+  return <div data-testid="onboarding-page"><OnboardingInterests onNext={handleInterestsComplete} onBack={handleBackToUseCase} /></div>;
 }

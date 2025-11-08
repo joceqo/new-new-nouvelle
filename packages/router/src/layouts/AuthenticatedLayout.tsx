@@ -75,7 +75,7 @@ export function AuthenticatedLayout() {
   );
 
   return (
-    <div className="flex h-screen bg-background">
+    <div className="flex h-screen bg-background" data-testid="authenticated-layout">
       {/* Sidebar */}
       <Sidebar
         workspaces={workspaces}
