@@ -5,6 +5,7 @@
 import { Home, type RecentPage } from "@nouvelle/ui";
 import { usePage } from "../../lib/page-context";
 import { useNavigate } from "@tanstack/react-router";
+import { createPageSlug } from "../../lib/notion-url";
 import { useMemo } from "react";
 
 export function HomePage() {
@@ -24,7 +25,23 @@ export function HomePage() {
   }, [pages]);
 
   const handlePageClick = (pageId: string) => {
-    navigate({ to: "/page/$pageId", params: { pageId } });
+    // Find the page in the tree (flattened search)
+    const findPageById = (pages: any[], id: string): any => {
+      for (const page of pages) {
+        if (page.id === id) return page;
+        if (page.children) {
+          const found = findPageById(page.children, id);
+          if (found) return found;
+        }
+      }
+      return null;
+    };
+
+    const page = findPageById(pages, pageId);
+    if (page) {
+      const slug = createPageSlug(page.title, page.id);
+      navigate({ to: "/$pageSlug", params: { pageSlug: slug } });
+    }
   };
 
   return <Home recentPages={recentPages} onPageClick={handlePageClick} />;

@@ -16,6 +16,7 @@ import {
 import { useAuth } from "../lib/auth-context";
 import { useWorkspace } from "../lib/workspace-context";
 import { usePage } from "../lib/page-context";
+import { createPageSlug } from "../lib/notion-url";
 import { useState, useEffect } from "react";
 import { Search, FileText, Home, Settings } from "lucide-react";
 
@@ -87,6 +88,27 @@ export function AuthenticatedLayout() {
     (w) => w.id === selectedWorkspaceId
   );
 
+  // Helper function to navigate to a page with Notion-style URL
+  const navigateToPage = (pageId: string) => {
+    // Find the page in the tree (flattened search)
+    const findPageById = (pages: any[], id: string): any => {
+      for (const page of pages) {
+        if (page.id === id) return page;
+        if (page.children) {
+          const found = findPageById(page.children, id);
+          if (found) return found;
+        }
+      }
+      return null;
+    };
+
+    const page = findPageById(pages, pageId);
+    if (page) {
+      const slug = createPageSlug(page.title, page.id);
+      navigate({ to: "/$pageSlug", params: { pageSlug: slug } });
+    }
+  };
+
   // Cmd+K shortcut for command palette
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -125,9 +147,7 @@ export function AuthenticatedLayout() {
         <PageTree
           title="Pages"
           pages={pages}
-          onPageSelect={(pageId: string) =>
-            navigate({ to: "/page/$pageId", params: { pageId } })
-          }
+          onPageSelect={navigateToPage}
           onPageCreate={(parentId?: string) => createPage("Untitled", parentId)}
           onToggleFavorite={(pageId: string) => toggleFavorite(pageId)}
           onPageDelete={(pageId: string) => deletePage(pageId)}
@@ -183,7 +203,7 @@ export function AuthenticatedLayout() {
                 <CommandItem
                   key={page.id}
                   onSelect={() => {
-                    navigate({ to: "/page/$pageId", params: { pageId: page.id } });
+                    navigateToPage(page.id);
                     setCommandQuery("");
                   }}
                 >
