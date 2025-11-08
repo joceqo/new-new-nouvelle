@@ -1,15 +1,24 @@
 import { Outlet, useNavigate } from "@tanstack/react-router";
 import {
   Sidebar,
+  InboxSheet,
   CreateWorkspaceDialog,
   InviteMembersDialog,
   WorkspaceSettingsDialog,
   PageTree,
+  Command,
+  CommandInput,
+  CommandList,
+  CommandEmpty,
+  CommandGroup,
+  CommandItem,
 } from "@nouvelle/ui";
 import { useAuth } from "../lib/auth-context";
 import { useWorkspace } from "../lib/workspace-context";
 import { usePage } from "../lib/page-context";
-import { useState } from "react";
+import { createPageSlug } from "../lib/notion-url";
+import { useState, useEffect } from "react";
+import { FileText, Home, Settings } from "lucide-react";
 
 export function AuthenticatedLayout() {
   const navigate = useNavigate();
@@ -33,6 +42,11 @@ export function AuthenticatedLayout() {
   const [selectedWorkspaceId, setSelectedWorkspaceId] = useState<string | null>(
     null
   );
+
+  // Command and Inbox states
+  const [showCommand, setShowCommand] = useState(false);
+  const [showInbox, setShowInbox] = useState(false);
+  const [commandQuery, setCommandQuery] = useState("");
 
   // Handlers
   const handleCreateWorkspace = async (name: string, icon?: string) => {
@@ -74,40 +88,106 @@ export function AuthenticatedLayout() {
     (w) => w.id === selectedWorkspaceId
   );
 
-  return (
-    <div className="flex h-screen bg-background" data-testid="authenticated-layout">
-      {/* Sidebar */}
-      <Sidebar
-        workspaces={workspaces}
-        activeWorkspace={activeWorkspace}
-        onWorkspaceChange={switchWorkspace}
-        onCreateWorkspace={() => setShowCreateDialog(true)}
-        onWorkspaceSettings={handleWorkspaceSettings}
-        onInviteMembers={handleInviteMembers}
-        userEmail={user?.email}
-        onLogout={logout}
-      >
-        {/* Pages Section */}
-        <PageTree
-          title="Pages"
-          pages={pages}
-          showSearch={true}
-          onPageSelect={(pageId: string) =>
-            navigate({ to: "/page/$pageId", params: { pageId } })
-          }
-          onPageCreate={(parentId?: string) => createPage("Untitled", parentId)}
-          onToggleFavorite={(pageId: string) => toggleFavorite(pageId)}
-          onPageDelete={(pageId: string) => deletePage(pageId)}
-          onPageRename={(pageId: string) => {
-            const newTitle = prompt("Enter new title:");
-            if (newTitle) updatePage(pageId, { title: newTitle });
-          }}
-        />
-      </Sidebar>
+  // Helper function to navigate to a page with Notion-style URL
+  const navigateToPage = (pageId: string) => {
+    // Close inbox when navigating to a page
+    setShowInbox(false);
+    
+    // Find the page in the tree (flattened search)
+    const findPageById = (pages: any[], id: string): any => {
+      for (const page of pages) {
+        if (page.id === id) return page;
+        if (page.children) {
+          const found = findPageById(page.children, id);
+          if (found) return found;
+        }
+      }
+      return null;
+    };
 
-      {/* Main Content */}
-      <div className="flex-1 overflow-auto">
-        <Outlet />
+    const page = findPageById(pages, pageId);
+    if (page) {
+      const slug = createPageSlug(page.title, page.id);
+      navigate({ to: "/$pageSlug", params: { pageSlug: slug } });
+    }
+  };
+
+  // Toggle inbox (for sidebar item click)
+  const handleInboxToggle = () => {
+    setShowInbox(!showInbox);
+  };
+
+  // Close inbox when clicking main content
+  const handleMainContentClick = () => {
+    if (showInbox) {
+      setShowInbox(false);
+    }
+  };
+
+  // Keyboard shortcuts
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      // Cmd+K for command palette
+      if ((e.metaKey || e.ctrlKey) && e.key === "k") {
+        e.preventDefault();
+        setShowCommand(true);
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, []);
+
+  // Filter pages based on search query
+  const filteredPages = pages.filter((page) =>
+    page.title.toLowerCase().includes(commandQuery.toLowerCase())
+  );
+
+  return (
+    <div
+      className="h-screen bg-background"
+      data-testid="authenticated-layout"
+    >
+      <div className="flex h-full">
+        {/* Fixed Sidebar */}
+        <Sidebar
+          workspaces={workspaces}
+          activeWorkspace={activeWorkspace}
+          onWorkspaceChange={switchWorkspace}
+          onCreateWorkspace={() => setShowCreateDialog(true)}
+          onWorkspaceSettings={handleWorkspaceSettings}
+          onInviteMembers={handleInviteMembers}
+          userEmail={user?.email}
+          onLogout={logout}
+          onSearchClick={() => {
+            setShowInbox(false); // Close inbox when opening search
+            setShowCommand(true);
+          }}
+          onHomeClick={() => {
+            setShowInbox(false); // Close inbox when going home
+            navigate({ to: "/home" });
+          }}
+          onInboxClick={handleInboxToggle} // Toggle inbox instead of just opening
+        >
+          {/* Pages Section */}
+          <PageTree
+            title="Pages"
+            pages={pages}
+            onPageSelect={navigateToPage}
+            onPageCreate={(parentId?: string) => createPage("Untitled", parentId)}
+            onToggleFavorite={(pageId: string) => toggleFavorite(pageId)}
+            onPageDelete={(pageId: string) => deletePage(pageId)}
+            onPageRename={(pageId: string) => {
+              const newTitle = prompt("Enter new title:");
+              if (newTitle) updatePage(pageId, { title: newTitle });
+            }}
+          />
+        </Sidebar>
+
+        {/* Main Content - stays in place */}
+        <div className="flex-1 overflow-auto" onClick={handleMainContentClick}>
+          <Outlet />
+        </div>
       </div>
 
       {/* Workspace Dialogs */}
@@ -131,6 +211,57 @@ export function AuthenticatedLayout() {
         onUpdateWorkspace={handleUpdateWorkspace}
         onDeleteWorkspace={handleDeleteWorkspace}
       />
+
+      {/* Command Palette */}
+      <Command open={showCommand} onOpenChange={setShowCommand}>
+        <CommandInput
+          placeholder="Search pages..."
+          value={commandQuery}
+          onChange={(e) => setCommandQuery(e.target.value)}
+        />
+        <CommandList>
+          {filteredPages.length === 0 && commandQuery && (
+            <CommandEmpty>No pages found</CommandEmpty>
+          )}
+
+          {filteredPages.length > 0 && (
+            <CommandGroup heading="Pages">
+              {filteredPages.map((page) => (
+                <CommandItem
+                  key={page.id}
+                  onSelect={() => {
+                    navigateToPage(page.id);
+                    setCommandQuery("");
+                  }}
+                >
+                  <FileText className="mr-2 h-4 w-4" />
+                  <span>{page.title}</span>
+                </CommandItem>
+              ))}
+            </CommandGroup>
+          )}
+
+          {!commandQuery && (
+            <CommandGroup heading="Quick Actions">
+              <CommandItem onSelect={() => navigate({ to: "/home" })}>
+                <Home className="mr-2 h-4 w-4" />
+                <span>Go to Home</span>
+              </CommandItem>
+              <CommandItem onSelect={() => createPage("Untitled")}>
+                <FileText className="mr-2 h-4 w-4" />
+                <span>Create new page</span>
+              </CommandItem>
+              <CommandItem onSelect={() => setShowSettingsDialog(true)}>
+                <Settings className="mr-2 h-4 w-4" />
+                <span>Workspace settings</span>
+              </CommandItem>
+            </CommandGroup>
+          )}
+        </CommandList>
+      </Command>
+
+      {/* Floating Inbox Sheet */}
+      <InboxSheet open={showInbox} onOpenChange={setShowInbox} />
     </div>
   );
 }

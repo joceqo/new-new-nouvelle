@@ -3,10 +3,14 @@ import { Star, MoreHorizontal, Share2, Clock, User } from "lucide-react";
 import { Button } from "@nouvelle/ui";
 import { useEffect } from "react";
 import { usePage } from "../../lib/page-context";
+import { extractPageId } from "../../lib/notion-url";
 
 export function PageView() {
   const params = useParams({ strict: false });
-  const pageId = params.pageId as string;
+  // Support both pageId and pageSlug params (Notion-style routing)
+  const rawPageId = (params.pageId || params.pageSlug) as string;
+  // Extract the actual ID from the slug (handles both "id" and "Title-id" formats)
+  const pageId = extractPageId(rawPageId);
   const { pages, toggleFavorite } = usePage();
 
   // Find the page in the tree (flattened search)
