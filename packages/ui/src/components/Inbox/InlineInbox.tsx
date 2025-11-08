@@ -18,19 +18,19 @@ export function InlineInbox({ open, onClose, className }: InlineInboxProps) {
   return (
     <div
       className={cn(
-        "bg-[var(--color-bg-subtle)] border border-[var(--color-border)] rounded-lg p-4 mb-3",
+        "mb-3 rounded-lg border border-[var(--color-border)] bg-[var(--color-bg-subtle)] p-4",
         "animate-in slide-in-from-top duration-200 ease-out",
         className
       )}
     >
       {/* Header */}
-      <div className="flex items-center justify-between mb-3">
+      <div className="mb-3 flex items-center justify-between">
         <h3 className="text-sm font-semibold text-[var(--color-text-primary)]">
           Inbox
         </h3>
         <button
           onClick={onClose}
-          className="rounded p-1 text-[var(--color-icon-default)] hover:bg-[var(--color-hover-subtle)] hover:text-[var(--color-icon-hover)] transition-all duration-150"
+          className="rounded p-1 text-[var(--color-icon-default)] transition-all duration-150 hover:bg-[var(--color-hover-subtle)] hover:text-[var(--color-icon-hover)]"
         >
           <X className="h-3 w-3" />
         </button>

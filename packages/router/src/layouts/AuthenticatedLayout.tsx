@@ -92,7 +92,7 @@ export function AuthenticatedLayout() {
   const navigateToPage = (pageId: string) => {
     // Close inbox when navigating to a page
     setShowInbox(false);
-    
+
     // Find the page in the tree (flattened search)
     const findPageById = (pages: any[], id: string): any => {
       for (const page of pages) {
@@ -144,10 +144,7 @@ export function AuthenticatedLayout() {
   );
 
   return (
-    <div
-      className="h-screen bg-background"
-      data-testid="authenticated-layout"
-    >
+    <div className="h-screen bg-background" data-testid="authenticated-layout">
       <div className="flex h-full">
         {/* Fixed Sidebar */}
         <Sidebar
@@ -174,7 +171,9 @@ export function AuthenticatedLayout() {
             title="Pages"
             pages={pages}
             onPageSelect={navigateToPage}
-            onPageCreate={(parentId?: string) => createPage("Untitled", parentId)}
+            onPageCreate={(parentId?: string) =>
+              createPage("Untitled", parentId)
+            }
             onToggleFavorite={(pageId: string) => toggleFavorite(pageId)}
             onPageDelete={(pageId: string) => deletePage(pageId)}
             onPageRename={(pageId: string) => {

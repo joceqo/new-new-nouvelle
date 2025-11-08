@@ -28,7 +28,7 @@ export interface SidebarProps {
   onSearchClick?: () => void;
   onHomeClick?: () => void;
   onInboxClick?: () => void;
-  
+
   // Inline inbox props
   showInbox?: boolean;
   onInboxClose?: () => void;
@@ -87,10 +87,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
         <Separator size="4" mb="3" />
 
         {/* Inline Inbox */}
-        <InlineInbox 
-          open={showInbox} 
-          onClose={onInboxClose || (() => {})} 
-        />
+        <InlineInbox open={showInbox} onClose={onInboxClose || (() => {})} />
 
         {/* Scrollable Content Area */}
         <ScrollArea className="flex-1">
