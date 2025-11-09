@@ -1,9 +1,11 @@
 import * as React from "react";
-import { cn } from "../../lib/utils";
+import { cn } from "@/lib/utils";
 
-const workspaceIconVariants = "relative inline-flex shrink-0 items-center justify-center rounded";
+const workspaceIconVariants =
+  "relative inline-flex shrink-0 items-center justify-center rounded";
 
-const iconContentVariants = "flex h-full w-full items-center justify-center rounded p-[0.2em] font-medium";
+const iconContentVariants =
+  "flex h-full w-full items-center justify-center rounded p-[0.2em] font-medium";
 
 export interface WorkspaceIconProps
   extends React.HTMLAttributes<HTMLDivElement> {
@@ -30,7 +32,11 @@ export const WorkspaceIcon = React.forwardRef<
 
   // Helper function to check if a string is a URL
   const isUrl = (str: string): boolean => {
-    return str.startsWith('http://') || str.startsWith('https://') || str.startsWith('/');
+    return (
+      str.startsWith("http://") ||
+      str.startsWith("https://") ||
+      str.startsWith("/")
+    );
   };
 
   // Helper function to check if a string is an emoji
@@ -45,18 +51,18 @@ export const WorkspaceIcon = React.forwardRef<
 
     // Check if it's a URL (image)
     if (isUrl(val)) {
-      return { type: 'image' as const, content: val };
+      return { type: "image" as const, content: val };
     }
 
     // Check if it's an emoji
     if (isEmoji(val)) {
-      return { type: 'emoji' as const, content: val };
+      return { type: "emoji" as const, content: val };
     }
 
     // Otherwise treat as text - take first character and lowercase
     return {
-      type: 'text' as const,
-      content: val.charAt(0).toLowerCase()
+      type: "text" as const,
+      content: val.charAt(0).toLowerCase(),
     };
   }, [value]);
 
@@ -79,7 +85,7 @@ export const WorkspaceIcon = React.forwardRef<
       }}
       {...props}
     >
-      {displayInfo.type === 'image' && !imageError ? (
+      {displayInfo.type === "image" && !imageError ? (
         <img
           src={displayInfo.content}
           alt={alt || "Workspace icon"}
@@ -87,11 +93,18 @@ export const WorkspaceIcon = React.forwardRef<
           onError={() => setImageError(true)}
         />
       ) : (
-        <div className={cn(
-          iconContentVariants,
-          displayInfo.type === 'text' && "bg-gray-200 text-gray-600 uppercase"
-        )}>
-          <div style={{ lineHeight: 1, fontSize: displayInfo.type === 'emoji' ? "1em" : "0.65em" }}>
+        <div
+          className={cn(
+            iconContentVariants,
+            displayInfo.type === "text" && "bg-gray-200 text-gray-600 uppercase"
+          )}
+        >
+          <div
+            style={{
+              lineHeight: 1,
+              fontSize: displayInfo.type === "emoji" ? "1em" : "0.65em",
+            }}
+          >
             {displayInfo.content}
           </div>
         </div>

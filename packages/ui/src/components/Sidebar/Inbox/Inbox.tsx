@@ -10,7 +10,7 @@ import {
   SheetHeader,
   SheetTitle,
   SheetBody,
-} from "../ui/sheet";
+} from "@/components/ui/sheet";
 
 export interface InboxProps {
   open: boolean;

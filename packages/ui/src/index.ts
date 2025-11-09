@@ -108,29 +108,25 @@ export {
 export {
   SidebarSheet,
   type SidebarSheetProps,
-} from "./components/SidebarSheet/SidebarSheet";
+} from "./components/Sidebar/SidebarSheet/SidebarSheet";
 export {
   SidebarItem,
   type SidebarItemProps,
 } from "./components/Sidebar/SidebarItem/SidebarItem";
-export {
-  SidebarHeader,
-  type SidebarHeaderProps,
-} from "./components/Sidebar/SidebarHeader/SidebarHeader";
 
 // Export WorkspaceSwitcher component
 export {
   WorkspaceSwitcher,
   type WorkspaceSwitcherProps,
-} from "./components/WorkspaceSwitcher";
+} from "./components/Sidebar/WorkspaceSwitcher";
 export {
   WorkspaceHeader,
   type WorkspaceHeaderProps,
-} from "./components/WorkspaceSwitcher/WorkspaceHeader";
+} from "./components/Sidebar/WorkspaceSwitcher/WorkspaceHeader";
 export {
   WorkspaceIcon,
   type WorkspaceIconProps,
-} from "./components/WorkspaceSwitcher/WorkspaceIcon";
+} from "./components/Sidebar/WorkspaceSwitcher/WorkspaceIcon";
 
 // Export Workspace Dialogs
 export {
@@ -140,24 +136,24 @@ export {
   type CreateWorkspaceDialogProps,
   type InviteMembersDialogProps,
   type WorkspaceSettingsDialogProps,
-} from "./components/WorkspaceDialogs";
+} from "./components/Sidebar/WorkspaceDialogs";
 
 // Export IconWrapper component
 export { IconWrapper, type IconWrapperProps } from "./components/IconWrapper";
 
 // Export PageTree components
-export { PageTree, PageTreeItem, type Page } from "./components/PageTree";
+export { PageTree, PageTreeItem, type Page } from "./components/Sidebar/PageTree";
 
 // Export Home component
 export { Home, type HomeProps, type RecentPage } from "./components/Home/Home";
 
 // Export Inbox component
-export { Inbox, type InboxProps } from "./components/Inbox/Inbox";
-export { InlineInbox, type InlineInboxProps } from "./components/Inbox/InlineInbox";
-export { InboxSheet, type InboxSheetProps } from "./components/InboxSheet/InboxSheet";
+export { Inbox, type InboxProps } from "./components/Sidebar/Inbox/Inbox";
+export { InlineInbox, type InlineInboxProps } from "./components/Sidebar/Inbox/InlineInbox";
+export { InboxSheet, type InboxSheetProps } from "./components/Sidebar/InboxSheet/InboxSheet";
 
 // Export styles (consumers should import these in their app)
 // import '@nouvelle/ui/styles/fluid-typography.css';
 // import '@radix-ui/themes/styles.css';
 
-import "./index.css";
+import "@/index.css";

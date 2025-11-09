@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "@tanstack/react-router";
 import { useAuth } from "../../lib/auth-context";
+import { useWorkspace } from "../../lib/workspace-context";
 import { OnboardingUseCase } from "./OnboardingUseCase";
 import { OnboardingForm } from "./OnboardingForm";
 import { OnboardingInterests } from "./OnboardingInterests";
@@ -10,7 +11,8 @@ type OnboardingStep = "profile" | "useCase" | "interests";
 
 export function OnboardingPage() {
   const navigate = useNavigate();
-  const { isAuthenticated, isLoading } = useAuth();
+  const { isAuthenticated, isLoading, user } = useAuth();
+  const { createWorkspace } = useWorkspace();
   const [currentStep, setCurrentStep] = useState<OnboardingStep>("profile");
   const [selectedUseCase, setSelectedUseCase] = useState<UseCase | null>(null);
 
@@ -44,11 +46,24 @@ export function OnboardingPage() {
     setCurrentStep("interests");
   };
 
-  const handleInterestsComplete = (_interests: string[]) => {
+  const handleInterestsComplete = async (_interests: string[]) => {
     // TODO: Send interests to backend
-    // Generate random page ID similar to Notion's format
-    const pageId = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
-    navigate({ to: `/getting-started/${pageId}` });
+
+    // Create a default workspace for the user
+    const workspaceName = user?.email?.split('@')[0]
+      ? `${user.email.split('@')[0]}'s Workspace`
+      : "My Workspace";
+
+    const result = await createWorkspace(workspaceName, "🏠");
+
+    if (result.success) {
+      // Navigate to home after workspace is created
+      navigate({ to: "/home" });
+    } else {
+      console.error("Failed to create workspace:", result.error);
+      // Navigate to home anyway - user can create workspace later
+      navigate({ to: "/home" });
+    }
   };
 
   const handleBackToProfile = () => {

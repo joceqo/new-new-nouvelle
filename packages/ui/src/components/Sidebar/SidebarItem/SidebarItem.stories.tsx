@@ -13,7 +13,7 @@ import {
   BookOpen,
   Code,
 } from "lucide-react";
-import { SidebarItem } from "./SidebarItem";
+import { SidebarItem } from "@/components/Sidebar/SidebarItem/SidebarItem";
 
 const meta = {
   title: "Components/Domain/Sidebar/SidebarItem",

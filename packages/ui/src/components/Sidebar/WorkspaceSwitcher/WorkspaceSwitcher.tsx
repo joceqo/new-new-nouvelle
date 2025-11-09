@@ -1,6 +1,6 @@
-import * as React from 'react';
-import { ChevronDown, Settings, Users, Plus, Check } from 'lucide-react';
-import { cn } from '../../lib/utils';
+import * as React from "react";
+import { ChevronDown, Settings, Users, Plus, Check } from "lucide-react";
+import { cn } from "@/lib/utils";
 import {
   DropdownMenu,
   DropdownMenuTrigger,
@@ -8,16 +8,16 @@ import {
   DropdownMenuItem,
   DropdownMenuSeparator,
   DropdownMenuLabel,
-} from '../ui/dropdown-menu';
-import { Avatar } from '../ui/avatar';
-import { Button } from '../ui/button';
+} from "@/components/ui/dropdown-menu";
+import { Avatar } from "@/components/ui/avatar";
+import { Button } from "@/components/ui/button";
 
 export interface Workspace {
   id: string;
   name: string;
   icon?: string;
   plan?: string;
-  role: 'owner' | 'admin' | 'member' | 'guest';
+  role: "owner" | "admin" | "member" | "guest";
   memberCount?: number;
 }
 
@@ -33,7 +33,10 @@ export interface WorkspaceSwitcherProps {
   className?: string;
 }
 
-export const WorkspaceSwitcher = React.forwardRef<HTMLDivElement, WorkspaceSwitcherProps>(
+export const WorkspaceSwitcher = React.forwardRef<
+  HTMLDivElement,
+  WorkspaceSwitcherProps
+>(
   (
     {
       workspaces,
@@ -51,9 +54,9 @@ export const WorkspaceSwitcher = React.forwardRef<HTMLDivElement, WorkspaceSwitc
     const [open, setOpen] = React.useState(false);
 
     const getPlanDisplay = (workspace: Workspace) => {
-      const plan = workspace.plan || 'free';
+      const plan = workspace.plan || "free";
       const memberCount = workspace.memberCount || 1;
-      return `${plan.charAt(0).toUpperCase() + plan.slice(1)} Plan • ${memberCount} member${memberCount > 1 ? 's' : ''}`;
+      return `${plan.charAt(0).toUpperCase() + plan.slice(1)} Plan • ${memberCount} member${memberCount > 1 ? "s" : ""}`;
     };
 
     return (
@@ -69,24 +72,23 @@ export const WorkspaceSwitcher = React.forwardRef<HTMLDivElement, WorkspaceSwitc
             >
               <Avatar
                 src={activeWorkspace?.icon}
-                fallback={activeWorkspace?.name || 'W'}
+                fallback={activeWorkspace?.name || "W"}
                 size="sm"
                 className="shrink-0"
               />
               <span className="flex-1 truncate text-left font-medium text-sidebar-foreground">
-                {activeWorkspace?.name || 'Select workspace'}
+                {activeWorkspace?.name || "Select workspace"}
               </span>
-              <ChevronDown className={cn(
-                "h-4 w-4 text-muted-foreground transition-transform",
-                open && "rotate-180"
-              )} />
+              <ChevronDown
+                className={cn(
+                  "h-4 w-4 text-muted-foreground transition-transform",
+                  open && "rotate-180"
+                )}
+              />
             </button>
           </DropdownMenuTrigger>
 
-          <DropdownMenuContent
-            align="start"
-            className="w-80"
-          >
+          <DropdownMenuContent align="start" className="w-80">
             {/* Workspace Header */}
             {activeWorkspace && (
               <div className="p-4 border-b border-border">
@@ -211,4 +213,4 @@ export const WorkspaceSwitcher = React.forwardRef<HTMLDivElement, WorkspaceSwitc
   }
 );
 
-WorkspaceSwitcher.displayName = 'WorkspaceSwitcher';
+WorkspaceSwitcher.displayName = "WorkspaceSwitcher";

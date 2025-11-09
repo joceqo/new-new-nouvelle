@@ -7,14 +7,15 @@ import {
   MoreHorizontal,
   Plus,
 } from "lucide-react";
-import { cn } from "../../lib/utils";
+import { cn } from "@/lib/utils";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "../ui/dropdown-menu";
+} from "@/components/ui/dropdown-menu";
+import { Flex } from "@radix-ui/themes/dist/cjs/components/index.js";
 
 export interface Page {
   id: string;
@@ -82,11 +83,12 @@ export function PageTreeItem({
 
   return (
     <div>
-      <div
+      <Flex
+        align="center"
         className={cn(
-          "group flex items-center gap-1 px-2 py-1 rounded-md cursor-pointer transition-colors",
-          "hover:bg-accent",
-          isActive && "bg-accent",
+          "group gap-1 px-2 py-1 rounded-md cursor-pointer transition-colors",
+          "hover:bg-[var(--sidebar-item-bg-hover)]",
+          isActive && "bg-[var(--sidebar-item-bg)]",
           "text-sm"
         )}
         style={{ paddingLeft: `${level * 12 + 8}px` }}
@@ -120,11 +122,6 @@ export function PageTreeItem({
 
         {/* Page title */}
         <span className="flex-1 truncate text-foreground">{page.title}</span>
-
-        {/* Favorite star */}
-        {page.isFavorite && (
-          <Star className="w-3 h-3 text-yellow-500 fill-yellow-500 flex-shrink-0" />
-        )}
 
         {/* Action buttons (visible on hover) */}
         {isHovered && (
@@ -179,7 +176,7 @@ export function PageTreeItem({
             </DropdownMenu>
           </div>
         )}
-      </div>
+      </Flex>
 
       {/* Child pages */}
       {isExpanded && hasChildren && (

@@ -11,7 +11,7 @@ import { cn } from "@/lib/utils";
 
 export interface SidebarItemProps {
   /** Icon to display */
-  icon: LucideIcon;
+  icon?: LucideIcon;
   /** Item label/text */
   label: string;
   /** Whether this item is currently active/selected */
@@ -92,37 +92,39 @@ export const SidebarItem = React.forwardRef<HTMLDivElement, SidebarItemProps>(
         onClick={onClick}
       >
         {/* Icon / Toggle Area */}
-        <Flex
-          align="center"
-          justify="center"
-          className="relative shrink-0"
-          style={{ fontSize: "18px" }}
-        >
-          {isExpandable ? (
-            <IconWrapper
-              icon={ChevronRight}
-              onClick={(e) => {
-                e.stopPropagation();
-                onToggleExpand?.();
-              }}
-              className={cn(
-                "transition-transform duration-200",
-                "text-[var(--sidebar-icon-color)]",
-                "hover:text-[var(--sidebar-icon-hover)]",
-                isExpanded && "rotate-90"
-              )}
-              style={{ fontSize: "14px" }}
-            />
-          ) : (
-            <IconWrapper
-              icon={Icon}
-              className={cn(
-                "text-[var(--sidebar-icon-color)]",
-                iconClassName
-              )}
-            />
-          )}
-        </Flex>
+        {Icon && (
+          <Flex
+            align="center"
+            justify="center"
+            className="relative shrink-0"
+            style={{ fontSize: "18px" }}
+          >
+            {isExpandable ? (
+              <IconWrapper
+                icon={ChevronRight}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onToggleExpand?.();
+                }}
+                className={cn(
+                  "transition-transform duration-200",
+                  "text-[var(--sidebar-icon-color)]",
+                  "hover:text-[var(--sidebar-icon-hover)]",
+                  isExpanded && "rotate-90"
+                )}
+                style={{ fontSize: "14px" }}
+              />
+            ) : (
+              <IconWrapper
+                icon={Icon}
+                className={cn(
+                  "text-[var(--sidebar-icon-color)]",
+                  iconClassName
+                )}
+              />
+            )}
+          </Flex>
+        )}
 
         {/* Title text */}
         <Flex className="min-w-0 flex-1">

@@ -8,11 +8,11 @@ import {
   DialogDescription,
   DialogBody,
   DialogFooter,
-} from "../ui/dialog";
-import { Button } from "../ui/button";
-import { Input } from "../ui/input";
-import { Label } from "../ui/label";
-import { Avatar } from "../ui/avatar";
+} from "@/components/ui/dialog";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Avatar } from "@/components/ui/avatar";
 
 // Common emoji icons for workspaces
 const WORKSPACE_ICONS = ["🏢", "💼", "🚀", "⭐", "🎯", "💡", "🔥", "✨", "🌟", "🎨", "📚", "🏠", "👤", "👥", "🌍"];

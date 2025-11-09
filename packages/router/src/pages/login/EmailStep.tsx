@@ -42,7 +42,7 @@ export function EmailStep({
             type="email"
             placeholder="you@example.com"
             value={email}
-            onChange={(e) => onEmailChange(e.target.value)}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) => onEmailChange(e.target.value)}
             required
             disabled={loading}
             className="pl-10"

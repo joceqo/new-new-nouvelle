@@ -42,8 +42,8 @@ export function createAuthRoutes() {
     app.use(
       rateLimit({
         duration: 15 * 60 * 1000, // 15 minutes
-        max: 15, // 5 requests per 15 minutes
-        generator: (request, _server) => {
+        max: 15, // 15 requests per 15 minutes
+        generator: (request, server) => {
           // Extract client IP from various possible headers (for proxies)
           const forwardedFor = request.headers.get("x-forwarded-for");
           const realIp = request.headers.get("x-real-ip");
@@ -57,7 +57,13 @@ export function createAuthRoutes() {
             return forwardedFor.split(",")[0].trim();
           }
 
-          // Fallback to a default identifier for development
+          // Fallback to socket IP address (works for localhost development)
+          const socketAddress = server?.requestIP(request);
+          if (socketAddress?.address) {
+            return socketAddress.address;
+          }
+
+          // Last resort fallback (should rarely happen)
           authLogger.warn(
             "Unable to determine client IP, using default identifier"
           );

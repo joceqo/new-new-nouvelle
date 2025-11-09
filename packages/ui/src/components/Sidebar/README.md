@@ -5,15 +5,15 @@ A complete Notion-inspired sidebar system with comprehensive theming support, bu
 ## Components
 
 ### `<Sidebar>`
+
 The main container component that provides the overall sidebar structure.
 
-### `<SidebarHeader>`
-Workspace header with icon, name, and action buttons (collapse, new page).
-
 ### `<SidebarItem>`
+
 Individual sidebar navigation items with hover states, badges, and actions.
 
 ### `<SidebarSection>`
+
 Collapsible sections like "Favorites" or "Documents".
 
 ## CSS Variables & Theming
@@ -97,24 +97,10 @@ function App() {
 }
 ```
 
-### Sidebar Header
-
-```tsx
-import { SidebarHeader } from "@/components/Sidebar/SidebarHeader";
-import { Home } from "lucide-react";
-
-<SidebarHeader
-  icon={<IconWrapper icon={Home} />}
-  label="My Workspace"
-  isOpen={isWorkspaceSwitcherOpen}
-  onLabelClick={() => setIsWorkspaceSwitcherOpen(!isWorkspaceSwitcherOpen)}
-  onToggleSidebar={() => setSidebarCollapsed(true)}
-  onCreateNewPage={() => createPage()}
-  showDivider={true}
-/>
-```
+````
 
 **Features:**
+
 - ✅ Hover background state
 - ✅ Dropdown chevron (shown on hover, or when `isOpen`)
 - ✅ Action buttons (new page, collapse sidebar)
@@ -141,10 +127,11 @@ import { FileText } from "lucide-react";
   badgeVariant="accent"
   level={0}
   href="/docs"
-/>
-```
+/>;
+````
 
 **Features:**
+
 - ✅ Transparent background by default
 - ✅ Hover/active states
 - ✅ Expandable chevron
@@ -166,10 +153,11 @@ import { SidebarSection } from "@/components/Sidebar/SidebarSection";
 >
   <SidebarItem icon={FileText} label="Page 1" />
   <SidebarItem icon={FileText} label="Page 2" />
-</SidebarSection>
+</SidebarSection>;
 ```
 
 **Features:**
+
 - ✅ Collapsible with animated chevron
 - ✅ Uppercase section title
 - ✅ Controlled or uncontrolled state
@@ -194,7 +182,7 @@ Each level adds `1rem` of left padding.
 
 ```css
 :root {
-  --sidebar-bg: #FAFAFA;
+  --sidebar-bg: #fafafa;
   --sidebar-item-bg-hover: rgba(59, 130, 246, 0.1);
   --sidebar-item-bg-active: rgba(59, 130, 246, 0.2);
 }
@@ -226,13 +214,13 @@ See `/src/styles/theme-config.json` for the full theme structure.
 
 The sidebar automatically adapts to light/dark mode:
 
-| Element          | Light Mode                  | Dark Mode                      |
-|------------------|-----------------------------|--------------------------------|
-| Sidebar bg       | `#F7F6F3` (warm off-white)  | `#1E1E1E` (dark gray)          |
-| Item hover       | `rgba(0,0,0,0.04)`          | `rgba(255,255,255,0.06)`       |
-| Item active      | `rgba(0,0,0,0.08)`          | `rgba(255,255,255,0.12)`       |
-| Header hover     | `rgba(0,0,0,0.04)`          | `rgba(255,255,255,0.06)`       |
-| Divider          | `rgba(0,0,0,0.1)`           | `rgba(255,255,255,0.1)`        |
+| Element      | Light Mode                 | Dark Mode                |
+| ------------ | -------------------------- | ------------------------ |
+| Sidebar bg   | `#F7F6F3` (warm off-white) | `#1E1E1E` (dark gray)    |
+| Item hover   | `rgba(0,0,0,0.04)`         | `rgba(255,255,255,0.06)` |
+| Item active  | `rgba(0,0,0,0.08)`         | `rgba(255,255,255,0.12)` |
+| Header hover | `rgba(0,0,0,0.04)`         | `rgba(255,255,255,0.06)` |
+| Divider      | `rgba(0,0,0,0.1)`          | `rgba(255,255,255,0.1)`  |
 
 ## Design Principles
 
@@ -261,7 +249,6 @@ The sidebar automatically adapts to light/dark mode:
 View all components in Storybook:
 
 - `Sidebar` → Components/Sidebar/Sidebar
-- `SidebarHeader` → Components/Sidebar/SidebarHeader
 - `SidebarItem` → Components/Sidebar/SidebarItem
 - `SidebarSection` → Components/Sidebar/SidebarSection
 
@@ -272,10 +259,6 @@ src/components/Sidebar/
 ├── Sidebar/
 │   ├── Sidebar.tsx
 │   ├── Sidebar.stories.tsx
-│   └── index.ts
-├── SidebarHeader/
-│   ├── SidebarHeader.tsx
-│   ├── SidebarHeader.stories.tsx
 │   └── index.ts
 ├── SidebarItem/
 │   ├── SidebarItem.tsx

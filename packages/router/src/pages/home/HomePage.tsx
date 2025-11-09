@@ -4,6 +4,8 @@
 
 import { Home, type RecentPage } from "@nouvelle/ui";
 import { usePage } from "../../lib/page-context";
+import { useWorkspace } from "../../lib/workspace-context";
+import { usePageTitle } from "../../lib/use-page-title";
 import { useNavigate } from "@tanstack/react-router";
 import { createPageSlug } from "../../lib/notion-url";
 import { useMemo } from "react";
@@ -11,6 +13,14 @@ import { useMemo } from "react";
 export function HomePage() {
   const navigate = useNavigate();
   const { pages } = usePage();
+  const { activeWorkspace } = useWorkspace();
+
+  // Update browser tab title
+  usePageTitle({
+    title: "Home",
+    icon: "🏠",
+    suffix: activeWorkspace?.name,
+  });
 
   // Get recently visited pages (mock for now - you can add real tracking later)
   const recentPages: RecentPage[] = useMemo(() => {

@@ -3,6 +3,8 @@ import { Star, MoreHorizontal, Share2, Clock, User } from "lucide-react";
 import { Button } from "@nouvelle/ui";
 import { useEffect } from "react";
 import { usePage } from "../../lib/page-context";
+import { useWorkspace } from "../../lib/workspace-context";
+import { usePageTitle } from "../../lib/use-page-title";
 import { extractPageId } from "../../lib/notion-url";
 
 export function PageView() {
@@ -12,6 +14,7 @@ export function PageView() {
   // Extract the actual ID from the slug (handles both "id" and "Title-id" formats)
   const pageId = extractPageId(rawPageId);
   const { pages, toggleFavorite } = usePage();
+  const { activeWorkspace } = useWorkspace();
 
   // Find the page in the tree (flattened search)
   const findPageById = (pages: any[], id: string): any => {
@@ -26,6 +29,13 @@ export function PageView() {
   };
 
   const page = findPageById(pages, pageId);
+
+  // Update browser tab title with emoji and page title
+  usePageTitle({
+    title: page?.title,
+    icon: page?.icon,
+    suffix: activeWorkspace?.name,
+  });
 
   // Mark page as opened when viewed
   useEffect(() => {
