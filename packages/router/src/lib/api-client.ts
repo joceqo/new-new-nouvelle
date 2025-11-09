@@ -26,7 +26,26 @@ export class AuthApiClient {
         body: JSON.stringify({ email }),
       });
 
-      const data = await response.json();
+      // Handle rate limiting specifically
+      if (response.status === 429) {
+        return { 
+          success: false, 
+          error: 'Too many requests. Please wait a moment before trying again.' 
+        };
+      }
+
+      let data;
+      try {
+        data = await response.json();
+      } catch (jsonError) {
+        // If JSON parsing fails, handle as text response
+        const text = await response.text();
+        console.error('Failed to parse JSON response:', text);
+        return { 
+          success: false, 
+          error: response.ok ? 'Invalid response format' : `Server error: ${response.status}` 
+        };
+      }
 
       if (!response.ok) {
         return { success: false, error: data.error || 'Failed to send code' };
@@ -49,7 +68,26 @@ export class AuthApiClient {
         body: JSON.stringify({ email, code }),
       });
 
-      const data = await response.json();
+      // Handle rate limiting specifically
+      if (response.status === 429) {
+        return { 
+          success: false, 
+          error: 'Too many requests. Please wait a moment before trying again.' 
+        };
+      }
+
+      let data;
+      try {
+        data = await response.json();
+      } catch (jsonError) {
+        // If JSON parsing fails, handle as text response
+        const text = await response.text();
+        console.error('Failed to parse JSON response:', text);
+        return { 
+          success: false, 
+          error: response.ok ? 'Invalid response format' : `Server error: ${response.status}` 
+        };
+      }
 
       if (!response.ok) {
         return { success: false, error: data.error || 'Failed to verify code' };

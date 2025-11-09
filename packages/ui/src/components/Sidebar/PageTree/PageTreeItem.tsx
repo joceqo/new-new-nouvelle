@@ -6,6 +6,9 @@ import {
   Star,
   MoreHorizontal,
   Plus,
+  Link,
+  Copy,
+  Trash2,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import {
@@ -22,6 +25,7 @@ export interface Page {
   title: string;
   icon?: string;
   isFavorite?: boolean;
+  visibility?: "private" | "workspace" | "public";
   hasChildren?: boolean;
   children?: Page[];
 }
@@ -35,6 +39,8 @@ interface PageTreeItemProps {
   onCreateChild?: (parentId: string) => void;
   onDelete?: (pageId: string) => void;
   onRename?: (pageId: string) => void;
+  onDuplicate?: (pageId: string) => void;
+  onCopyLink?: (pageId: string) => void;
 }
 
 export function PageTreeItem({
@@ -46,9 +52,12 @@ export function PageTreeItem({
   onCreateChild,
   onDelete,
   onRename,
+  onDuplicate,
+  onCopyLink,
 }: PageTreeItemProps) {
   const [isExpanded, setIsExpanded] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   const hasChildren = page.children && page.children.length > 0;
 
@@ -72,6 +81,12 @@ export function PageTreeItem({
       case "new-child":
         onCreateChild?.(page.id);
         break;
+      case "copy-link":
+        onCopyLink?.(page.id);
+        break;
+      case "duplicate":
+        onDuplicate?.(page.id);
+        break;
       case "rename":
         onRename?.(page.id);
         break;
@@ -88,7 +103,7 @@ export function PageTreeItem({
         className={cn(
           "group gap-1 px-2 py-1 rounded-md cursor-pointer transition-colors",
           "hover:bg-[var(--sidebar-item-bg-hover)]",
-          isActive && "bg-[var(--sidebar-item-bg)]",
+          isActive && "bg-[var(--sidebar-item-bg-active)]",
           "text-sm"
         )}
         style={{ paddingLeft: `${level * 12 + 8}px` }}
@@ -123,20 +138,10 @@ export function PageTreeItem({
         {/* Page title */}
         <span className="flex-1 truncate text-foreground">{page.title}</span>
 
-        {/* Action buttons (visible on hover) */}
-        {isHovered && (
+        {/* Action buttons (visible on hover or when dropdown is open) */}
+        {(isHovered || isDropdownOpen) && (
           <div className="flex items-center gap-1 flex-shrink-0">
-            <button
-              className="w-5 h-5 flex items-center justify-center rounded hover:bg-accent-foreground/10 transition-colors opacity-0 group-hover:opacity-100"
-              onClick={(e) => {
-                e.stopPropagation();
-                onCreateChild?.(page.id);
-              }}
-            >
-              <Plus className="w-3 h-3" />
-            </button>
-
-            <DropdownMenu>
+            <DropdownMenu onOpenChange={setIsDropdownOpen}>
               <DropdownMenuTrigger asChild>
                 <button
                   className="w-5 h-5 flex items-center justify-center rounded hover:bg-accent-foreground/10 transition-colors opacity-0 group-hover:opacity-100"
@@ -162,6 +167,18 @@ export function PageTreeItem({
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem
+                  onClick={(e) => handleMenuAction("copy-link", e as any)}
+                >
+                  <Link className="w-4 h-4 mr-2" />
+                  Copy link
+                </DropdownMenuItem>
+                <DropdownMenuItem
+                  onClick={(e) => handleMenuAction("duplicate", e as any)}
+                >
+                  <Copy className="w-4 h-4 mr-2" />
+                  Duplicate
+                </DropdownMenuItem>
+                <DropdownMenuItem
                   onClick={(e) => handleMenuAction("rename", e as any)}
                 >
                   Rename
@@ -170,10 +187,21 @@ export function PageTreeItem({
                   onClick={(e) => handleMenuAction("delete", e as any)}
                   className="text-destructive"
                 >
-                  Delete
+                  <Trash2 className="w-4 h-4 mr-2" />
+                  Move to trash
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
+
+            <button
+              className="w-5 h-5 flex items-center justify-center rounded hover:bg-accent-foreground/10 transition-colors opacity-0 group-hover:opacity-100"
+              onClick={(e) => {
+                e.stopPropagation();
+                onCreateChild?.(page.id);
+              }}
+            >
+              <Plus className="w-3 h-3" />
+            </button>
           </div>
         )}
       </Flex>
@@ -192,6 +220,8 @@ export function PageTreeItem({
               onCreateChild={onCreateChild}
               onDelete={onDelete}
               onRename={onRename}
+              onDuplicate={onDuplicate}
+              onCopyLink={onCopyLink}
             />
           ))}
         </div>

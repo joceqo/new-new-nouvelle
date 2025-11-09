@@ -1,4 +1,9 @@
-import { Outlet, useNavigate, useRouter } from "@tanstack/react-router";
+import {
+  Outlet,
+  useNavigate,
+  useRouter,
+  useLocation,
+} from "@tanstack/react-router";
 import {
   Sidebar,
   InboxSheet,
@@ -16,14 +21,15 @@ import {
 import { useAuth } from "../lib/auth-context";
 import { useWorkspace } from "../lib/workspace-context";
 import { usePage } from "../lib/page-context";
-import { createPageSlug } from "../lib/notion-url";
+import { createPageSlug, extractPageId } from "../lib/notion-url";
 import { useState, useEffect } from "react";
 import { FileText, Home, Settings } from "lucide-react";
 
 export function AuthenticatedLayout() {
   const navigate = useNavigate();
   const router = useRouter();
-  const { user, logout } = useAuth();
+  const location = useLocation();
+  const { user, logout, isLoading } = useAuth();
   const {
     workspaces,
     activeWorkspace,
@@ -33,8 +39,15 @@ export function AuthenticatedLayout() {
     deleteWorkspace,
     inviteMember,
   } = useWorkspace();
-  const { pages, createPage, toggleFavorite, deletePage, updatePage } =
-    usePage();
+  const {
+    pages,
+    createPage,
+    toggleFavorite,
+    deletePage,
+    updatePage,
+    duplicatePage,
+    copyPageLink,
+  } = usePage();
 
   // Dialog states
   const [showCreateDialog, setShowCreateDialog] = useState(false);
@@ -50,6 +63,11 @@ export function AuthenticatedLayout() {
   const [commandQuery, setCommandQuery] = useState("");
 
   // Handlers
+  const handleLogout = async () => {
+    await logout();
+    navigate({ to: "/login" });
+  };
+
   const handleCreateWorkspace = async (name: string, icon?: string) => {
     await createWorkspace(name, icon);
   };
@@ -139,6 +157,14 @@ export function AuthenticatedLayout() {
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, []);
 
+  // Redirect to login if not authenticated
+  useEffect(() => {
+    if (!user && !isLoading) {
+      console.log("🔒 [REDIRECT] User not authenticated, redirecting to login");
+      navigate({ to: "/login" });
+    }
+  }, [user, isLoading, navigate]);
+
   // Track last visited page in localStorage
   useEffect(() => {
     const currentPath = router.state.location.pathname;
@@ -153,10 +179,57 @@ export function AuthenticatedLayout() {
     }
   }, [router.state.location.pathname]);
 
+  // Helper function to flatten page tree
+  const flattenPages = (pages: any[]): any[] => {
+    const result: any[] = [];
+    for (const page of pages) {
+      result.push(page);
+      if (page.children) {
+        result.push(...flattenPages(page.children));
+      }
+    }
+    return result;
+  };
+
+  // Filter pages for Private and Favorites sections
+  const allPages = flattenPages(pages);
+  const privatePages = allPages.filter(
+    (page) => page.visibility === "private" || !page.visibility // Default to private if no visibility set
+  );
+  const favoritePages = allPages.filter((page) => page.isFavorite);
+
+  // Get active page ID from current URL
+  const [activePageId, setActivePageId] = useState<string | undefined>(
+    undefined
+  );
+
+  // Update active page ID when route changes
+  useEffect(() => {
+    const pathname = location.pathname;
+    const newActivePageId =
+      pathname.startsWith("/") && pathname !== "/" && pathname !== "/home"
+        ? extractPageId(pathname.slice(1)) // Remove leading slash
+        : undefined;
+
+    setActivePageId(newActivePageId);
+  }, [location.pathname]);
+
   // Filter pages based on search query
-  const filteredPages = pages.filter((page) =>
+  const filteredPages = allPages.filter((page) =>
     page.title.toLowerCase().includes(commandQuery.toLowerCase())
   );
+
+  // Show loading state while checking authentication
+  if (isLoading) {
+    return (
+      <div className="h-screen flex items-center justify-center bg-background">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
+          <p className="text-muted-foreground">Loading...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="h-screen bg-background" data-testid="authenticated-layout">
@@ -170,7 +243,7 @@ export function AuthenticatedLayout() {
           onWorkspaceSettings={handleWorkspaceSettings}
           onInviteMembers={handleInviteMembers}
           userEmail={user?.email}
-          onLogout={logout}
+          onLogout={handleLogout}
           onSearchClick={() => {
             setShowInbox(false); // Close inbox when opening search
             setShowCommand(true);
@@ -182,11 +255,32 @@ export function AuthenticatedLayout() {
           onInboxClick={handleInboxToggle} // Toggle inbox instead of just opening
           onToggleSidebar={() => {}}
         >
-          <div className="mt-4">
-            {/* Pages Section */}
+          <div className="mt-4 space-y-6">
+            {/* Favorites Section - Always visible */}
+            {!!favoritePages.length && (
+              <PageTree
+                title="Favorites"
+                pages={favoritePages}
+                activePageId={activePageId}
+                maxItems={10}
+                showCreateButton={false}
+                onPageSelect={navigateToPage}
+                onToggleFavorite={(pageId: string) => toggleFavorite(pageId)}
+                onPageDelete={(pageId: string) => deletePage(pageId)}
+                onPageRename={(pageId: string) => {
+                  const newTitle = prompt("Enter new title:");
+                  if (newTitle) updatePage(pageId, { title: newTitle });
+                }}
+                onDuplicate={(pageId: string) => duplicatePage(pageId)}
+                onCopyLink={(pageId: string) => copyPageLink(pageId)}
+              />
+            )}
+            {/* Private Pages Section - Always visible */}
             <PageTree
-              title="Pages"
-              pages={pages}
+              title="Private"
+              pages={privatePages}
+              activePageId={activePageId}
+              maxItems={10}
               onPageSelect={navigateToPage}
               onPageCreate={(parentId?: string) =>
                 createPage("Untitled", parentId)
@@ -197,6 +291,8 @@ export function AuthenticatedLayout() {
                 const newTitle = prompt("Enter new title:");
                 if (newTitle) updatePage(pageId, { title: newTitle });
               }}
+              onDuplicate={(pageId: string) => duplicatePage(pageId)}
+              onCopyLink={(pageId: string) => copyPageLink(pageId)}
             />
           </div>
         </Sidebar>

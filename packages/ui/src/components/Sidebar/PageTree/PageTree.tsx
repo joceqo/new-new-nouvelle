@@ -2,12 +2,18 @@ import {
   PageTreeItem,
   type Page,
 } from "@/components/Sidebar/PageTree/PageTreeItem";
-import { Icon, Plus } from "lucide-react";
-import { SidebarItem } from "@/components/Sidebar/SidebarItem";
+import { Plus, MoreHorizontal } from "lucide-react";
 import { IconWrapper } from "@/index";
 import { Flex } from "@radix-ui/themes";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { cn } from "@/lib/utils";
 
-interface PageTreeProps {
+export interface PageTreeProps {
   pages: Page[];
   activePageId?: string;
   onPageSelect?: (pageId: string) => void;
@@ -15,7 +21,11 @@ interface PageTreeProps {
   onToggleFavorite?: (pageId: string) => void;
   onPageDelete?: (pageId: string) => void;
   onPageRename?: (pageId: string) => void;
+  onDuplicate?: (pageId: string) => void;
+  onCopyLink?: (pageId: string) => void;
   title?: string;
+  maxItems?: number;
+  showCreateButton?: boolean;
 }
 
 export function PageTree({
@@ -26,8 +36,17 @@ export function PageTree({
   onToggleFavorite,
   onPageDelete,
   onPageRename,
+  onDuplicate,
+  onCopyLink,
   title = "Pages",
+  maxItems,
+  showCreateButton = true,
 }: PageTreeProps) {
+  // Determine visible pages and overflow
+  const hasOverflow = maxItems && pages.length > maxItems;
+  const visiblePages = hasOverflow ? pages.slice(0, maxItems - 1) : pages;
+  const overflowPages = hasOverflow ? pages.slice(maxItems - 1) : [];
+
   return (
     <div className="flex flex-col h-full" data-testid="page-tree">
       {/* Header */}
@@ -40,11 +59,13 @@ export function PageTree({
           {title}
         </span>
 
-        <IconWrapper
-          icon={Plus}
-          onClick={() => onPageCreate?.()}
-          variant="button"
-        />
+        {showCreateButton && (
+          <IconWrapper
+            icon={Plus}
+            onClick={() => onPageCreate?.()}
+            variant="button"
+          />
+        )}
       </Flex>
 
       {/* Page tree */}
@@ -55,18 +76,62 @@ export function PageTree({
           </div>
         ) : (
           <div className="space-y-0.5">
-            {pages.map((page) => (
-              <PageTreeItem
-                key={page.id}
-                page={page}
-                isActive={page.id === activePageId}
-                onSelect={onPageSelect}
-                onToggleFavorite={onToggleFavorite}
-                onCreateChild={onPageCreate}
-                onDelete={onPageDelete}
-                onRename={onPageRename}
-              />
-            ))}
+            {visiblePages.map((page) => {
+              const isActive = page.id === activePageId;
+              return (
+                <PageTreeItem
+                  key={page.id}
+                  page={page}
+                  isActive={isActive}
+                  onSelect={onPageSelect}
+                  onToggleFavorite={onToggleFavorite}
+                  onCreateChild={onPageCreate}
+                  onDelete={onPageDelete}
+                  onRename={onPageRename}
+                  onDuplicate={onDuplicate}
+                  onCopyLink={onCopyLink}
+                />
+              );
+            })}
+
+            {/* Overflow menu item */}
+            {hasOverflow && (
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Flex
+                    align="center"
+                    className={cn(
+                      "group gap-1 px-2 py-1 rounded-md cursor-pointer transition-colors",
+                      "hover:bg-[var(--sidebar-item-bg-hover)]",
+                      "text-sm"
+                    )}
+                    style={{ paddingLeft: "8px" }}
+                  >
+                    <div className="w-4 h-4 flex items-center justify-center flex-shrink-0">
+                      <MoreHorizontal className="w-4 h-4 text-muted-foreground" />
+                    </div>
+                    <span className="flex-1 truncate text-muted-foreground">
+                      {overflowPages.length} more pages...
+                    </span>
+                  </Flex>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent
+                  align="start"
+                  className="w-56 max-h-96 overflow-y-auto"
+                >
+                  {overflowPages.map((page) => (
+                    <DropdownMenuItem
+                      key={page.id}
+                      onClick={() => onPageSelect?.(page.id)}
+                      className="cursor-pointer"
+                    >
+                      <span className="mr-2">{page.icon || "📄"}</span>
+                      <span className="truncate">{page.title}</span>
+                    </DropdownMenuItem>
+                  ))}
+                </DropdownMenuContent>
+              </DropdownMenu>
+            )}
           </div>
         )}
       </div>

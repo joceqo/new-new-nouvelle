@@ -4,6 +4,7 @@ import {
   ChevronsLeft,
   ChevronsRight,
   SquarePen,
+  LogOut,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import {
@@ -51,6 +52,7 @@ export const WorkspaceHeader = React.forwardRef<
       activeWorkspace,
       onWorkspaceChange,
       onCreateWorkspace,
+      onLogout,
       onNewPage,
       onToggleSidebar,
       isSidebarCollapsed = false,
@@ -145,6 +147,22 @@ export const WorkspaceHeader = React.forwardRef<
                   >
                     <Plus className="h-4 w-4" />
                     <span className="text-sm">New workspace</span>
+                  </DropdownMenuItem>
+                </div>
+              </>
+            )}
+
+            {/* Logout */}
+            {onLogout && (
+              <>
+                <DropdownMenuSeparator className="my-1 bg-[var(--color-divider)]" />
+                <div>
+                  <DropdownMenuItem
+                    onSelect={onLogout}
+                    className="flex cursor-pointer items-center gap-2.5 rounded-md px-2 py-1.5 text-red-600 transition-colors duration-150 hover:bg-[var(--color-hover-subtle)] focus:bg-[var(--color-hover-subtle)] dark:text-red-500"
+                  >
+                    <LogOut className="h-4 w-4" />
+                    <span className="text-sm">Log out</span>
                   </DropdownMenuItem>
                 </div>
               </>

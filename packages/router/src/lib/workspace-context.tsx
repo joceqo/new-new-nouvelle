@@ -32,7 +32,10 @@ export function WorkspaceProvider({ children }: { children: React.ReactNode }) {
 
   // Load workspaces from API
   const loadWorkspaces = useCallback(async () => {
+    console.log('🏢 [WORKSPACE] loadWorkspaces called', { hasToken: !!token, isAuthenticated });
+
     if (!token || !isAuthenticated) {
+      console.log('🏢 [WORKSPACE] No token or not authenticated, clearing workspaces');
       setState({
         workspaces: [],
         activeWorkspace: null,
@@ -43,16 +46,23 @@ export function WorkspaceProvider({ children }: { children: React.ReactNode }) {
     }
 
     try {
+      console.log('🏢 [WORKSPACE] Calling workspaceApiClient.listWorkspaces...');
       const response = await workspaceApiClient.listWorkspaces(token);
+      console.log('🏢 [WORKSPACE] API Response:', response);
 
       if (response.success && response.workspaces) {
         const workspaces = response.workspaces;
+        console.log('🏢 [WORKSPACE] Workspaces loaded successfully:', {
+          count: workspaces.length,
+          workspaces: workspaces.map(w => ({ id: w.id, name: w.name, icon: w.icon }))
+        });
 
         // Get saved active workspace ID from localStorage
         const savedActiveId = localStorage.getItem(ACTIVE_WORKSPACE_KEY);
 
         // Try to find the saved active workspace, or use the first one
         let activeWorkspace = workspaces.find(w => w.id === savedActiveId) || workspaces[0] || null;
+        console.log('🏢 [WORKSPACE] Active workspace set:', activeWorkspace ? { id: activeWorkspace.id, name: activeWorkspace.name } : null);
 
         setState({
           workspaces,
@@ -66,6 +76,7 @@ export function WorkspaceProvider({ children }: { children: React.ReactNode }) {
           localStorage.setItem(ACTIVE_WORKSPACE_KEY, activeWorkspace.id);
         }
       } else {
+        console.warn('🏢 [WORKSPACE] No workspaces in response or request failed:', response);
         setState({
           workspaces: [],
           activeWorkspace: null,
@@ -74,7 +85,7 @@ export function WorkspaceProvider({ children }: { children: React.ReactNode }) {
         });
       }
     } catch (error) {
-      console.error('Load workspaces error:', error);
+      console.error('🏢 [WORKSPACE] Load workspaces error:', error);
       setState({
         workspaces: [],
         activeWorkspace: null,

@@ -13,6 +13,7 @@ export interface Page {
   title: string;
   icon?: string;
   isFavorite?: boolean;
+  visibility?: "private" | "workspace" | "public";
   hasChildren?: boolean;
   children?: Page[];
 }
@@ -40,6 +41,12 @@ interface PageContextValue {
     pageId: string
   ) => Promise<{ success: boolean; error?: string }>;
   restorePage: (
+    pageId: string
+  ) => Promise<{ success: boolean; error?: string }>;
+  duplicatePage: (
+    pageId: string
+  ) => Promise<{ success: boolean; pageId?: string; error?: string }>;
+  copyPageLink: (
     pageId: string
   ) => Promise<{ success: boolean; error?: string }>;
   refreshPages: () => Promise<void>;
@@ -80,6 +87,7 @@ export function PageProvider({ children }: { children: React.ReactNode }) {
         title: page.title,
         icon: page.icon,
         isFavorite: page.isFavorite,
+        visibility: page.visibility,
         hasChildren: false,
         children: [],
       });
@@ -127,6 +135,7 @@ export function PageProvider({ children }: { children: React.ReactNode }) {
           workspaceId: activeWorkspace.id,
           title: "Getting Started",
           icon: "📝",
+          visibility: "private",
           parentPageId: undefined,
           isFavorite: true,
           isArchived: false,
@@ -138,8 +147,9 @@ export function PageProvider({ children }: { children: React.ReactNode }) {
           workspaceId: activeWorkspace.id,
           title: "Project Planning",
           icon: "📋",
+          visibility: "private",
           parentPageId: undefined,
-          isFavorite: false,
+          isFavorite: true,
           isArchived: false,
           createdAt: Date.now(),
           updatedAt: Date.now(),
@@ -149,7 +159,152 @@ export function PageProvider({ children }: { children: React.ReactNode }) {
           workspaceId: activeWorkspace.id,
           title: "Meeting Notes",
           icon: "📅",
+          visibility: "private",
           parentPageId: "2",
+          isFavorite: false,
+          isArchived: false,
+          createdAt: Date.now(),
+          updatedAt: Date.now(),
+        },
+        {
+          id: "4",
+          workspaceId: activeWorkspace.id,
+          title: "Design System",
+          icon: "🎨",
+          visibility: "private",
+          parentPageId: undefined,
+          isFavorite: true,
+          isArchived: false,
+          createdAt: Date.now(),
+          updatedAt: Date.now(),
+        },
+        {
+          id: "5",
+          workspaceId: activeWorkspace.id,
+          title: "Engineering Docs",
+          icon: "⚙️",
+          visibility: "private",
+          parentPageId: undefined,
+          isFavorite: false,
+          isArchived: false,
+          createdAt: Date.now(),
+          updatedAt: Date.now(),
+        },
+        {
+          id: "6",
+          workspaceId: activeWorkspace.id,
+          title: "Product Roadmap",
+          icon: "🗺️",
+          visibility: "private",
+          parentPageId: undefined,
+          isFavorite: true,
+          isArchived: false,
+          createdAt: Date.now(),
+          updatedAt: Date.now(),
+        },
+        {
+          id: "7",
+          workspaceId: activeWorkspace.id,
+          title: "Team Handbook",
+          icon: "📖",
+          visibility: "private",
+          parentPageId: undefined,
+          isFavorite: false,
+          isArchived: false,
+          createdAt: Date.now(),
+          updatedAt: Date.now(),
+        },
+        {
+          id: "8",
+          workspaceId: activeWorkspace.id,
+          title: "Marketing Plans",
+          icon: "📊",
+          visibility: "private",
+          parentPageId: undefined,
+          isFavorite: true,
+          isArchived: false,
+          createdAt: Date.now(),
+          updatedAt: Date.now(),
+        },
+        {
+          id: "9",
+          workspaceId: activeWorkspace.id,
+          title: "Customer Research",
+          icon: "🔍",
+          visibility: "private",
+          parentPageId: undefined,
+          isFavorite: false,
+          isArchived: false,
+          createdAt: Date.now(),
+          updatedAt: Date.now(),
+        },
+        {
+          id: "10",
+          workspaceId: activeWorkspace.id,
+          title: "Sprint Planning",
+          icon: "🏃",
+          visibility: "private",
+          parentPageId: undefined,
+          isFavorite: true,
+          isArchived: false,
+          createdAt: Date.now(),
+          updatedAt: Date.now(),
+        },
+        {
+          id: "11",
+          workspaceId: activeWorkspace.id,
+          title: "Performance Metrics",
+          icon: "📈",
+          visibility: "private",
+          parentPageId: undefined,
+          isFavorite: false,
+          isArchived: false,
+          createdAt: Date.now(),
+          updatedAt: Date.now(),
+        },
+        {
+          id: "12",
+          workspaceId: activeWorkspace.id,
+          title: "Tech Stack",
+          icon: "💻",
+          visibility: "private",
+          parentPageId: undefined,
+          isFavorite: true,
+          isArchived: false,
+          createdAt: Date.now(),
+          updatedAt: Date.now(),
+        },
+        {
+          id: "13",
+          workspaceId: activeWorkspace.id,
+          title: "Budget 2024",
+          icon: "💰",
+          visibility: "private",
+          parentPageId: undefined,
+          isFavorite: false,
+          isArchived: false,
+          createdAt: Date.now(),
+          updatedAt: Date.now(),
+        },
+        {
+          id: "14",
+          workspaceId: activeWorkspace.id,
+          title: "Company Values",
+          icon: "💎",
+          visibility: "private",
+          parentPageId: undefined,
+          isFavorite: true,
+          isArchived: false,
+          createdAt: Date.now(),
+          updatedAt: Date.now(),
+        },
+        {
+          id: "15",
+          workspaceId: activeWorkspace.id,
+          title: "Onboarding Guide",
+          icon: "🎓",
+          visibility: "private",
+          parentPageId: undefined,
           isFavorite: false,
           isArchived: false,
           createdAt: Date.now(),
@@ -342,14 +497,59 @@ export function PageProvider({ children }: { children: React.ReactNode }) {
         return { success: false, error: "Not authenticated" };
       }
 
+      // Optimistically update the UI immediately
+      const updatePageFavoriteStatus = (
+        pages: Page[],
+        pageId: string
+      ): Page[] => {
+        return pages.map((page) => {
+          if (page.id === pageId) {
+            return { ...page, isFavorite: !page.isFavorite };
+          }
+          // Also check children recursively
+          if (page.children) {
+            return {
+              ...page,
+              children: updatePageFavoriteStatus(page.children, pageId),
+            };
+          }
+          return page;
+        });
+      };
+
+      // Update state optimistically
+      setState((prev) => {
+        const updatedPages = updatePageFavoriteStatus(prev.pages, pageId);
+
+        // Rebuild favorites list from updated pages
+        const flattenPages = (pages: Page[]): Page[] => {
+          return pages.reduce((acc, page) => {
+            acc.push(page);
+            if (page.children) {
+              acc.push(...flattenPages(page.children));
+            }
+            return acc;
+          }, [] as Page[]);
+        };
+
+        const allPages = flattenPages(updatedPages);
+        const newFavorites = allPages.filter((page) => page.isFavorite);
+
+        return {
+          ...prev,
+          pages: updatedPages,
+          favorites: newFavorites,
+        };
+      });
+
       try {
         // TODO: Replace with actual API call
-        console.log("Toggling favorite:", { pageId });
-
-        // Mock success for now
-        await loadPages();
+        // Mock success for now - in real implementation, this would make the API call
+        // If the API call fails, we should revert the optimistic update
         return { success: true };
       } catch (error) {
+        // Revert the optimistic update on error
+        await loadPages();
         const errorMsg =
           error instanceof Error ? error.message : "Failed to toggle favorite";
         console.error("Toggle favorite error:", errorMsg);
@@ -405,6 +605,54 @@ export function PageProvider({ children }: { children: React.ReactNode }) {
     [token, loadPages]
   );
 
+  // Duplicate page
+  const duplicatePage = useCallback(
+    async (
+      pageId: string
+    ): Promise<{ success: boolean; pageId?: string; error?: string }> => {
+      if (!token || !activeWorkspace) {
+        return { success: false, error: "Not authenticated" };
+      }
+
+      try {
+        // TODO: Replace with actual API call
+        console.log("Duplicating page:", { pageId });
+
+        // Mock success for now
+        await loadPages();
+        return { success: true, pageId: Date.now().toString() };
+      } catch (error) {
+        const errorMsg =
+          error instanceof Error ? error.message : "Failed to duplicate page";
+        console.error("Duplicate page error:", errorMsg);
+        return { success: false, error: errorMsg };
+      }
+    },
+    [token, activeWorkspace, loadPages]
+  );
+
+  // Copy page link
+  const copyPageLink = useCallback(
+    async (pageId: string): Promise<{ success: boolean; error?: string }> => {
+      try {
+        // Generate page URL (adjust based on your routing structure)
+        const pageUrl = `${window.location.origin}/page/${pageId}`;
+
+        // Copy to clipboard
+        await navigator.clipboard.writeText(pageUrl);
+
+        console.log("Copied page link:", { pageId, url: pageUrl });
+        return { success: true };
+      } catch (error) {
+        const errorMsg =
+          error instanceof Error ? error.message : "Failed to copy link";
+        console.error("Copy page link error:", errorMsg);
+        return { success: false, error: errorMsg };
+      }
+    },
+    []
+  );
+
   // Refresh pages
   const refreshPages = useCallback(async () => {
     await loadPages();
@@ -430,6 +678,8 @@ export function PageProvider({ children }: { children: React.ReactNode }) {
         toggleFavorite,
         archivePage,
         restorePage,
+        duplicatePage,
+        copyPageLink,
         refreshPages,
         clearError,
       }}
