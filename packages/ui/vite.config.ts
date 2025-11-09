@@ -13,6 +13,8 @@ export default defineConfig({
     dts({
       include: ['src/**/*'],
       exclude: ['**/*.stories.tsx', '**/*.test.tsx'],
+      outDir: 'dist',
+      entryRoot: 'src',
       compilerOptions: {
         declarationMap: true,
       },
@@ -24,6 +26,7 @@ export default defineConfig({
     },
   },
   build: {
+    sourcemap: true,
     lib: {
       entry: './src/index.ts',
       name: 'NouvelleUI',

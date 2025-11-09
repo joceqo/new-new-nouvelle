@@ -61,7 +61,7 @@ export function CodeVerificationStep({
           <InputOTP
             maxLength={6}
             value={code}
-            onChange={(value) => onCodeChange(value)}
+            onChange={(value: string) => onCodeChange(value)}
             disabled={loading}
             autoFocus
           />

@@ -14,8 +14,13 @@ export function LoginPage() {
     if (!isLoading && !workspacesLoading && isAuthenticated) {
       // Check if user has workspaces (has completed onboarding)
       if (workspaces.length > 0) {
-        // User has workspaces, redirect to main app
-        navigate({ to: "/getting-started/$pageId", params: { pageId: "home" } });
+        // User has workspaces, check for last visited page or go to home
+        const lastVisitedPage = localStorage.getItem('nouvelle_last_visited_page');
+        if (lastVisitedPage && lastVisitedPage !== '/login' && lastVisitedPage !== '/onboarding') {
+          navigate({ to: lastVisitedPage as any });
+        } else {
+          navigate({ to: "/home" });
+        }
       } else {
         // New user, redirect to onboarding
         navigate({ to: "/onboarding" });

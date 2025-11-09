@@ -1,4 +1,4 @@
-import { Outlet, useNavigate } from "@tanstack/react-router";
+import { Outlet, useNavigate, useRouter } from "@tanstack/react-router";
 import {
   Sidebar,
   InboxSheet,
@@ -22,6 +22,7 @@ import { FileText, Home, Settings } from "lucide-react";
 
 export function AuthenticatedLayout() {
   const navigate = useNavigate();
+  const router = useRouter();
   const { user, logout } = useAuth();
   const {
     workspaces,
@@ -138,6 +139,20 @@ export function AuthenticatedLayout() {
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, []);
 
+  // Track last visited page in localStorage
+  useEffect(() => {
+    const currentPath = router.state.location.pathname;
+    // Save current path to localStorage, but exclude login and onboarding
+    if (
+      currentPath &&
+      currentPath !== "/login" &&
+      currentPath !== "/onboarding" &&
+      currentPath !== "/"
+    ) {
+      localStorage.setItem("nouvelle_last_visited_page", currentPath);
+    }
+  }, [router.state.location.pathname]);
+
   // Filter pages based on search query
   const filteredPages = pages.filter((page) =>
     page.title.toLowerCase().includes(commandQuery.toLowerCase())
@@ -167,21 +182,23 @@ export function AuthenticatedLayout() {
           onInboxClick={handleInboxToggle} // Toggle inbox instead of just opening
           onToggleSidebar={() => {}}
         >
-          {/* Pages Section */}
-          <PageTree
-            title="Pages"
-            pages={pages}
-            onPageSelect={navigateToPage}
-            onPageCreate={(parentId?: string) =>
-              createPage("Untitled", parentId)
-            }
-            onToggleFavorite={(pageId: string) => toggleFavorite(pageId)}
-            onPageDelete={(pageId: string) => deletePage(pageId)}
-            onPageRename={(pageId: string) => {
-              const newTitle = prompt("Enter new title:");
-              if (newTitle) updatePage(pageId, { title: newTitle });
-            }}
-          />
+          <div className="mt-4">
+            {/* Pages Section */}
+            <PageTree
+              title="Pages"
+              pages={pages}
+              onPageSelect={navigateToPage}
+              onPageCreate={(parentId?: string) =>
+                createPage("Untitled", parentId)
+              }
+              onToggleFavorite={(pageId: string) => toggleFavorite(pageId)}
+              onPageDelete={(pageId: string) => deletePage(pageId)}
+              onPageRename={(pageId: string) => {
+                const newTitle = prompt("Enter new title:");
+                if (newTitle) updatePage(pageId, { title: newTitle });
+              }}
+            />
+          </div>
         </Sidebar>
 
         {/* Main Content - stays in place */}
@@ -223,7 +240,9 @@ export function AuthenticatedLayout() {
         <CommandInput
           placeholder="Search pages..."
           value={commandQuery}
-          onChange={(e) => setCommandQuery(e.target.value)}
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+            setCommandQuery(e.target.value)
+          }
         />
         <CommandList>
           {filteredPages.length === 0 && commandQuery && (

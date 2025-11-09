@@ -73,9 +73,9 @@ export const WorkspaceHeader = React.forwardRef<
         {/* Workspace Switcher Dropdown */}
         <DropdownMenu open={dropdownOpen} onOpenChange={setDropdownOpen}>
           <DropdownMenuTrigger asChild>
-            <button
+            <div
               className={cn(
-                "flex min-w-0 flex-1 items-center gap-2 rounded px-1 py-0.5 text-sm",
+                "flex min-w-0 flex-1 items-center gap-2 rounded px-1 py-0.5 text-sm cursor-pointer",
                 "text-[var(--sidebar-header-text)]",
                 "focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--palette-blue-text)] focus-visible:ring-offset-1",
                 "transition-colors duration-150"
@@ -89,14 +89,17 @@ export const WorkspaceHeader = React.forwardRef<
               <span className="flex-1 truncate text-left font-medium">
                 {activeWorkspace?.name || "Select workspace"}
               </span>
-              <ChevronDown
+
+              <IconWrapper
+                icon={ChevronDown}
                 className={cn(
                   "h-4 w-4 shrink-0 text-[var(--sidebar-header-icon)] transition-all duration-200",
                   "group-hover:text-[var(--sidebar-header-icon-hover)]",
                   dropdownOpen && "rotate-180"
                 )}
+                variant="button"
               />
-            </button>
+            </div>
           </DropdownMenuTrigger>
 
           <DropdownMenuContent

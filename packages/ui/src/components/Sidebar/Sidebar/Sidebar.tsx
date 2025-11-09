@@ -13,6 +13,7 @@ import {
   User,
   Trash2,
   Menu,
+  ChevronsRight,
 } from "lucide-react";
 import React from "react";
 import { IconWrapper } from "@/components/IconWrapper";
@@ -62,69 +63,84 @@ export const Sidebar: React.FC<SidebarProps> = ({
   showInbox = false,
   onInboxClose,
 }) => {
-  const [isHamburgerShown, setIsHamburgerShown] = React.useState(true);
+  const [isHamburgerShown, setIsHamburgerShown] = React.useState(false);
   const [isHamburgerHovered, setIsHamburgerHovered] = React.useState(false);
   return (
-    <div>
+    <div className="p-0.5">
       {isHamburgerShown && (
         <div>
           <IconWrapper
-            icon={Menu}
+            icon={isHamburgerHovered ? ChevronsRight : Menu}
             onMouseEnter={() => setIsHamburgerHovered(true)}
             onMouseLeave={() => setIsHamburgerHovered(false)}
+            onClick={() => {
+              onToggleSidebar?.();
+              setIsHamburgerShown(false);
+            }}
+            variant="button"
           />
         </div>
       )}
-      <Flex
-        asChild
-        direction="column"
-        className="h-screen w-64 bg-[var(--sidebar-bg)] px-2 py-5 text-[var(--sidebar-item-text)]"
-      >
-        <aside data-testid="sidebar">
-          {/* WorkspaceHeader */}
-          <WorkspaceHeader
-            workspaces={workspaces}
-            activeWorkspace={activeWorkspace}
-            onWorkspaceChange={onWorkspaceChange}
-            onCreateWorkspace={onCreateWorkspace}
-            onWorkspaceSettings={onWorkspaceSettings}
-            onInviteMembers={onInviteMembers}
-            onLogout={onLogout}
-            userEmail={userEmail}
-            onNewPage={onNewPage}
-            onToggleSidebar={onToggleSidebar}
-            isSidebarCollapsed={isSidebarCollapsed}
-            className="mb-3"
-          />
+      {!isHamburgerShown && (
+        <Flex
+          asChild
+          direction="column"
+          className="h-screen w-64 bg-[var(--sidebar-bg)] px-2 py-5 text-[var(--sidebar-item-text)]"
+        >
+          <aside data-testid="sidebar">
+            {/* WorkspaceHeader */}
+            <WorkspaceHeader
+              workspaces={workspaces}
+              activeWorkspace={activeWorkspace}
+              onWorkspaceChange={onWorkspaceChange}
+              onCreateWorkspace={onCreateWorkspace}
+              onWorkspaceSettings={onWorkspaceSettings}
+              onInviteMembers={onInviteMembers}
+              onLogout={onLogout}
+              userEmail={userEmail}
+              onNewPage={onNewPage}
+              onToggleSidebar={() => {
+                onToggleSidebar?.();
+                setIsHamburgerShown((prev) => !prev);
+              }}
+              isSidebarCollapsed={isSidebarCollapsed}
+              className="mb-3"
+            />
 
-          {/* Navigation Links */}
-          <Flex direction="column" gap="1" mb="3">
-            <SidebarItem icon={Search} label="Search" onClick={onSearchClick} />
-            <SidebarItem icon={Home} label="Home" onClick={onHomeClick} />
+            {/* Navigation Links */}
+            <Flex direction="column" gap="1" mb="3">
+              <SidebarItem
+                icon={Search}
+                label="Search"
+                onClick={onSearchClick}
+              />
+              <SidebarItem icon={Home} label="Home" onClick={onHomeClick} />
 
-            <SidebarItem icon={Inbox} label="Inbox" onClick={onInboxClick} />
-          </Flex>
-
-          <Separator size="4" mb="3" />
-
-          {/* Inline Inbox */}
-          <InlineInbox open={showInbox} onClose={onInboxClose || (() => {})} />
-
-          {/* Scrollable Content Area */}
-          <ScrollArea className="flex-1">
-            <Flex direction="column" gap="2">
-              {children}
+              <SidebarItem icon={Inbox} label="Inbox" onClick={onInboxClick} />
             </Flex>
-          </ScrollArea>
 
-          {/* Footer */}
-          <Flex direction="column" gap="0.5" mt="3" pt="3">
-            <Separator size="4" mb="2" />
-            <SidebarItem icon={User} label="Profile" />
-            <SidebarItem icon={Trash2} label="Trash" badge="11" />
-          </Flex>
-        </aside>
-      </Flex>
+            {/* Inline Inbox */}
+            <InlineInbox
+              open={showInbox}
+              onClose={onInboxClose || (() => {})}
+            />
+
+            {/* Scrollable Content Area */}
+            <ScrollArea className="flex-1">
+              <Flex direction="column" gap="2">
+                {children}
+              </Flex>
+            </ScrollArea>
+
+            {/* Footer */}
+            <Flex direction="column" gap="0.5" mt="3" pt="3">
+              <Separator size="4" mb="2" />
+              <SidebarItem icon={User} label="Profile" />
+              <SidebarItem icon={Trash2} label="Trash" badge="11" />
+            </Flex>
+          </aside>
+        </Flex>
+      )}
     </div>
   );
 };
