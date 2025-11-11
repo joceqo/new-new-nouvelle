@@ -59,13 +59,13 @@ export function PageTree({
           {title}
         </span>
 
-        {showCreateButton && (
+        <div className={cn(!showCreateButton && "invisible")}>
           <IconWrapper
             icon={Plus}
             onClick={() => onPageCreate?.()}
             variant="button"
           />
-        )}
+        </div>
       </Flex>
 
       {/* Page tree */}
@@ -75,7 +75,7 @@ export function PageTree({
             No pages yet
           </div>
         ) : (
-          <div className="space-y-0.5">
+          <div className="space-y-0.5 w-full">
             {visiblePages.map((page) => {
               const isActive = page.id === activePageId;
               return (
@@ -83,6 +83,7 @@ export function PageTree({
                   key={page.id}
                   page={page}
                   isActive={isActive}
+                  activePageId={activePageId}
                   onSelect={onPageSelect}
                   onToggleFavorite={onToggleFavorite}
                   onCreateChild={onPageCreate}

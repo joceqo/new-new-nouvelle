@@ -17,6 +17,7 @@ import {
 } from "lucide-react";
 import React from "react";
 import { IconWrapper } from "@/components/IconWrapper";
+import { cn } from "@/lib/utils";
 
 export interface SidebarProps {
   children?: React.ReactNode;
@@ -42,6 +43,9 @@ export interface SidebarProps {
   // Inline inbox props
   showInbox?: boolean;
   onInboxClose?: () => void;
+
+  // Scroll area styling
+  scrollAreaClassName?: string;
 }
 
 export const Sidebar: React.FC<SidebarProps> = ({
@@ -62,6 +66,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
   onInboxClick,
   showInbox = false,
   onInboxClose,
+  scrollAreaClassName = "sidebar-scroll-area",
 }) => {
   const [isHamburgerShown, setIsHamburgerShown] = React.useState(false);
   const [isHamburgerHovered, setIsHamburgerHovered] = React.useState(false);
@@ -85,7 +90,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
         <Flex
           asChild
           direction="column"
-          className="h-screen w-64 bg-[var(--sidebar-bg)] px-2 py-5 text-[var(--sidebar-item-text)]"
+          className="h-screen w-full bg-[var(--sidebar-bg)] px-2 py-5 text-[var(--sidebar-item-text)]"
         >
           <aside data-testid="sidebar">
             {/* WorkspaceHeader */}
@@ -126,8 +131,8 @@ export const Sidebar: React.FC<SidebarProps> = ({
             />
 
             {/* Scrollable Content Area */}
-            <ScrollArea className="flex-1">
-              <Flex direction="column" gap="2">
+            <ScrollArea className="flex-1 [&_[data-radix-scroll-area-viewport]>div]:!w-full">
+              <Flex direction="column" gap="2" className="w-full">
                 {children}
               </Flex>
             </ScrollArea>

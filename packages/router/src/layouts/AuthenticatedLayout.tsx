@@ -17,13 +17,25 @@ import {
   CommandEmpty,
   CommandGroup,
   CommandItem,
+  ResizablePanelGroup,
+  ResizablePanel,
+  ResizableHandle,
+  Button,
 } from "@nouvelle/ui";
 import { useAuth } from "../lib/auth-context";
 import { useWorkspace } from "../lib/workspace-context";
 import { usePage } from "../lib/page-context";
 import { createPageSlug, extractPageId } from "../lib/notion-url";
-import { useState, useEffect } from "react";
-import { FileText, Home, Settings } from "lucide-react";
+import { getRecentPages } from "../lib/recent-pages";
+import { useState, useEffect, useMemo } from "react";
+import {
+  FileText,
+  Home,
+  Settings,
+  PanelLeftClose,
+  PanelLeftOpen,
+  Menu,
+} from "lucide-react";
 
 export function AuthenticatedLayout() {
   const navigate = useNavigate();
@@ -49,6 +61,8 @@ export function AuthenticatedLayout() {
     copyPageLink,
   } = usePage();
 
+  console.log("pages", pages);
+
   // Dialog states
   const [showCreateDialog, setShowCreateDialog] = useState(false);
   const [showInviteDialog, setShowInviteDialog] = useState(false);
@@ -61,6 +75,10 @@ export function AuthenticatedLayout() {
   const [showCommand, setShowCommand] = useState(false);
   const [showInbox, setShowInbox] = useState(false);
   const [commandQuery, setCommandQuery] = useState("");
+
+  // Sidebar states
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
+  const [sidebarSize, setSidebarSize] = useState(20); // 20% default
 
   // Handlers
   const handleLogout = async () => {
@@ -131,6 +149,19 @@ export function AuthenticatedLayout() {
     }
   };
 
+  // Handle page creation with navigation
+  const handleCreatePage = async (
+    title: string = "Untitled",
+    parentId?: string
+  ) => {
+    const result = await createPage(title, parentId);
+    if (result.success && result.pageId) {
+      // Navigate to the newly created page
+      const slug = createPageSlug(title, result.pageId);
+      navigate({ to: "/$pageSlug", params: { pageSlug: slug } });
+    }
+  };
+
   // Toggle inbox (for sidebar item click)
   const handleInboxToggle = () => {
     setShowInbox(!showInbox);
@@ -191,12 +222,33 @@ export function AuthenticatedLayout() {
     return result;
   };
 
+  // Helper function to find all favorited pages recursively
+  const findFavoritedPages = (pages: any[]): any[] => {
+    const favorites: any[] = [];
+
+    const traverse = (pageList: any[]) => {
+      for (const page of pageList) {
+        // If this page is favorited, add it with its children
+        if (page.isFavorite) {
+          favorites.push(page);
+        }
+        // Continue searching in children
+        if (page.children && page.children.length > 0) {
+          traverse(page.children);
+        }
+      }
+    };
+
+    traverse(pages);
+    return favorites;
+  };
+
   // Filter pages for Private and Favorites sections
-  const allPages = flattenPages(pages);
+  const allPages = pages;
   const privatePages = allPages.filter(
     (page) => page.visibility === "private" || !page.visibility // Default to private if no visibility set
   );
-  const favoritePages = allPages.filter((page) => page.isFavorite);
+  const favoritePages = findFavoritedPages(allPages);
 
   // Get active page ID from current URL
   const [activePageId, setActivePageId] = useState<string | undefined>(
@@ -219,6 +271,17 @@ export function AuthenticatedLayout() {
     page.title.toLowerCase().includes(commandQuery.toLowerCase())
   );
 
+  // Get recent pages for Command K when query is empty
+  const recentPagesForCommand = useMemo(() => {
+    const visitedPages = getRecentPages();
+    const pageMap = new Map(allPages.map((p) => [p.id, p]));
+
+    return visitedPages
+      .slice(0, 6)
+      .map((visited) => pageMap.get(visited.pageId))
+      .filter(Boolean);
+  }, [allPages]);
+
   // Show loading state while checking authentication
   if (isLoading) {
     return (
@@ -233,75 +296,123 @@ export function AuthenticatedLayout() {
 
   return (
     <div className="h-screen bg-background" data-testid="authenticated-layout">
-      <div className="flex h-full">
-        {/* Fixed Sidebar */}
-        <Sidebar
-          workspaces={workspaces}
-          activeWorkspace={activeWorkspace}
-          onWorkspaceChange={switchWorkspace}
-          onCreateWorkspace={() => setShowCreateDialog(true)}
-          onWorkspaceSettings={handleWorkspaceSettings}
-          onInviteMembers={handleInviteMembers}
-          userEmail={user?.email}
-          onLogout={handleLogout}
-          onSearchClick={() => {
-            setShowInbox(false); // Close inbox when opening search
-            setShowCommand(true);
+      <ResizablePanelGroup direction="horizontal" className="h-full w-full">
+        {/* Resizable Sidebar Panel */}
+        <ResizablePanel
+          id="sidebar-panel"
+          defaultSize={sidebarCollapsed ? 0 : 20}
+          minSize={sidebarCollapsed ? 0 : 10}
+          maxSize={sidebarCollapsed ? 0 : 40}
+          collapsible={false}
+          onResize={(size: number) => {
+            console.log("[Sidebar Resize]", size);
+            setSidebarSize(size);
           }}
-          onHomeClick={() => {
-            setShowInbox(false); // Close inbox when going home
-            navigate({ to: "/home" });
-          }}
-          onInboxClick={handleInboxToggle} // Toggle inbox instead of just opening
-          onToggleSidebar={() => {}}
+          className="min-w-[140px]"
         >
-          <div className="mt-4 space-y-6">
-            {/* Favorites Section - Always visible */}
-            {!!favoritePages.length && (
-              <PageTree
-                title="Favorites"
-                pages={favoritePages}
-                activePageId={activePageId}
-                maxItems={10}
-                showCreateButton={false}
-                onPageSelect={navigateToPage}
-                onToggleFavorite={(pageId: string) => toggleFavorite(pageId)}
-                onPageDelete={(pageId: string) => deletePage(pageId)}
-                onPageRename={(pageId: string) => {
-                  const newTitle = prompt("Enter new title:");
-                  if (newTitle) updatePage(pageId, { title: newTitle });
-                }}
-                onDuplicate={(pageId: string) => duplicatePage(pageId)}
-                onCopyLink={(pageId: string) => copyPageLink(pageId)}
-              />
-            )}
-            {/* Private Pages Section - Always visible */}
-            <PageTree
-              title="Private"
-              pages={privatePages}
-              activePageId={activePageId}
-              maxItems={10}
-              onPageSelect={navigateToPage}
-              onPageCreate={(parentId?: string) =>
-                createPage("Untitled", parentId)
-              }
-              onToggleFavorite={(pageId: string) => toggleFavorite(pageId)}
-              onPageDelete={(pageId: string) => deletePage(pageId)}
-              onPageRename={(pageId: string) => {
-                const newTitle = prompt("Enter new title:");
-                if (newTitle) updatePage(pageId, { title: newTitle });
+          {!sidebarCollapsed && (
+            <Sidebar
+              workspaces={workspaces}
+              activeWorkspace={activeWorkspace}
+              onWorkspaceChange={switchWorkspace}
+              onCreateWorkspace={() => setShowCreateDialog(true)}
+              onWorkspaceSettings={handleWorkspaceSettings}
+              onInviteMembers={handleInviteMembers}
+              userEmail={user?.email}
+              onLogout={handleLogout}
+              onSearchClick={() => {
+                setShowInbox(false); // Close inbox when opening search
+                setShowCommand(true);
               }}
-              onDuplicate={(pageId: string) => duplicatePage(pageId)}
-              onCopyLink={(pageId: string) => copyPageLink(pageId)}
-            />
-          </div>
-        </Sidebar>
+              onHomeClick={() => {
+                setShowInbox(false); // Close inbox when going home
+                navigate({ to: "/home" });
+              }}
+              onInboxClick={handleInboxToggle} // Toggle inbox instead of just opening
+              onToggleSidebar={() => setSidebarCollapsed(!sidebarCollapsed)}
+              isSidebarCollapsed={sidebarCollapsed}
+            >
+              <div className="mt-4 space-y-6">
+                {/* Favorites Section - Always visible */}
+                {!!favoritePages.length && (
+                  <PageTree
+                    title="Favorites"
+                    pages={favoritePages}
+                    activePageId={activePageId}
+                    maxItems={10}
+                    showCreateButton={false}
+                    onPageSelect={navigateToPage}
+                    onToggleFavorite={(pageId: string) =>
+                      toggleFavorite(pageId)
+                    }
+                    onPageDelete={(pageId: string) => deletePage(pageId)}
+                    onPageRename={(pageId: string) => {
+                      const newTitle = prompt("Enter new title:");
+                      if (newTitle) updatePage(pageId, { title: newTitle });
+                    }}
+                    onDuplicate={(pageId: string) => duplicatePage(pageId)}
+                    onCopyLink={(pageId: string) => copyPageLink(pageId)}
+                  />
+                )}
+                {/* Private Pages Section - Always visible */}
+                <PageTree
+                  title="Private"
+                  pages={privatePages}
+                  activePageId={activePageId}
+                  maxItems={10}
+                  onPageSelect={navigateToPage}
+                  onPageCreate={(parentId?: string) =>
+                    handleCreatePage("Untitled", parentId)
+                  }
+                  onToggleFavorite={(pageId: string) => toggleFavorite(pageId)}
+                  onPageDelete={(pageId: string) => deletePage(pageId)}
+                  onPageRename={(pageId: string) => {
+                    const newTitle = prompt("Enter new title:");
+                    if (newTitle) updatePage(pageId, { title: newTitle });
+                  }}
+                  onDuplicate={(pageId: string) => duplicatePage(pageId)}
+                  onCopyLink={(pageId: string) => copyPageLink(pageId)}
+                />
+              </div>
+            </Sidebar>
+          )}
+        </ResizablePanel>
 
-        {/* Main Content - stays in place */}
-        <div className="flex-1 overflow-auto" onClick={handleMainContentClick}>
-          <Outlet />
-        </div>
-      </div>
+        {/* Hamburger menu when collapsed */}
+        {sidebarCollapsed && (
+          <div className="fixed top-4 left-4 z-50">
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={() => setSidebarCollapsed(false)}
+              className="text-muted-foreground hover:text-foreground"
+            >
+              <Menu className="h-5 w-5" />
+            </Button>
+          </div>
+        )}
+
+        {/* Resizable Handle */}
+        {!sidebarCollapsed && (
+          <ResizableHandle withHandle className="bg-border hover:bg-accent" />
+        )}
+
+        {/* Main Content Panel */}
+        <ResizablePanel
+          id="main-panel"
+          defaultSize={sidebarCollapsed ? 100 : 80}
+        >
+          <div className="flex flex-col h-full">
+            {/* Main Content */}
+            <div
+              className="flex-1 overflow-auto"
+              onClick={handleMainContentClick}
+            >
+              <Outlet />
+            </div>
+          </div>
+        </ResizablePanel>
+      </ResizablePanelGroup>
 
       {/* Workspace Dialogs */}
       {showCreateDialog && (
@@ -363,20 +474,45 @@ export function AuthenticatedLayout() {
           )}
 
           {!commandQuery && (
-            <CommandGroup heading="Quick Actions">
-              <CommandItem onSelect={() => navigate({ to: "/home" })}>
-                <Home className="mr-2 h-4 w-4" />
-                <span>Go to Home</span>
-              </CommandItem>
-              <CommandItem onSelect={() => createPage("Untitled")}>
-                <FileText className="mr-2 h-4 w-4" />
-                <span>Create new page</span>
-              </CommandItem>
-              <CommandItem onSelect={() => setShowSettingsDialog(true)}>
-                <Settings className="mr-2 h-4 w-4" />
-                <span>Workspace settings</span>
-              </CommandItem>
-            </CommandGroup>
+            <>
+              {/* Recent Pages Section */}
+              {recentPagesForCommand.length > 0 && (
+                <CommandGroup heading="Recently Visited">
+                  {recentPagesForCommand.map((page: any) => (
+                    <CommandItem
+                      key={page.id}
+                      onSelect={() => {
+                        navigateToPage(page.id);
+                        setShowCommand(false);
+                      }}
+                    >
+                      {page.icon ? (
+                        <span className="mr-2 text-base">{page.icon}</span>
+                      ) : (
+                        <FileText className="mr-2 h-4 w-4" />
+                      )}
+                      <span>{page.title}</span>
+                    </CommandItem>
+                  ))}
+                </CommandGroup>
+              )}
+
+              {/* Quick Actions Section */}
+              <CommandGroup heading="Quick Actions">
+                <CommandItem onSelect={() => navigate({ to: "/home" })}>
+                  <Home className="mr-2 h-4 w-4" />
+                  <span>Go to Home</span>
+                </CommandItem>
+                <CommandItem onSelect={() => handleCreatePage("Untitled")}>
+                  <FileText className="mr-2 h-4 w-4" />
+                  <span>Create new page</span>
+                </CommandItem>
+                <CommandItem onSelect={() => setShowSettingsDialog(true)}>
+                  <Settings className="mr-2 h-4 w-4" />
+                  <span>Workspace settings</span>
+                </CommandItem>
+              </CommandGroup>
+            </>
           )}
         </CommandList>
       </Command>

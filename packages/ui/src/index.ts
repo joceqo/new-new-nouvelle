@@ -152,6 +152,16 @@ export { Inbox, type InboxProps } from "./components/Sidebar/Inbox/Inbox";
 export { InlineInbox, type InlineInboxProps } from "./components/Sidebar/Inbox/InlineInbox";
 export { InboxSheet, type InboxSheetProps } from "./components/Sidebar/InboxSheet/InboxSheet";
 
+// Export Resizable components
+export {
+  ResizablePanelGroup,
+  ResizablePanel,
+  ResizableHandle,
+} from "./components/ui/resizable";
+
+// Export utilities
+export { cn } from "./lib/utils";
+
 // Export styles (consumers should import these in their app)
 // import '@nouvelle/ui/styles/fluid-typography.css';
 // import '@radix-ui/themes/styles.css';
