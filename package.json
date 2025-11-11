@@ -11,6 +11,7 @@
     "dev:api": "turbo run dev --filter=@nouvelle/api",
     "dev:convex": "turbo run dev --filter=@nouvelle/convex",
     "dev:all": "turbo run dev --filter=@nouvelle/convex --filter=@nouvelle/api --filter=@nouvelle/web --filter=@nouvelle/desktop",
+    "convex:dashboard": "docker compose --profile dashboard up -d && echo \"Admin key copied to clipboard!\" && printf '%s' \"$(grep CONVEX_SELF_HOSTED_ADMIN_KEY .env | cut -d '=' -f2)\" | pbcopy && open http://localhost:6791",
     "build": "turbo run build",
     "build:web": "turbo run build --filter=@nouvelle/web",
     "build:desktop": "turbo run build --filter=@nouvelle/desktop",
@@ -42,6 +43,7 @@
   "devDependencies": {
     "@playwright/test": "^1.56.1",
     "@types/node": "^22.10.5",
+    "convex": "^1.16.5",
     "mdxlint": "^1.0.0",
     "playwright": "^1.56.1",
     "prettier": "^3.4.2",

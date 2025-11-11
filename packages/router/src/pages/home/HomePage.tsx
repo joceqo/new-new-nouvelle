@@ -3,12 +3,13 @@
  */
 
 import { Home, type RecentPage } from "@nouvelle/ui";
-import { usePage } from "../../lib/page-context";
+import { usePage, type Page } from "../../lib/page-context";
 import { useWorkspace } from "../../lib/workspace-context";
 import { usePageTitle } from "../../lib/use-page-title";
 import { useNavigate } from "@tanstack/react-router";
 import { createPageSlug } from "../../lib/notion-url";
 import { useMemo } from "react";
+import { getRecentPages } from "../../lib/recent-pages";
 
 export function HomePage() {
   const navigate = useNavigate();
@@ -22,16 +23,60 @@ export function HomePage() {
     suffix: activeWorkspace?.name,
   });
 
-  // Get recently visited pages (mock for now - you can add real tracking later)
+  // Get recently visited pages with smart merging
   const recentPages: RecentPage[] = useMemo(() => {
-    // Sort pages by some criteria and take the first 6
-    // For now, just take first 6 pages
-    return pages.slice(0, 6).map((page) => ({
-      id: page.id,
-      title: page.title,
-      icon: page.icon,
-      lastVisited: new Date(Date.now() - Math.random() * 7 * 24 * 60 * 60 * 1000), // Random time in last 7 days
-    }));
+    // Flatten page tree to get ALL pages (including nested)
+    const flattenPages = (pageList: Page[]): Page[] => {
+      const result: Page[] = [];
+      for (const page of pageList) {
+        result.push(page);
+        if (page.children && page.children.length > 0) {
+          result.push(...flattenPages(page.children));
+        }
+      }
+      return result;
+    };
+
+    const allPages = flattenPages(pages);
+    const visitedPages = getRecentPages();
+
+    // Create a map for quick lookup
+    const pageMap = new Map(allPages.map(p => [p.id, p]));
+    const result: RecentPage[] = [];
+    const usedPageIds = new Set<string>();
+
+    // 1. Add visited pages first (from localStorage)
+    for (const visited of visitedPages) {
+      const page = pageMap.get(visited.pageId);
+      if (page && result.length < 6) {
+        result.push({
+          id: page.id,
+          title: page.title,
+          icon: page.icon,
+          lastVisited: new Date(visited.lastVisited),
+        });
+        usedPageIds.add(page.id);
+      }
+    }
+
+    // 2. Fill remaining slots with recently updated pages (if < 6)
+    if (result.length < 6) {
+      const recentlyUpdated = allPages
+        .filter(p => !usedPageIds.has(p.id)) // Exclude already added pages
+        .sort((a, b) => (b.updatedAt || 0) - (a.updatedAt || 0)); // Sort by updatedAt desc
+
+      for (const page of recentlyUpdated) {
+        if (result.length >= 6) break;
+        result.push({
+          id: page.id,
+          title: page.title,
+          icon: page.icon,
+          lastVisited: new Date(page.updatedAt || Date.now()),
+        });
+      }
+    }
+
+    return result;
   }, [pages]);
 
   const handlePageClick = (pageId: string) => {

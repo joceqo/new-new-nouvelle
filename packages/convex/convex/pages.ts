@@ -110,11 +110,10 @@ export const create = mutation({
     title: v.string(),
     icon: v.optional(v.string()),
     visibility: v.optional(v.string()),
+    createdBy: v.id("users"),
   },
   handler: async (ctx, args) => {
-    // Get the current user (you'll need to implement auth context)
-    // For now, we'll use a placeholder - you'll need to add auth
-    const userId = "placeholder" as Id<"users">; // TODO: Get from auth context
+    const userId = args.createdBy;
 
     // Get the position for the new page
     const siblings = await ctx.db

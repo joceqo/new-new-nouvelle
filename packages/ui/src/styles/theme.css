@@ -136,7 +136,7 @@
   /* Sidebar items */
   --sidebar-item-bg: transparent;
   --sidebar-item-bg-hover: rgba(0, 0, 0, 0.04);
-  --sidebar-item-bg-active: rgba(0, 0, 0, 0.08);
+  --sidebar-item-bg-active: rgba(0, 0, 0, 0.03);
   --sidebar-item-text: var(--color-text-primary);
   --sidebar-item-text-muted: var(--color-text-secondary);
   --sidebar-item-radius: 6px;

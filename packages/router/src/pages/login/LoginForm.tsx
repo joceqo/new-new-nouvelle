@@ -65,24 +65,34 @@ export function LoginForm() {
         setError(result.error || "Invalid or expired code. Please try again.");
         setLoading(false);
       } else {
+        console.log('✅ [LOGIN FORM] Login successful, user:', result.user);
         // Login successful
         login(result.token, result.user, result.refreshToken);
 
         // Check if user has workspaces to determine redirect
+        console.log('🔍 [LOGIN FORM] Checking for workspaces...');
         const workspacesResponse = await workspaceApiClient.listWorkspaces(result.token);
+        console.log('🔍 [LOGIN FORM] Workspaces response:', workspacesResponse);
+
         const hasWorkspaces = workspacesResponse.success &&
                               workspacesResponse.workspaces &&
                               workspacesResponse.workspaces.length > 0;
 
+        console.log('🔍 [LOGIN FORM] Has workspaces?', hasWorkspaces, 'Count:', workspacesResponse.workspaces?.length || 0);
+
         if (hasWorkspaces) {
           // User has workspaces, check for last visited page or go to home
+          console.log('✅ [LOGIN FORM] User has workspaces, checking redirect...');
           const lastVisitedPage = localStorage.getItem('nouvelle_last_visited_page');
           if (lastVisitedPage && lastVisitedPage !== '/login' && lastVisitedPage !== '/onboarding') {
+            console.log('✅ [LOGIN FORM] Redirecting to last visited page:', lastVisitedPage);
             navigate({ to: lastVisitedPage as any });
           } else {
+            console.log('✅ [LOGIN FORM] Redirecting to /home');
             navigate({ to: "/home" });
           }
         } else {
+          console.log('⚠️ [LOGIN FORM] User has NO workspaces, redirecting to /onboarding');
           // New user, redirect to onboarding
           navigate({ to: "/onboarding" });
         }

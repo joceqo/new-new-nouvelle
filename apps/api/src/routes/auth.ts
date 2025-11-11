@@ -28,6 +28,15 @@ export function createAuthRoutes() {
 
   const isTest =
     process.env.NODE_ENV === "test" || process.env.TEST_MODE === "true";
+  const isDev = process.env.NODE_ENV === "development" || !process.env.NODE_ENV; // Default to dev if NODE_ENV not set
+  
+  // Log the environment for debugging
+  authLogger.info({ 
+    NODE_ENV: process.env.NODE_ENV, 
+    isTest, 
+    isDev,
+    rateLimitingEnabled: !isTest && !isDev
+  }, "Auth routes environment configuration");
 
   const app = new Elysia({ prefix: "/auth" }).use(
     jwt({
@@ -37,8 +46,8 @@ export function createAuthRoutes() {
     })
   );
 
-  // Apply rate limiting only in non-test environments
-  if (!isTest) {
+  // Apply rate limiting only in production (not in test or dev)
+  if (!isTest && !isDev) {
     app.use(
       rateLimit({
         duration: 15 * 60 * 1000, // 15 minutes

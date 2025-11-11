@@ -99,10 +99,12 @@ export interface DropdownMenuContentProps extends React.HTMLAttributes<HTMLDivEl
   align?: "start" | "center" | "end";
   side?: "top" | "bottom" | "left" | "right";
   sideOffset?: number;
+  collisionPadding?: number;
+  autoFlip?: boolean;
 }
 
 export const DropdownMenuContent = React.forwardRef<HTMLDivElement, DropdownMenuContentProps>(
-  ({ children, className, align = "start", side = "bottom", sideOffset = 4, ...props }, ref) => {
+  ({ children, className, align = "start", side = "bottom", sideOffset = 4, collisionPadding = 8, autoFlip = true, ...props }, ref) => {
     const { isOpen, setOpen, triggerRef } = React.useContext(DropdownMenuContext);
     const contentRef = React.useRef<HTMLDivElement>(null);
     const [position, setPosition] = React.useState<{ top?: number; left?: number; right?: number }>({});
@@ -115,14 +117,14 @@ export const DropdownMenuContent = React.forwardRef<HTMLDivElement, DropdownMenu
       const contentRect = contentRef.current.getBoundingClientRect();
       const newPosition: { top?: number; left?: number; right?: number } = {};
 
-      // Calculate vertical position based on side
+      // Calculate initial vertical position based on side
       if (side === "bottom") {
         newPosition.top = triggerRect.bottom + sideOffset;
       } else if (side === "top") {
         newPosition.top = triggerRect.top - contentRect.height - sideOffset;
       }
 
-      // Calculate horizontal position based on align
+      // Calculate initial horizontal position based on align
       if (align === "start") {
         newPosition.left = triggerRect.left;
       } else if (align === "end") {
@@ -131,8 +133,73 @@ export const DropdownMenuContent = React.forwardRef<HTMLDivElement, DropdownMenu
         newPosition.left = triggerRect.left + (triggerRect.width - contentRect.width) / 2;
       }
 
+      // Apply collision detection if autoFlip is enabled
+      if (autoFlip) {
+        // Check horizontal overflow
+        if (align === "end") {
+          // Calculate where the right edge would be
+          const rightEdge = window.innerWidth - (newPosition.right || 0);
+          const leftEdge = rightEdge - contentRect.width;
+
+          // If overflows left, flip to start alignment
+          if (leftEdge < collisionPadding) {
+            newPosition.left = triggerRect.left;
+            delete newPosition.right;
+          }
+        } else if (align === "start") {
+          // Check if overflows right
+          const rightEdge = (newPosition.left || 0) + contentRect.width;
+
+          // If overflows right, flip to end alignment
+          if (rightEdge > window.innerWidth - collisionPadding) {
+            newPosition.right = window.innerWidth - triggerRect.right;
+            delete newPosition.left;
+          }
+        } else if (align === "center") {
+          const leftEdge = newPosition.left || 0;
+          const rightEdge = leftEdge + contentRect.width;
+
+          // If overflows either side, prefer start alignment
+          if (leftEdge < collisionPadding || rightEdge > window.innerWidth - collisionPadding) {
+            newPosition.left = Math.max(collisionPadding, triggerRect.left);
+          }
+        }
+
+        // Check vertical overflow
+        const bottomEdge = (newPosition.top || 0) + contentRect.height;
+        const topEdge = newPosition.top || 0;
+
+        if (side === "bottom" && bottomEdge > window.innerHeight - collisionPadding) {
+          // Try flipping to top
+          const topPosition = triggerRect.top - contentRect.height - sideOffset;
+          if (topPosition >= collisionPadding) {
+            newPosition.top = topPosition;
+          } else {
+            // Keep bottom but adjust to fit
+            newPosition.top = Math.max(collisionPadding, window.innerHeight - contentRect.height - collisionPadding);
+          }
+        } else if (side === "top" && topEdge < collisionPadding) {
+          // Try flipping to bottom
+          const bottomPosition = triggerRect.bottom + sideOffset;
+          if (bottomPosition + contentRect.height <= window.innerHeight - collisionPadding) {
+            newPosition.top = bottomPosition;
+          } else {
+            // Keep top but adjust to fit
+            newPosition.top = collisionPadding;
+          }
+        }
+
+        // Apply collision padding to edges
+        if (newPosition.left !== undefined) {
+          newPosition.left = Math.max(collisionPadding, Math.min(newPosition.left, window.innerWidth - contentRect.width - collisionPadding));
+        }
+        if (newPosition.top !== undefined) {
+          newPosition.top = Math.max(collisionPadding, Math.min(newPosition.top, window.innerHeight - contentRect.height - collisionPadding));
+        }
+      }
+
       setPosition(newPosition);
-    }, [isOpen, align, side, sideOffset, triggerRef]);
+    }, [isOpen, align, side, sideOffset, collisionPadding, autoFlip, triggerRef]);
 
     // Close when clicking outside
     React.useEffect(() => {

@@ -1,5 +1,5 @@
 import { ConvexHttpClient } from 'convex/browser';
-import { api } from '@nouvelle/convex/convex/_generated/api';
+import { api } from '@nouvelle/convex';
 
 // Initialize Convex client
 const convexUrl = process.env.CONVEX_URL;

@@ -8,13 +8,18 @@ import React, {
 import { useAuth } from "./auth-context";
 import { useWorkspace } from "./workspace-context";
 
+const API_BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:3001";
+
 export interface Page {
   id: string;
   title: string;
   icon?: string;
   isFavorite?: boolean;
+  visibility?: "private" | "workspace" | "public";
   hasChildren?: boolean;
   children?: Page[];
+  createdAt?: number;
+  updatedAt?: number;
 }
 
 interface PageContextValue {
@@ -42,13 +47,17 @@ interface PageContextValue {
   restorePage: (
     pageId: string
   ) => Promise<{ success: boolean; error?: string }>;
+  duplicatePage: (
+    pageId: string
+  ) => Promise<{ success: boolean; pageId?: string; error?: string }>;
+  copyPageLink: (
+    pageId: string
+  ) => Promise<{ success: boolean; error?: string }>;
   refreshPages: () => Promise<void>;
   clearError: () => void;
 }
 
 const PageContext = createContext<PageContextValue | undefined>(undefined);
-
-// const API_BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:3001";
 
 export function PageProvider({ children }: { children: React.ReactNode }) {
   const { token, isAuthenticated } = useAuth();
@@ -75,19 +84,22 @@ export function PageProvider({ children }: { children: React.ReactNode }) {
 
     // First pass: create all page objects
     pages.forEach((page) => {
-      pageMap.set(page.id, {
-        id: page.id,
+      pageMap.set(page._id, {
+        id: page._id,
         title: page.title,
         icon: page.icon,
         isFavorite: page.isFavorite,
+        visibility: page.visibility,
         hasChildren: false,
         children: [],
+        createdAt: page.createdAt,
+        updatedAt: page.updatedAt,
       });
     });
 
     // Second pass: build tree structure
     pages.forEach((page) => {
-      const pageNode = pageMap.get(page.id);
+      const pageNode = pageMap.get(page._id);
       if (!pageNode) return;
 
       if (page.parentPageId) {
@@ -119,66 +131,14 @@ export function PageProvider({ children }: { children: React.ReactNode }) {
     }
 
     try {
-      // For now, we'll create mock data since the API endpoints don't exist yet
-      // TODO: Replace with actual API calls when backend is ready
-      const mockPages: any[] = [
-        {
-          id: "1",
-          workspaceId: activeWorkspace.id,
-          title: "Getting Started",
-          icon: "📝",
-          parentPageId: undefined,
-          isFavorite: true,
-          isArchived: false,
-          createdAt: Date.now(),
-          updatedAt: Date.now(),
-        },
-        {
-          id: "2",
-          workspaceId: activeWorkspace.id,
-          title: "Project Planning",
-          icon: "📋",
-          parentPageId: undefined,
-          isFavorite: false,
-          isArchived: false,
-          createdAt: Date.now(),
-          updatedAt: Date.now(),
-        },
-        {
-          id: "3",
-          workspaceId: activeWorkspace.id,
-          title: "Meeting Notes",
-          icon: "📅",
-          parentPageId: "2",
-          isFavorite: false,
-          isArchived: false,
-          createdAt: Date.now(),
-          updatedAt: Date.now(),
-        },
-      ];
-
-      const tree = buildTree(mockPages);
-      const favs = mockPages.filter((p) => p.isFavorite);
-      const recentPages = mockPages.slice(0, 5);
-
-      setState({
-        pages: tree,
-        favorites: buildTree(favs),
-        recent: buildTree(recentPages),
-        isLoading: false,
-        error: null,
-      });
-
-      /* 
-      // Uncomment when API endpoints are ready:
       const [pagesRes, favsRes, recentRes] = await Promise.all([
-        fetch(`${API_BASE_URL}/api/workspaces/${activeWorkspace.id}/pages`, {
+        fetch(`${API_BASE_URL}/workspaces/${activeWorkspace.id}/pages`, {
           headers: { Authorization: `Bearer ${token}` },
         }),
-        fetch(`${API_BASE_URL}/api/workspaces/${activeWorkspace.id}/pages/favorites`, {
+        fetch(`${API_BASE_URL}/workspaces/${activeWorkspace.id}/pages/favorites`, {
           headers: { Authorization: `Bearer ${token}` },
         }),
-        fetch(`${API_BASE_URL}/api/workspaces/${activeWorkspace.id}/pages/recent`, {
+        fetch(`${API_BASE_URL}/workspaces/${activeWorkspace.id}/pages/recent`, {
           headers: { Authorization: `Bearer ${token}` },
         }),
       ]);
@@ -200,7 +160,6 @@ export function PageProvider({ children }: { children: React.ReactNode }) {
         isLoading: false,
         error: null,
       });
-      */
     } catch (error) {
       console.error("Load pages error:", error);
       setState((prev) => ({
@@ -223,37 +182,29 @@ export function PageProvider({ children }: { children: React.ReactNode }) {
       }
 
       try {
-        // TODO: Replace with actual API call
-        console.log("Creating page:", {
-          title,
-          parentId,
-          icon,
-          workspaceId: activeWorkspace.id,
-        });
+        const response = await fetch(
+          `${API_BASE_URL}/workspaces/${activeWorkspace.id}/pages`,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+            body: JSON.stringify({ title, parentId, icon }),
+          }
+        );
 
-        // Mock success for now
-        await loadPages();
-        return { success: true, pageId: Date.now().toString() };
+        const data = await response.json();
 
-        /*
-      const response = await fetch(`${API_BASE_URL}/api/workspaces/${activeWorkspace.id}/pages`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify({ title, parentId, icon }),
-      });
+        if (data.success) {
+          await loadPages();
+          return { success: true, pageId: data.pageId };
+        }
 
-      const data = await response.json();
-
-      if (data.success) {
-        await loadPages();
-        return { success: true, pageId: data.pageId };
-      }
-
-      return { success: false, error: data.error || 'Failed to create page' };
-      */
+        return {
+          success: false,
+          error: data.error || "Failed to create page",
+        };
       } catch (error) {
         const errorMsg =
           error instanceof Error ? error.message : "Failed to create page";
@@ -275,32 +226,23 @@ export function PageProvider({ children }: { children: React.ReactNode }) {
       }
 
       try {
-        // TODO: Replace with actual API call
-        console.log("Updating page:", { pageId, updates });
+        const response = await fetch(`${API_BASE_URL}/pages/${pageId}`, {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify(updates),
+        });
 
-        // Mock success for now
-        await loadPages();
-        return { success: true };
+        const data = await response.json();
 
-        /*
-      const response = await fetch(`${API_BASE_URL}/api/pages/${pageId}`, {
-        method: 'PATCH',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify(updates),
-      });
+        if (data.success) {
+          await loadPages();
+          return { success: true };
+        }
 
-      const data = await response.json();
-
-      if (data.success) {
-        await loadPages();
-        return { success: true };
-      }
-
-      return { success: false, error: data.error || 'Failed to update page' };
-      */
+        return { success: false, error: data.error || "Failed to update page" };
       } catch (error) {
         const errorMsg =
           error instanceof Error ? error.message : "Failed to update page";
@@ -319,12 +261,19 @@ export function PageProvider({ children }: { children: React.ReactNode }) {
       }
 
       try {
-        // TODO: Replace with actual API call
-        console.log("Deleting page:", { pageId });
+        const response = await fetch(`${API_BASE_URL}/pages/${pageId}`, {
+          method: "DELETE",
+          headers: { Authorization: `Bearer ${token}` },
+        });
 
-        // Mock success for now
-        await loadPages();
-        return { success: true };
+        const data = await response.json();
+
+        if (data.success) {
+          await loadPages();
+          return { success: true };
+        }
+
+        return { success: false, error: data.error || "Failed to delete page" };
       } catch (error) {
         const errorMsg =
           error instanceof Error ? error.message : "Failed to delete page";
@@ -343,12 +292,22 @@ export function PageProvider({ children }: { children: React.ReactNode }) {
       }
 
       try {
-        // TODO: Replace with actual API call
-        console.log("Toggling favorite:", { pageId });
+        const response = await fetch(`${API_BASE_URL}/pages/${pageId}/favorite`, {
+          method: "POST",
+          headers: { Authorization: `Bearer ${token}` },
+        });
 
-        // Mock success for now
-        await loadPages();
-        return { success: true };
+        const data = await response.json();
+
+        if (data.success) {
+          await loadPages();
+          return { success: true };
+        }
+
+        return {
+          success: false,
+          error: data.error || "Failed to toggle favorite",
+        };
       } catch (error) {
         const errorMsg =
           error instanceof Error ? error.message : "Failed to toggle favorite";
@@ -367,11 +326,19 @@ export function PageProvider({ children }: { children: React.ReactNode }) {
       }
 
       try {
-        // TODO: Replace with actual API call
-        console.log("Archiving page:", { pageId });
+        const response = await fetch(`${API_BASE_URL}/pages/${pageId}/archive`, {
+          method: "POST",
+          headers: { Authorization: `Bearer ${token}` },
+        });
 
-        await loadPages();
-        return { success: true };
+        const data = await response.json();
+
+        if (data.success) {
+          await loadPages();
+          return { success: true };
+        }
+
+        return { success: false, error: data.error || "Failed to archive page" };
       } catch (error) {
         const errorMsg =
           error instanceof Error ? error.message : "Failed to archive page";
@@ -390,11 +357,19 @@ export function PageProvider({ children }: { children: React.ReactNode }) {
       }
 
       try {
-        // TODO: Replace with actual API call
-        console.log("Restoring page:", { pageId });
+        const response = await fetch(`${API_BASE_URL}/pages/${pageId}/restore`, {
+          method: "POST",
+          headers: { Authorization: `Bearer ${token}` },
+        });
 
-        await loadPages();
-        return { success: true };
+        const data = await response.json();
+
+        if (data.success) {
+          await loadPages();
+          return { success: true };
+        }
+
+        return { success: false, error: data.error || "Failed to restore page" };
       } catch (error) {
         const errorMsg =
           error instanceof Error ? error.message : "Failed to restore page";
@@ -403,6 +378,43 @@ export function PageProvider({ children }: { children: React.ReactNode }) {
       }
     },
     [token, loadPages]
+  );
+
+  // Duplicate page (not implemented in Convex yet, placeholder for now)
+  const duplicatePage = useCallback(
+    async (
+      pageId: string
+    ): Promise<{ success: boolean; pageId?: string; error?: string }> => {
+      // TODO: Implement duplication in Convex backend
+      console.log("Duplicating page:", { pageId });
+      return {
+        success: false,
+        error: "Duplicate functionality not yet implemented",
+      };
+    },
+    []
+  );
+
+  // Copy page link
+  const copyPageLink = useCallback(
+    async (pageId: string): Promise<{ success: boolean; error?: string }> => {
+      try {
+        // Generate page URL (adjust based on your routing structure)
+        const pageUrl = `${window.location.origin}/page/${pageId}`;
+
+        // Copy to clipboard
+        await navigator.clipboard.writeText(pageUrl);
+
+        console.log("Copied page link:", { pageId, url: pageUrl });
+        return { success: true };
+      } catch (error) {
+        const errorMsg =
+          error instanceof Error ? error.message : "Failed to copy link";
+        console.error("Copy page link error:", errorMsg);
+        return { success: false, error: errorMsg };
+      }
+    },
+    []
   );
 
   // Refresh pages
@@ -430,6 +442,8 @@ export function PageProvider({ children }: { children: React.ReactNode }) {
         toggleFavorite,
         archivePage,
         restorePage,
+        duplicatePage,
+        copyPageLink,
         refreshPages,
         clearError,
       }}

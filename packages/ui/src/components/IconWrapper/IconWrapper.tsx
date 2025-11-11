@@ -17,8 +17,21 @@ type IconVariant = "default" | "button";
 type BaseIconWrapperProps = {
   /**
    * The Lucide icon component to render
+   * Optional when using children for custom content (e.g., emojis)
    */
-  icon: LucideIcon;
+  icon?: LucideIcon;
+
+  /**
+   * Custom content to render instead of a Lucide icon
+   * Use this for emojis or other custom icon content
+   */
+  children?: React.ReactNode;
+
+  /**
+   * Props to pass directly to the icon component (e.g., fill, strokeWidth)
+   * Useful for customizing icon appearance beyond className
+   */
+  iconProps?: React.SVGProps<SVGSVGElement>;
 
   /**
    * Predefined icon size
@@ -69,6 +82,8 @@ const sizeClasses: Record<IconSize, { icon: string; container?: string }> = {
 
 export const IconWrapper: React.FC<IconWrapperProps> = ({
   icon: Icon,
+  children,
+  iconProps,
   size,
   interactive = false,
   variant = "default",
@@ -87,9 +102,9 @@ export const IconWrapper: React.FC<IconWrapperProps> = ({
     (interactive || isButton) && "inline-flex items-center justify-center",
     // Transition for smooth hover effects
     (interactive || isButton) && "transition-colors duration-150",
-    // Button-specific styles
+    // Button-specific styles (no padding override - uses size-based padding)
     isButton && [
-      "rounded p-0.5 cursor-pointer",
+      "rounded cursor-pointer",
       "text-[var(--sidebar-header-icon)]",
       "hover:bg-[var(--sidebar-action-bg-hover)]",
       "hover:text-[var(--sidebar-header-icon-hover)]",
@@ -99,6 +114,9 @@ export const IconWrapper: React.FC<IconWrapperProps> = ({
     className
   );
 
+  // Render content (either custom children or Icon component)
+  const content = children ? children : Icon ? <Icon className={iconClassName} {...iconProps} /> : null;
+
   // Render as button when variant is 'button'
   if (isButton) {
     return (
@@ -106,7 +124,7 @@ export const IconWrapper: React.FC<IconWrapperProps> = ({
         className={containerClassName}
         {...(props as React.ButtonHTMLAttributes<HTMLButtonElement>)}
       >
-        <Icon className={iconClassName} />
+        {content}
       </button>
     );
   }
@@ -117,7 +135,7 @@ export const IconWrapper: React.FC<IconWrapperProps> = ({
       className={containerClassName}
       {...(props as React.HTMLAttributes<HTMLDivElement>)}
     >
-      <Icon className={iconClassName} />
+      {content}
     </div>
   );
 };
