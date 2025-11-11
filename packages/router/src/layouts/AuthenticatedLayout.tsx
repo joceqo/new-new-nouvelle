@@ -32,8 +32,6 @@ import {
   FileText,
   Home,
   Settings,
-  PanelLeftClose,
-  PanelLeftOpen,
   Menu,
 } from "lucide-react";
 
@@ -78,7 +76,6 @@ export function AuthenticatedLayout() {
 
   // Sidebar states
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
-  const [sidebarSize, setSidebarSize] = useState(20); // 20% default
 
   // Handlers
   const handleLogout = async () => {
@@ -304,10 +301,6 @@ export function AuthenticatedLayout() {
           minSize={sidebarCollapsed ? 0 : 10}
           maxSize={sidebarCollapsed ? 0 : 40}
           collapsible={false}
-          onResize={(size: number) => {
-            console.log("[Sidebar Resize]", size);
-            setSidebarSize(size);
-          }}
           className="min-w-[140px]"
         >
           {!sidebarCollapsed && (

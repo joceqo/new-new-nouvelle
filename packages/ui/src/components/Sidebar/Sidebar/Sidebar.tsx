@@ -17,7 +17,6 @@ import {
 } from "lucide-react";
 import React from "react";
 import { IconWrapper } from "@/components/IconWrapper";
-import { cn } from "@/lib/utils";
 
 export interface SidebarProps {
   children?: React.ReactNode;
