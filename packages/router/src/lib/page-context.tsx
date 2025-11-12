@@ -1,14 +1,7 @@
-import React, {
-  createContext,
-  useContext,
-  useState,
-  useEffect,
-  useCallback,
-} from "react";
+import React, { createContext, useContext, useCallback } from "react";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useAuth } from "./auth-context";
 import { useWorkspace } from "./workspace-context";
-
-const API_BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:3001";
 
 export interface Page {
   id: string;
@@ -60,22 +53,9 @@ interface PageContextValue {
 const PageContext = createContext<PageContextValue | undefined>(undefined);
 
 export function PageProvider({ children }: { children: React.ReactNode }) {
-  const { token, isAuthenticated } = useAuth();
-  const { activeWorkspace } = useWorkspace();
-
-  const [state, setState] = useState<{
-    pages: Page[];
-    favorites: Page[];
-    recent: Page[];
-    isLoading: boolean;
-    error: string | null;
-  }>({
-    pages: [],
-    favorites: [],
-    recent: [],
-    isLoading: true,
-    error: null,
-  });
+  const { token, isAuthenticated, isLoading: authLoading } = useAuth();
+  const { activeWorkspace, isLoading: workspaceLoading } = useWorkspace();
+  const queryClient = useQueryClient();
 
   // Build tree structure from flat list of pages
   const buildTree = useCallback((pages: any[]): Page[] => {
@@ -117,340 +97,419 @@ export function PageProvider({ children }: { children: React.ReactNode }) {
     return rootPages;
   }, []);
 
-  // Load pages from API
-  const loadPages = useCallback(async () => {
-    if (!token || !isAuthenticated || !activeWorkspace) {
-      setState({
-        pages: [],
-        favorites: [],
-        recent: [],
-        isLoading: false,
-        error: null,
-      });
-      return;
-    }
-
-    try {
-      const [pagesRes, favsRes, recentRes] = await Promise.all([
-        fetch(`${API_BASE_URL}/workspaces/${activeWorkspace.id}/pages`, {
-          headers: { Authorization: `Bearer ${token}` },
-        }),
-        fetch(`${API_BASE_URL}/workspaces/${activeWorkspace.id}/pages/favorites`, {
-          headers: { Authorization: `Bearer ${token}` },
-        }),
-        fetch(`${API_BASE_URL}/workspaces/${activeWorkspace.id}/pages/recent`, {
-          headers: { Authorization: `Bearer ${token}` },
-        }),
-      ]);
-
-      const [pagesData, favsData, recentData] = await Promise.all([
-        pagesRes.json(),
-        favsRes.json(),
-        recentRes.json(),
-      ]);
-
-      const tree = buildTree(pagesData.pages || []);
-      const favs = buildTree(favsData.pages || []);
-      const recent = buildTree(recentData.pages || []);
-
-      setState({
-        pages: tree,
-        favorites: favs,
-        recent: recent,
-        isLoading: false,
-        error: null,
-      });
-    } catch (error) {
-      console.error("Load pages error:", error);
-      setState((prev) => ({
-        ...prev,
-        isLoading: false,
-        error: error instanceof Error ? error.message : "Failed to load pages",
-      }));
-    }
-  }, [token, isAuthenticated, activeWorkspace, buildTree]);
-
-  // Create new page
-  const createPage = useCallback(
-    async (
-      title: string,
-      parentId?: string,
-      icon?: string
-    ): Promise<{ success: boolean; pageId?: string; error?: string }> => {
-      if (!token || !activeWorkspace) {
-        return { success: false, error: "Not authenticated" };
+  // Query for pages - only runs when workspace is active
+  const {
+    data: pagesData,
+    isLoading: pagesLoading,
+    refetch: refetchPages,
+  } = useQuery({
+    queryKey: ["pages", activeWorkspace?.id],
+    queryFn: async () => {
+      if (!token || !isAuthenticated || !activeWorkspace) {
+        console.log(
+          "[PAGES] No token, not authenticated, or no active workspace"
+        );
+        return { pages: [], favorites: [], recent: [] };
       }
 
+      console.log("[PAGES] Loading pages for workspace:", activeWorkspace.id);
+
+      const API_BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:3001";
+
       try {
-        const response = await fetch(
-          `${API_BASE_URL}/workspaces/${activeWorkspace.id}/pages`,
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${token}`,
-            },
-            body: JSON.stringify({ title, parentId, icon }),
-          }
-        );
+        // Fetch pages, favorites, and recent in parallel
+        const [pagesRes, favsRes, recentRes] = await Promise.all([
+          fetch(`${API_BASE_URL}/workspaces/${activeWorkspace.id}/pages`, {
+            headers: { Authorization: `Bearer ${token}` },
+          }),
+          fetch(`${API_BASE_URL}/workspaces/${activeWorkspace.id}/pages/favorites`, {
+            headers: { Authorization: `Bearer ${token}` },
+          }),
+          fetch(`${API_BASE_URL}/workspaces/${activeWorkspace.id}/pages/recent`, {
+            headers: { Authorization: `Bearer ${token}` },
+          }),
+        ]);
 
-        const data = await response.json();
-
-        if (data.success) {
-          await loadPages();
-          return { success: true, pageId: data.pageId };
+        // Check for errors
+        if (!pagesRes.ok || !favsRes.ok || !recentRes.ok) {
+          throw new Error("Failed to fetch pages");
         }
 
+        const [pagesData, favsData, recentData] = await Promise.all([
+          pagesRes.json(),
+          favsRes.json(),
+          recentRes.json(),
+        ]);
+
+        const tree = buildTree(pagesData.pages || []);
+        const favs = buildTree(favsData.pages || []);
+        const recent = buildTree(recentData.pages || []);
+
+        console.log("[PAGES] Pages loaded:", {
+          count: tree.length,
+          favorites: favs.length,
+          recent: recent.length,
+        });
+
         return {
-          success: false,
-          error: data.error || "Failed to create page",
+          pages: tree,
+          favorites: favs,
+          recent: recent,
         };
       } catch (error) {
-        const errorMsg =
-          error instanceof Error ? error.message : "Failed to create page";
-        console.error("Create page error:", errorMsg);
-        return { success: false, error: errorMsg };
+        console.error("[PAGES] Error loading pages:", error);
+        return { pages: [], favorites: [], recent: [] };
       }
     },
-    [token, activeWorkspace, loadPages]
-  );
+    enabled:
+      !!token &&
+      isAuthenticated &&
+      !!activeWorkspace &&
+      !authLoading &&
+      !workspaceLoading, // THIS PREVENTS THE RACE CONDITION
+    staleTime: 1 * 60 * 1000, // 1 minute
+    gcTime: 5 * 60 * 1000, // 5 minutes
+  });
 
-  // Update page
-  const updatePage = useCallback(
-    async (
-      pageId: string,
-      updates: Partial<Page>
-    ): Promise<{ success: boolean; error?: string }> => {
-      if (!token) {
-        return { success: false, error: "Not authenticated" };
-      }
+  // Mutations
+  const createPageMutation = useMutation({
+    mutationFn: async ({
+      title,
+      parentId,
+      icon,
+    }: {
+      title: string;
+      parentId?: string;
+      icon?: string;
+    }) => {
+      if (!token || !activeWorkspace) throw new Error("Not authenticated");
 
-      try {
-        const response = await fetch(`${API_BASE_URL}/pages/${pageId}`, {
-          method: "PATCH",
+      const API_BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:3001";
+
+      const response = await fetch(
+        `${API_BASE_URL}/workspaces/${activeWorkspace.id}/pages`,
+        {
+          method: "POST",
           headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,
           },
-          body: JSON.stringify(updates),
-        });
-
-        const data = await response.json();
-
-        if (data.success) {
-          await loadPages();
-          return { success: true };
+          body: JSON.stringify({
+            title,
+            parentId,
+            icon,
+          }),
         }
+      );
 
-        return { success: false, error: data.error || "Failed to update page" };
-      } catch (error) {
-        const errorMsg =
-          error instanceof Error ? error.message : "Failed to update page";
-        console.error("Update page error:", errorMsg);
-        return { success: false, error: errorMsg };
+      if (!response.ok) {
+        throw new Error("Failed to create page");
       }
+
+      const data = await response.json();
+      return data;
     },
-    [token, loadPages]
-  );
-
-  // Delete page
-  const deletePage = useCallback(
-    async (pageId: string): Promise<{ success: boolean; error?: string }> => {
-      if (!token) {
-        return { success: false, error: "Not authenticated" };
-      }
-
-      try {
-        const response = await fetch(`${API_BASE_URL}/pages/${pageId}`, {
-          method: "DELETE",
-          headers: { Authorization: `Bearer ${token}` },
-        });
-
-        const data = await response.json();
-
-        if (data.success) {
-          await loadPages();
-          return { success: true };
-        }
-
-        return { success: false, error: data.error || "Failed to delete page" };
-      } catch (error) {
-        const errorMsg =
-          error instanceof Error ? error.message : "Failed to delete page";
-        console.error("Delete page error:", errorMsg);
-        return { success: false, error: errorMsg };
-      }
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["pages"] });
     },
-    [token, loadPages]
-  );
+  });
 
-  // Toggle favorite
-  const toggleFavorite = useCallback(
-    async (pageId: string): Promise<{ success: boolean; error?: string }> => {
-      if (!token) {
-        return { success: false, error: "Not authenticated" };
+  const updatePageMutation = useMutation({
+    mutationFn: async ({
+      pageId,
+      updates,
+    }: {
+      pageId: string;
+      updates: Partial<Page>;
+    }) => {
+      if (!token) throw new Error("Not authenticated");
+
+      const API_BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:3001";
+
+      const response = await fetch(`${API_BASE_URL}/pages/${pageId}`, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(updates),
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to update page");
       }
 
+      return await response.json();
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["pages"] });
+    },
+  });
+
+  const deletePageMutation = useMutation({
+    mutationFn: async (pageId: string) => {
+      if (!token) throw new Error("Not authenticated");
+
+      const API_BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:3001";
+
+      const response = await fetch(`${API_BASE_URL}/pages/${pageId}`, {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to delete page");
+      }
+
+      return await response.json();
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["pages"] });
+    },
+  });
+
+  const toggleFavoriteMutation = useMutation({
+    mutationFn: async (pageId: string) => {
+      if (!token) throw new Error("Not authenticated");
+
+      const API_BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:3001";
+
+      const response = await fetch(`${API_BASE_URL}/pages/${pageId}/favorite`, {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to toggle favorite");
+      }
+
+      return await response.json();
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["pages"] });
+    },
+  });
+
+  const archivePageMutation = useMutation({
+    mutationFn: async (pageId: string) => {
+      if (!token) throw new Error("Not authenticated");
+
+      const API_BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:3001";
+
+      const response = await fetch(`${API_BASE_URL}/pages/${pageId}/archive`, {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to archive page");
+      }
+
+      return await response.json();
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["pages"] });
+    },
+  });
+
+  const restorePageMutation = useMutation({
+    mutationFn: async (pageId: string) => {
+      if (!token) throw new Error("Not authenticated");
+
+      const API_BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:3001";
+
+      const response = await fetch(`${API_BASE_URL}/pages/${pageId}/restore`, {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to restore page");
+      }
+
+      return await response.json();
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["pages"] });
+    },
+  });
+
+  // Action functions
+  const createPage = useCallback(
+    async (title: string, parentId?: string, icon?: string) => {
       try {
-        const response = await fetch(`${API_BASE_URL}/pages/${pageId}/favorite`, {
-          method: "POST",
-          headers: { Authorization: `Bearer ${token}` },
+        const result = await createPageMutation.mutateAsync({
+          title,
+          parentId,
+          icon,
         });
-
-        const data = await response.json();
-
-        if (data.success) {
-          await loadPages();
-          return { success: true };
-        }
-
+        return result.success
+          ? { success: true, pageId: result.pageId }
+          : { success: false, error: "Failed to create page" };
+      } catch (error) {
         return {
           success: false,
-          error: data.error || "Failed to toggle favorite",
+          error:
+            error instanceof Error ? error.message : "Failed to create page",
         };
-      } catch (error) {
-        const errorMsg =
-          error instanceof Error ? error.message : "Failed to toggle favorite";
-        console.error("Toggle favorite error:", errorMsg);
-        return { success: false, error: errorMsg };
       }
     },
-    [token, loadPages]
+    [createPageMutation]
   );
 
-  // Archive page
+  const updatePage = useCallback(
+    async (pageId: string, updates: Partial<Page>) => {
+      try {
+        const result = await updatePageMutation.mutateAsync({
+          pageId,
+          updates,
+        });
+        return result.success
+          ? { success: true }
+          : { success: false, error: "Failed to update page" };
+      } catch (error) {
+        return {
+          success: false,
+          error:
+            error instanceof Error ? error.message : "Failed to update page",
+        };
+      }
+    },
+    [updatePageMutation]
+  );
+
+  const deletePage = useCallback(
+    async (pageId: string) => {
+      try {
+        const result = await deletePageMutation.mutateAsync(pageId);
+        return result.success
+          ? { success: true }
+          : { success: false, error: "Failed to delete page" };
+      } catch (error) {
+        return {
+          success: false,
+          error:
+            error instanceof Error ? error.message : "Failed to delete page",
+        };
+      }
+    },
+    [deletePageMutation]
+  );
+
+  const toggleFavorite = useCallback(
+    async (pageId: string) => {
+      try {
+        const result = await toggleFavoriteMutation.mutateAsync(pageId);
+        return result.success
+          ? { success: true }
+          : { success: false, error: "Failed to toggle favorite" };
+      } catch (error) {
+        return {
+          success: false,
+          error:
+            error instanceof Error
+              ? error.message
+              : "Failed to toggle favorite",
+        };
+      }
+    },
+    [toggleFavoriteMutation]
+  );
+
   const archivePage = useCallback(
-    async (pageId: string): Promise<{ success: boolean; error?: string }> => {
-      if (!token) {
-        return { success: false, error: "Not authenticated" };
-      }
-
+    async (pageId: string) => {
       try {
-        const response = await fetch(`${API_BASE_URL}/pages/${pageId}/archive`, {
-          method: "POST",
-          headers: { Authorization: `Bearer ${token}` },
-        });
-
-        const data = await response.json();
-
-        if (data.success) {
-          await loadPages();
-          return { success: true };
-        }
-
-        return { success: false, error: data.error || "Failed to archive page" };
+        const result = await archivePageMutation.mutateAsync(pageId);
+        return result.success
+          ? { success: true }
+          : { success: false, error: "Failed to archive page" };
       } catch (error) {
-        const errorMsg =
-          error instanceof Error ? error.message : "Failed to archive page";
-        console.error("Archive page error:", errorMsg);
-        return { success: false, error: errorMsg };
+        return {
+          success: false,
+          error:
+            error instanceof Error ? error.message : "Failed to archive page",
+        };
       }
     },
-    [token, loadPages]
+    [archivePageMutation]
   );
 
-  // Restore page
   const restorePage = useCallback(
-    async (pageId: string): Promise<{ success: boolean; error?: string }> => {
-      if (!token) {
-        return { success: false, error: "Not authenticated" };
-      }
-
+    async (pageId: string) => {
       try {
-        const response = await fetch(`${API_BASE_URL}/pages/${pageId}/restore`, {
-          method: "POST",
-          headers: { Authorization: `Bearer ${token}` },
-        });
-
-        const data = await response.json();
-
-        if (data.success) {
-          await loadPages();
-          return { success: true };
-        }
-
-        return { success: false, error: data.error || "Failed to restore page" };
+        const result = await restorePageMutation.mutateAsync(pageId);
+        return result.success
+          ? { success: true }
+          : { success: false, error: "Failed to restore page" };
       } catch (error) {
-        const errorMsg =
-          error instanceof Error ? error.message : "Failed to restore page";
-        console.error("Restore page error:", errorMsg);
-        return { success: false, error: errorMsg };
+        return {
+          success: false,
+          error:
+            error instanceof Error ? error.message : "Failed to restore page",
+        };
       }
     },
-    [token, loadPages]
+    [restorePageMutation]
   );
 
-  // Duplicate page (not implemented in Convex yet, placeholder for now)
-  const duplicatePage = useCallback(
-    async (
-      pageId: string
-    ): Promise<{ success: boolean; pageId?: string; error?: string }> => {
-      // TODO: Implement duplication in Convex backend
-      console.log("Duplicating page:", { pageId });
-      return {
-        success: false,
-        error: "Duplicate functionality not yet implemented",
-      };
-    },
-    []
-  );
-
-  // Copy page link
-  const copyPageLink = useCallback(
-    async (pageId: string): Promise<{ success: boolean; error?: string }> => {
-      try {
-        // Generate page URL (adjust based on your routing structure)
-        const pageUrl = `${window.location.origin}/page/${pageId}`;
-
-        // Copy to clipboard
-        await navigator.clipboard.writeText(pageUrl);
-
-        console.log("Copied page link:", { pageId, url: pageUrl });
-        return { success: true };
-      } catch (error) {
-        const errorMsg =
-          error instanceof Error ? error.message : "Failed to copy link";
-        console.error("Copy page link error:", errorMsg);
-        return { success: false, error: errorMsg };
-      }
-    },
-    []
-  );
-
-  // Refresh pages
-  const refreshPages = useCallback(async () => {
-    await loadPages();
-  }, [loadPages]);
-
-  // Clear error
-  const clearError = useCallback(() => {
-    setState((prev) => ({ ...prev, error: null }));
+  const duplicatePage = useCallback(async (pageId: string) => {
+    // TODO: Implement duplication in backend
+    console.log("Duplicating page:", { pageId });
+    return {
+      success: false,
+      error: "Duplicate functionality not yet implemented",
+    };
   }, []);
 
-  // Load pages when workspace changes
-  useEffect(() => {
-    loadPages();
-  }, [loadPages]);
+  const copyPageLink = useCallback(async (pageId: string) => {
+    try {
+      const pageUrl = `${window.location.origin}/page/${pageId}`;
+      await navigator.clipboard.writeText(pageUrl);
+      console.log("Copied page link:", { pageId, url: pageUrl });
+      return { success: true };
+    } catch (error) {
+      const errorMsg =
+        error instanceof Error ? error.message : "Failed to copy link";
+      console.error("Copy page link error:", errorMsg);
+      return { success: false, error: errorMsg };
+    }
+  }, []);
 
-  return (
-    <PageContext.Provider
-      value={{
-        ...state,
-        createPage,
-        updatePage,
-        deletePage,
-        toggleFavorite,
-        archivePage,
-        restorePage,
-        duplicatePage,
-        copyPageLink,
-        refreshPages,
-        clearError,
-      }}
-    >
-      {children}
-    </PageContext.Provider>
-  );
+  const refreshPages = useCallback(async () => {
+    await refetchPages();
+  }, [refetchPages]);
+
+  const clearError = useCallback(() => {
+    queryClient.resetQueries({ queryKey: ["pages"] });
+  }, [queryClient]);
+
+  const value: PageContextValue = {
+    pages: pagesData?.pages || [],
+    favorites: pagesData?.favorites || [],
+    recent: pagesData?.recent || [],
+    isLoading: authLoading || workspaceLoading || pagesLoading,
+    error: null,
+    createPage,
+    updatePage,
+    deletePage,
+    toggleFavorite,
+    archivePage,
+    restorePage,
+    duplicatePage,
+    copyPageLink,
+    refreshPages,
+    clearError,
+  };
+
+  return <PageContext.Provider value={value}>{children}</PageContext.Provider>;
 }
 
 export function usePage() {

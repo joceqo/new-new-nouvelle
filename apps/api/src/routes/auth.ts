@@ -29,11 +29,11 @@ export function createAuthRoutes() {
   const isTest =
     process.env.NODE_ENV === "test" || process.env.TEST_MODE === "true";
   const isDev = process.env.NODE_ENV === "development" || !process.env.NODE_ENV; // Default to dev if NODE_ENV not set
-  
+
   // Log the environment for debugging
-  authLogger.info({ 
-    NODE_ENV: process.env.NODE_ENV, 
-    isTest, 
+  authLogger.info({
+    NODE_ENV: process.env.NODE_ENV,
+    isTest,
     isDev,
     rateLimitingEnabled: !isTest && !isDev
   }, "Auth routes environment configuration");
@@ -80,6 +80,8 @@ export function createAuthRoutes() {
         },
       })
     );
+  } else {
+    authLogger.info("✅ Rate limiting DISABLED (development/test mode)");
   }
 
   return (

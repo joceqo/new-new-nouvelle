@@ -4,10 +4,10 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "bun --watch src/index.ts",
+    "dev": "NODE_ENV=development bun --watch src/index.ts",
     "dev:test": "bun --watch --env-file=.env.test src/index.ts",
     "build": "tsc",
-    "start": "bun src/index.ts",
+    "start": "NODE_ENV=production bun src/index.ts",
     "typecheck": "tsc --noEmit",
     "test": "bun test --preload ./src/test-setup.ts",
     "test:watch": "bun test --watch --preload ./src/test-setup.ts"

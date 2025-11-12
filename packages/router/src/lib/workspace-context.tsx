@@ -1,4 +1,5 @@
-import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
+import React, { createContext, useContext, useCallback } from 'react';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import type { WorkspaceState } from './types';
 import { workspaceApiClient } from './api-client';
 import { useAuth } from './auth-context';
@@ -13,275 +14,188 @@ interface WorkspaceContextValue extends WorkspaceState {
   clearError: () => void;
 }
 
-interface WorkspaceStateExtended extends WorkspaceState {
-  error: string | null;
-}
-
 const WorkspaceContext = createContext<WorkspaceContextValue | undefined>(undefined);
 
 const ACTIVE_WORKSPACE_KEY = 'nouvelle_active_workspace_id';
 
 export function WorkspaceProvider({ children }: { children: React.ReactNode }) {
-  const { token, isAuthenticated } = useAuth();
-  const [state, setState] = useState<WorkspaceStateExtended>({
-    workspaces: [],
-    activeWorkspace: null,
-    isLoading: true,
-    error: null,
-  });
+  const { token, isAuthenticated, isLoading: authLoading } = useAuth();
+  const queryClient = useQueryClient();
 
-  // Load workspaces from API
-  const loadWorkspaces = useCallback(async () => {
-    console.log('🏢 [WORKSPACE] loadWorkspaces called', { hasToken: !!token, isAuthenticated });
+  // Query for workspaces - only runs when authenticated
+  const {
+    data: workspacesData,
+    isLoading: workspacesLoading,
+    refetch: refetchWorkspaces,
+  } = useQuery({
+    queryKey: ['workspaces', token],
+    queryFn: async () => {
+      if (!token || !isAuthenticated) {
+        console.log('[WORKSPACE] No token or not authenticated, returning empty');
+        return { workspaces: [], activeWorkspace: null };
+      }
 
-    if (!token || !isAuthenticated) {
-      console.log('🏢 [WORKSPACE] No token or not authenticated, clearing workspaces');
-      setState({
-        workspaces: [],
-        activeWorkspace: null,
-        isLoading: false,
-        error: null,
-      });
-      return;
-    }
-
-    try {
-      console.log('🏢 [WORKSPACE] Calling workspaceApiClient.listWorkspaces...');
+      console.log('[WORKSPACE] Fetching workspaces...');
       const response = await workspaceApiClient.listWorkspaces(token);
-      console.log('🏢 [WORKSPACE] API Response:', response);
+      console.log('[WORKSPACE] API Response:', response);
 
       if (response.success && response.workspaces) {
         const workspaces = response.workspaces;
-        console.log('🏢 [WORKSPACE] Workspaces loaded successfully:', {
-          count: workspaces.length,
-          workspaces: workspaces.map(w => ({ id: w.id, name: w.name, icon: w.icon }))
-        });
-
-        // Get saved active workspace ID from localStorage
         const savedActiveId = localStorage.getItem(ACTIVE_WORKSPACE_KEY);
+        const activeWorkspace = workspaces.find(w => w.id === savedActiveId) || workspaces[0] || null;
 
-        // Try to find the saved active workspace, or use the first one
-        let activeWorkspace = workspaces.find(w => w.id === savedActiveId) || workspaces[0] || null;
-        console.log('🏢 [WORKSPACE] Active workspace set:', activeWorkspace ? { id: activeWorkspace.id, name: activeWorkspace.name } : null);
-
-        setState({
-          workspaces,
-          activeWorkspace,
-          isLoading: false,
-          error: null,
-        });
-
-        // Save the active workspace ID
         if (activeWorkspace) {
           localStorage.setItem(ACTIVE_WORKSPACE_KEY, activeWorkspace.id);
         }
-      } else {
-        console.warn('🏢 [WORKSPACE] No workspaces in response or request failed:', response);
-        setState({
-          workspaces: [],
-          activeWorkspace: null,
-          isLoading: false,
-          error: null,
-        });
-      }
-    } catch (error) {
-      console.error('🏢 [WORKSPACE] Load workspaces error:', error);
-      setState({
-        workspaces: [],
-        activeWorkspace: null,
-        isLoading: false,
-        error: error instanceof Error ? error.message : 'Failed to load workspaces',
-      });
-    }
-  }, [token, isAuthenticated]);
 
-  // Switch active workspace
+        console.log('[WORKSPACE] Workspaces loaded:', {
+          count: workspaces.length,
+          activeWorkspaceId: activeWorkspace?.id,
+        });
+
+        return { workspaces, activeWorkspace };
+      }
+
+      console.log('[WORKSPACE] No workspaces found or request failed');
+      return { workspaces: [], activeWorkspace: null };
+    },
+    enabled: !!token && isAuthenticated && !authLoading, // THIS FIXES THE RACE CONDITION
+    staleTime: 1 * 60 * 1000, // 1 minute
+    gcTime: 5 * 60 * 1000, // 5 minutes
+  });
+
+  // Create workspace mutation
+  const createWorkspaceMutation = useMutation({
+    mutationFn: async ({ name, icon }: { name: string; icon?: string }) => {
+      if (!token) throw new Error('Not authenticated');
+      return workspaceApiClient.createWorkspace(name, token, icon);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['workspaces'] });
+    },
+  });
+
+  // Update workspace mutation
+  const updateWorkspaceMutation = useMutation({
+    mutationFn: async ({ workspaceId, updates }: { workspaceId: string; updates: { name?: string; icon?: string } }) => {
+      if (!token) throw new Error('Not authenticated');
+      return workspaceApiClient.updateWorkspace(workspaceId, token, updates);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['workspaces'] });
+    },
+  });
+
+  // Delete workspace mutation
+  const deleteWorkspaceMutation = useMutation({
+    mutationFn: async (workspaceId: string) => {
+      if (!token) throw new Error('Not authenticated');
+      return workspaceApiClient.deleteWorkspace(workspaceId, token);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['workspaces'] });
+    },
+  });
+
+  // Invite member mutation
+  const inviteMemberMutation = useMutation({
+    mutationFn: async ({ workspaceId, email }: { workspaceId: string; email: string }) => {
+      if (!token) throw new Error('Not authenticated');
+      return workspaceApiClient.inviteMember(workspaceId, email, token);
+    },
+  });
+
+  // Actions
   const switchWorkspace = useCallback((workspaceId: string) => {
-    setState(prev => {
-      const newActiveWorkspace = prev.workspaces.find(w => w.id === workspaceId) || null;
+    const workspace = workspacesData?.workspaces.find(w => w.id === workspaceId);
+    if (workspace) {
+      localStorage.setItem(ACTIVE_WORKSPACE_KEY, workspaceId);
+      // Update the query cache with new active workspace
+      queryClient.setQueryData(['workspaces', token], (old: any) => ({
+        ...old,
+        activeWorkspace: workspace,
+      }));
+      console.log('[WORKSPACE] Switched to workspace:', workspaceId);
+    }
+  }, [workspacesData?.workspaces, queryClient, token]);
 
-      if (newActiveWorkspace) {
-        localStorage.setItem(ACTIVE_WORKSPACE_KEY, newActiveWorkspace.id);
-      }
-
+  const createWorkspace = useCallback(async (name: string, icon?: string) => {
+    try {
+      const result = await createWorkspaceMutation.mutateAsync({ name, icon });
+      return result.success
+        ? { success: true, workspaceId: result.workspaceId }
+        : { success: false, error: 'Failed to create workspace' };
+    } catch (error) {
       return {
-        ...prev,
-        activeWorkspace: newActiveWorkspace,
+        success: false,
+        error: error instanceof Error ? error.message : 'Failed to create workspace',
       };
-    });
-  }, []);
-
-  // Create new workspace
-  const createWorkspace = useCallback(async (name: string, icon?: string): Promise<{ success: boolean; workspaceId?: string; error?: string }> => {
-    if (!token) {
-      const errorMsg = 'Not authenticated';
-      setState(prev => ({ ...prev, error: errorMsg }));
-      return { success: false, error: errorMsg };
     }
+  }, [createWorkspaceMutation]);
 
-    try {
-      const response = await workspaceApiClient.createWorkspace(name, token, icon);
-
-      if (response.success && response.workspaceId) {
-        // Reload workspaces to get the new one
-        await loadWorkspaces();
-        setState(prev => ({ ...prev, error: null }));
-        return { success: true, workspaceId: response.workspaceId };
-      }
-
-      const errorMsg = 'Failed to create workspace';
-      setState(prev => ({ ...prev, error: errorMsg }));
-      return { success: false, error: errorMsg };
-    } catch (error) {
-      const errorMsg = error instanceof Error ? error.message : 'Failed to create workspace';
-      console.error('Create workspace error:', errorMsg, error);
-      setState(prev => ({ ...prev, error: errorMsg }));
-      return { success: false, error: errorMsg };
-    }
-  }, [token, loadWorkspaces]);
-
-  // Refresh workspaces
   const refreshWorkspaces = useCallback(async () => {
-    await loadWorkspaces();
-  }, [loadWorkspaces]);
+    await refetchWorkspaces();
+  }, [refetchWorkspaces]);
 
-  // Update workspace
-  const updateWorkspace = useCallback(async (
-    workspaceId: string,
-    updates: { name?: string; icon?: string }
-  ): Promise<{ success: boolean; error?: string }> => {
-    if (!token) {
-      const errorMsg = 'Not authenticated';
-      setState(prev => ({ ...prev, error: errorMsg }));
-      return { success: false, error: errorMsg };
-    }
-
+  const updateWorkspace = useCallback(async (workspaceId: string, updates: { name?: string; icon?: string }) => {
     try {
-      const response = await workspaceApiClient.updateWorkspace(workspaceId, token, updates);
-
-      if (response.success) {
-        // Update local state
-        setState(prev => ({
-          ...prev,
-          workspaces: prev.workspaces.map(w =>
-            w.id === workspaceId ? { ...w, ...updates } : w
-          ),
-          activeWorkspace: prev.activeWorkspace?.id === workspaceId
-            ? { ...prev.activeWorkspace, ...updates }
-            : prev.activeWorkspace,
-          error: null,
-        }));
-        return { success: true };
-      }
-
-      const errorMsg = 'error' in response ? (response as any).error : 'Failed to update workspace';
-      setState(prev => ({ ...prev, error: errorMsg }));
-      return { success: false, error: errorMsg };
+      const result = await updateWorkspaceMutation.mutateAsync({ workspaceId, updates });
+      return result.success
+        ? { success: true }
+        : { success: false, error: 'Failed to update workspace' };
     } catch (error) {
-      const errorMsg = error instanceof Error ? error.message : 'Failed to update workspace';
-      console.error('Update workspace error:', errorMsg, error);
-      setState(prev => ({ ...prev, error: errorMsg }));
-      return { success: false, error: errorMsg };
+      return {
+        success: false,
+        error: error instanceof Error ? error.message : 'Failed to update workspace',
+      };
     }
-  }, [token]);
+  }, [updateWorkspaceMutation]);
 
-  // Delete workspace
-  const deleteWorkspace = useCallback(async (workspaceId: string): Promise<{ success: boolean; error?: string }> => {
-    if (!token) {
-      const errorMsg = 'Not authenticated';
-      setState(prev => ({ ...prev, error: errorMsg }));
-      return { success: false, error: errorMsg };
-    }
-
+  const deleteWorkspace = useCallback(async (workspaceId: string) => {
     try {
-      const response = await workspaceApiClient.deleteWorkspace(workspaceId, token);
-
-      if (response.success) {
-        setState(prev => {
-          const newWorkspaces = prev.workspaces.filter(w => w.id !== workspaceId);
-          const wasActive = prev.activeWorkspace?.id === workspaceId;
-
-          return {
-            ...prev,
-            workspaces: newWorkspaces,
-            activeWorkspace: wasActive ? (newWorkspaces[0] || null) : prev.activeWorkspace,
-            error: null,
-          };
-        });
-        return { success: true };
-      }
-
-      const errorMsg = 'error' in response ? (response as any).error : 'Failed to delete workspace';
-      setState(prev => ({ ...prev, error: errorMsg }));
-      return { success: false, error: errorMsg };
+      const result = await deleteWorkspaceMutation.mutateAsync(workspaceId);
+      return result.success
+        ? { success: true }
+        : { success: false, error: 'Failed to delete workspace' };
     } catch (error) {
-      const errorMsg = error instanceof Error ? error.message : 'Failed to delete workspace';
-      console.error('Delete workspace error:', errorMsg, error);
-      setState(prev => ({ ...prev, error: errorMsg }));
-      return { success: false, error: errorMsg };
+      return {
+        success: false,
+        error: error instanceof Error ? error.message : 'Failed to delete workspace',
+      };
     }
-  }, [token]);
+  }, [deleteWorkspaceMutation]);
 
-  // Invite member
-  const inviteMember = useCallback(async (
-    workspaceId: string,
-    email: string
-  ): Promise<{ success: boolean; inviteLink?: string; error?: string }> => {
-    if (!token) {
-      const errorMsg = 'Not authenticated';
-      setState(prev => ({ ...prev, error: errorMsg }));
-      return { success: false, error: errorMsg };
-    }
-
+  const inviteMember = useCallback(async (workspaceId: string, email: string) => {
     try {
-      const result = await workspaceApiClient.inviteMember(workspaceId, email, token);
-      if (result.success) {
-        setState(prev => ({ ...prev, error: null }));
-      } else {
-        setState(prev => ({ ...prev, error: result.error || 'Failed to invite member' }));
-      }
+      const result = await inviteMemberMutation.mutateAsync({ workspaceId, email });
       return result;
     } catch (error) {
-      const errorMsg = error instanceof Error ? error.message : 'Failed to invite member';
-      console.error('Invite member error:', errorMsg, error);
-      setState(prev => ({ ...prev, error: errorMsg }));
-      return { success: false, error: errorMsg };
+      return {
+        success: false,
+        error: error instanceof Error ? error.message : 'Failed to invite member',
+      };
     }
-  }, [token]);
+  }, [inviteMemberMutation]);
 
-  // Clear error state
   const clearError = useCallback(() => {
-    setState(prev => ({ ...prev, error: null }));
-  }, []);
+    queryClient.resetQueries({ queryKey: ['workspaces'] });
+  }, [queryClient]);
 
-  // Load workspaces when authenticated
-  useEffect(() => {
-    if (isAuthenticated && token) {
-      loadWorkspaces();
-    } else {
-      setState({
-        workspaces: [],
-        activeWorkspace: null,
-        isLoading: false,
-        error: null,
-      });
-      localStorage.removeItem(ACTIVE_WORKSPACE_KEY);
-    }
-  }, [isAuthenticated, token, loadWorkspaces]);
+  const value: WorkspaceContextValue = {
+    workspaces: workspacesData?.workspaces || [],
+    activeWorkspace: workspacesData?.activeWorkspace || null,
+    isLoading: authLoading || workspacesLoading,
+    switchWorkspace,
+    createWorkspace,
+    refreshWorkspaces,
+    updateWorkspace,
+    deleteWorkspace,
+    inviteMember,
+    clearError,
+  };
 
   return (
-    <WorkspaceContext.Provider
-      value={{
-        ...state,
-        switchWorkspace,
-        createWorkspace,
-        refreshWorkspaces,
-        updateWorkspace,
-        deleteWorkspace,
-        inviteMember,
-        clearError,
-      }}
-    >
+    <WorkspaceContext.Provider value={value}>
       {children}
     </WorkspaceContext.Provider>
   );

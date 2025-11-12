@@ -2,6 +2,9 @@
 export { router } from "./router";
 export type { Router } from "./router";
 
+// Export React Query client
+export { queryClient } from "./lib/query-client";
+
 // Export route tree
 export { routeTree } from "./route-tree";
 export type { RouteTree } from "./route-tree";
