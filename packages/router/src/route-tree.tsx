@@ -1,5 +1,5 @@
-import { createRootRoute, createRoute } from "@tanstack/react-router";
-import { LoginPage } from "./pages/login/LoginPage";
+import { createRootRoute, createRoute, redirect } from "@tanstack/react-router";
+import { LoginForm } from "./pages/login/LoginForm";
 import { OnboardingPage } from "./pages/onboarding/OnboardingPage";
 import { MagicLinkPage } from "./pages/auth/MagicLinkPage";
 import { GettingStartedPage } from "./pages/getting-started/GettingStartedPage";
@@ -7,6 +7,7 @@ import { InvitePage } from "./pages/invite/InvitePage";
 import { PageView } from "./pages/page/PageView";
 import { HomePage } from "./pages/home/HomePage";
 import { RootLayout, AuthenticatedLayout } from "./layouts";
+import type { AppRouterContext } from "./router";
 
 // Root route - base layout wrapper for all routes
 export const rootRoute = createRootRoute({
@@ -18,22 +19,88 @@ export const rootRoute = createRootRoute({
 export const appRoute = createRoute({
   getParentRoute: () => rootRoute,
   id: "app",
+  beforeLoad: async ({ context }) => {
+    const { auth, workspace } = context as AppRouterContext;
+
+    // Wait for auth AND workspace to finish loading
+    if (auth.isLoading || workspace.isLoading) {
+      return;
+    }
+
+    // Redirect to login if not authenticated
+    if (!auth.isAuthenticated) {
+      throw redirect({ to: "/login" });
+    }
+
+    // Redirect to onboarding if no workspaces (after loading is complete)
+    if (workspace.workspaces.length === 0) {
+      throw redirect({ to: "/onboarding" });
+    }
+  },
   component: AuthenticatedLayout,
 });
 
 // Public routes (no sidebar)
-// Index route - login page
+// Index route - login page with smart redirect
 export const indexRoute = createRoute({
   getParentRoute: () => rootRoute,
   path: "/",
-  component: LoginPage,
+  beforeLoad: async ({ context }) => {
+    const { auth, workspace } = context as AppRouterContext;
+
+    // Wait for auth and workspace to finish loading
+    if (auth.isLoading || workspace.isLoading) {
+      return;
+    }
+
+    if (auth.isAuthenticated) {
+      if (workspace.workspaces.length > 0) {
+        // User has workspaces, check for last visited page or go to home
+        const lastVisitedPage = localStorage.getItem('nouvelle_last_visited_page');
+        if (lastVisitedPage && lastVisitedPage !== '/login' && lastVisitedPage !== '/onboarding') {
+          throw redirect({ to: lastVisitedPage as any });
+        } else {
+          throw redirect({ to: "/home" });
+        }
+      } else {
+        // New user, redirect to onboarding
+        throw redirect({ to: "/onboarding" });
+      }
+    }
+    // If not authenticated, continue to render LoginForm
+  },
+  component: LoginForm,
 });
 
-// Login route
+// Login route with smart redirect
 export const loginRoute = createRoute({
   getParentRoute: () => rootRoute,
   path: "/login",
-  component: LoginPage,
+  beforeLoad: async ({ context }) => {
+    const { auth, workspace } = context as AppRouterContext;
+
+    // Wait for auth and workspace to finish loading
+    if (auth.isLoading || workspace.isLoading) {
+      return;
+    }
+
+    if (auth.isAuthenticated) {
+      if (workspace.workspaces.length > 0) {
+        // User has workspaces, check for last visited page or go to home
+        const lastVisitedPage = localStorage.getItem('nouvelle_last_visited_page');
+        if (lastVisitedPage && lastVisitedPage !== '/login' && lastVisitedPage !== '/onboarding') {
+          throw redirect({ to: lastVisitedPage as any });
+        } else {
+          throw redirect({ to: "/home" });
+        }
+      } else {
+        // New user, redirect to onboarding
+        throw redirect({ to: "/onboarding" });
+      }
+    }
+    // If not authenticated, continue to render LoginForm
+  },
+  component: LoginForm,
 });
 
 // Onboarding route
