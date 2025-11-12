@@ -6,6 +6,7 @@
 import * as React from "react";
 import { X } from "lucide-react";
 import { cn } from "@/lib/utils";
+import Flex from "@/components/design_system/Layout/Flex";
 
 export interface SheetProps {
   open: boolean;
@@ -132,13 +133,16 @@ export interface SheetHeaderProps
 
 export const SheetHeader = React.forwardRef<HTMLDivElement, SheetHeaderProps>(
   ({ children, className, ...props }, ref) => (
-    <div
+    <Flex
       ref={ref}
-      className={cn("flex flex-col space-y-2 text-left pb-4", className)}
+      direction="column"
+      gap="2"
+      pb="4"
+      className={cn("text-left", className)}
       {...props}
     >
       {children}
-    </div>
+    </Flex>
   )
 );
 SheetHeader.displayName = "SheetHeader";
@@ -189,13 +193,14 @@ export interface SheetBodyProps extends React.HTMLAttributes<HTMLDivElement> {
 
 export const SheetBody = React.forwardRef<HTMLDivElement, SheetBodyProps>(
   ({ children, className, ...props }, ref) => (
-    <div
+    <Flex
       ref={ref}
-      className={cn("flex-1 overflow-y-auto", className)}
+      grow="1"
+      className={cn("overflow-y-auto", className)}
       {...props}
     >
       {children}
-    </div>
+    </Flex>
   )
 );
 SheetBody.displayName = "SheetBody";

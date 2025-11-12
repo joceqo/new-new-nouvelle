@@ -6,6 +6,7 @@
 import * as React from "react";
 import { Search, X } from "lucide-react";
 import { cn } from "@/lib/utils";
+import Flex from "@/components/design_system/Layout/Flex";
 
 export interface CommandProps {
   open: boolean;
@@ -105,7 +106,7 @@ export const CommandInput = React.forwardRef<
   );
 
   return (
-    <div className="flex items-center border-b border-[var(--color-divider)] px-4 py-3">
+    <Flex align="center" className="border-b border-[var(--color-divider)]" px="4" py="3">
       <Search className="mr-2 h-5 w-5 shrink-0 text-[var(--color-icon-default)]" />
       <input
         ref={combinedRef}
@@ -118,7 +119,7 @@ export const CommandInput = React.forwardRef<
         )}
         {...props}
       />
-    </div>
+    </Flex>
   );
 });
 CommandInput.displayName = "CommandInput";

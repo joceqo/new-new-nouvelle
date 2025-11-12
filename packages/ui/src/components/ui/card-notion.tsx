@@ -10,6 +10,7 @@
 import * as React from "react";
 import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "@/lib/utils";
+import Flex from "@/components/design_system/Layout/Flex";
 
 const cardVariants = cva(
   // Base card styles - minimal and clean like Notion
@@ -78,18 +79,21 @@ const CardHeader = React.forwardRef<
   HTMLDivElement,
   React.HTMLAttributes<HTMLDivElement> & { icon?: React.ReactNode }
 >(({ className, icon, children, ...props }, ref) => (
-  <div
+  <Flex
     ref={ref}
-    className={cn("flex items-start gap-3 mb-2", className)}
+    align="start"
+    gap="3"
+    mb="2"
+    className={className}
     {...props}
   >
     {icon && (
-      <div className="flex items-center justify-center w-8 h-8 rounded bg-[var(--color-bg-muted)]">
+      <Flex align="center" justify="center" className="w-8 h-8 rounded bg-[var(--color-bg-muted)]">
         {icon}
-      </div>
+      </Flex>
     )}
-    <div className="flex-1 min-w-0">{children}</div>
-  </div>
+    <Flex grow="1" className="min-w-0">{children}</Flex>
+  </Flex>
 ));
 CardHeader.displayName = "CardHeader";
 
@@ -151,10 +155,13 @@ const CardFooter = React.forwardRef<
   HTMLDivElement,
   React.HTMLAttributes<HTMLDivElement>
 >(({ className, ...props }, ref) => (
-  <div
+  <Flex
     ref={ref}
+    align="center"
+    gap="2"
+    mt="3"
+    pt="3"
     className={cn(
-      "flex items-center gap-2 mt-3 pt-3",
       "border-t border-[var(--color-divider)]",
       // Actions appear on hover (Notion pattern)
       "opacity-0 group-hover:opacity-100 transition-opacity duration-200",

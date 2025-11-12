@@ -6,6 +6,7 @@
 import * as React from "react";
 import { Clock } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import Flex from "@/components/design_system/Layout/Flex";
 
 export interface RecentPage {
   id: string;
@@ -59,19 +60,19 @@ export function Home({ recentPages = [], onPageClick }: HomeProps) {
   const greeting = getGreeting();
 
   return (
-    <div className="flex flex-col h-full overflow-auto p-6 lg:p-12">
+    <Flex direction="column" className="h-full overflow-auto" p={{ initial: "6", lg: "8" }}>
       {/* Greeting Header */}
-      <div className="mb-8">
-        <div className="flex items-center gap-2 mb-2">
+      <Flex direction="column" mb="6">
+        <Flex align="center" gap="2" mb="2">
           <Clock className="w-5 h-5 text-[var(--color-icon-default)]" />
           <span className="text-sm text-[var(--color-text-emphasis-medium)]">
             {formatTime(new Date())}
           </span>
-        </div>
+        </Flex>
         <h1 className="text-3xl font-semibold text-[var(--color-text-primary)]">
           {greeting}
         </h1>
-      </div>
+      </Flex>
 
       {/* Recently Visited Pages */}
       {recentPages.length > 0 && (
@@ -88,18 +89,18 @@ export function Home({ recentPages = [], onPageClick }: HomeProps) {
                 onClick={() => onPageClick?.(page.id)}
               >
                 <CardHeader>
-                  <div className="flex items-center gap-3">
+                  <Flex align="center" gap="3">
                     {page.icon ? (
                       <div className="text-2xl">{page.icon}</div>
                     ) : (
-                      <div className="w-8 h-8 rounded bg-[var(--color-bg-muted)] flex items-center justify-center text-[var(--color-text-muted)]">
+                      <Flex align="center" justify="center" className="w-8 h-8 rounded bg-[var(--color-bg-muted)] text-[var(--color-text-muted)]">
                         📄
-                      </div>
+                      </Flex>
                     )}
                     <CardTitle className="flex-1 truncate">
                       {page.title}
                     </CardTitle>
-                  </div>
+                  </Flex>
                 </CardHeader>
                 <CardContent>
                   <span className="text-xs text-[var(--color-text-emphasis-low)]">
@@ -114,17 +115,17 @@ export function Home({ recentPages = [], onPageClick }: HomeProps) {
 
       {/* Empty State */}
       {recentPages.length === 0 && (
-        <div className="flex-1 flex items-center justify-center">
-          <div className="text-center max-w-md">
+        <Flex grow="1" align="center" justify="center">
+          <Flex direction="column" align="center" className="max-w-md">
             <h2 className="text-xl font-semibold text-[var(--color-text-primary)] mb-2">
               Welcome to your workspace
             </h2>
             <p className="text-sm text-[var(--color-text-emphasis-medium)]">
               Start by creating a new page or opening an existing one
             </p>
-          </div>
-        </div>
+          </Flex>
+        </Flex>
       )}
-    </div>
+    </Flex>
   );
 }
