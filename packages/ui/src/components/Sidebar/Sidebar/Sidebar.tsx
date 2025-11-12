@@ -8,7 +8,6 @@ import { Flex, ScrollArea, Separator } from "@radix-ui/themes";
 import {
   Search,
   Home,
-  Sparkles,
   Inbox,
   User,
   Trash2,
@@ -42,9 +41,6 @@ export interface SidebarProps {
   // Inline inbox props
   showInbox?: boolean;
   onInboxClose?: () => void;
-
-  // Scroll area styling
-  scrollAreaClassName?: string;
 }
 
 export const Sidebar: React.FC<SidebarProps> = ({
@@ -65,7 +61,6 @@ export const Sidebar: React.FC<SidebarProps> = ({
   onInboxClick,
   showInbox = false,
   onInboxClose,
-  scrollAreaClassName = "sidebar-scroll-area",
 }) => {
   const [isHamburgerShown, setIsHamburgerShown] = React.useState(false);
   const [isHamburgerHovered, setIsHamburgerHovered] = React.useState(false);

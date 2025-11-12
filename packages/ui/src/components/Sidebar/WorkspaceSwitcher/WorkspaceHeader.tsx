@@ -5,6 +5,7 @@ import {
   ChevronsRight,
   SquarePen,
   LogOut,
+  Settings,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import {
@@ -17,6 +18,9 @@ import {
 import { WorkspaceIcon } from "@/components/Sidebar/WorkspaceSwitcher/WorkspaceIcon";
 import { IconWrapper } from "@/components/IconWrapper/IconWrapper";
 import { Check, Plus } from "lucide-react";
+import { Flex, Separator } from "@radix-ui/themes";
+import { Button } from "@/components/ui/button";
+import { SettingsDialog } from "@/components/Sidebar/WorkspaceSwitcher/SettingsDialog";
 
 export interface Workspace {
   id: string;
@@ -61,6 +65,7 @@ export const WorkspaceHeader = React.forwardRef<
     ref
   ) => {
     const [dropdownOpen, setDropdownOpen] = React.useState(false);
+    const [settingsOpen, setSettingsOpen] = React.useState(false);
 
     return (
       <div
@@ -75,9 +80,11 @@ export const WorkspaceHeader = React.forwardRef<
         {/* Workspace Switcher Dropdown */}
         <DropdownMenu open={dropdownOpen} onOpenChange={setDropdownOpen}>
           <DropdownMenuTrigger asChild>
-            <div
+            <Flex
+              gap="2"
+              align="center"
               className={cn(
-                "flex min-w-0 flex-1 items-center gap-2 rounded px-1 py-0.5 text-sm cursor-pointer",
+                "min-w-0 flex-1 rounded px-1 py-0.5 text-sm cursor-pointer",
                 "text-[var(--sidebar-header-text)]",
                 "focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--palette-blue-text)] focus-visible:ring-offset-1",
                 "transition-colors duration-150"
@@ -101,7 +108,7 @@ export const WorkspaceHeader = React.forwardRef<
                 )}
                 variant="button"
               />
-            </div>
+            </Flex>
           </DropdownMenuTrigger>
 
           <DropdownMenuContent
@@ -111,30 +118,54 @@ export const WorkspaceHeader = React.forwardRef<
             className="w-64 rounded-lg border-[var(--color-border)] bg-[var(--color-bg-base)] p-2 shadow-md"
           >
             {/* Workspace List */}
-            {workspaces.length > 0 && (
-              <div className="space-y-0.5">
-                {workspaces.map((workspace) => (
-                  <DropdownMenuItem
-                    key={workspace.id}
-                    onSelect={() => {
-                      onWorkspaceChange(workspace.id);
-                    }}
-                    className="flex cursor-pointer items-center gap-2.5 rounded-md px-2 py-1.5 text-[var(--color-text-primary)] transition-colors duration-150 hover:bg-[var(--color-hover-subtle)] focus:bg-[var(--color-hover-subtle)]"
+
+            <Flex direction="column">
+              <Flex direction="column" className="p-1" gap="3">
+                <Flex align="center" gap="2">
+                  <WorkspaceIcon
+                    value={activeWorkspace?.icon || activeWorkspace?.name}
+                    className="shrink-0"
+                    style={{ fontSize: "20px" }}
+                  />
+                  <Flex direction="column" gap="0.5">
+                    <span>{activeWorkspace?.name}</span>
+                    <span className="text-sm">numberOfMembers</span>
+                  </Flex>
+                </Flex>
+                <Flex justify="start">
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => setSettingsOpen(true)}
                   >
-                    <WorkspaceIcon
-                      value={workspace.icon || workspace.name}
-                      style={{ fontSize: "14px" }}
-                    />
-                    <span className="flex-1 truncate text-sm">
-                      {workspace.name}
-                    </span>
-                    {activeWorkspace?.id === workspace.id && (
-                      <Check className="h-4 w-4 text-[var(--palette-blue-text)]" />
-                    )}
-                  </DropdownMenuItem>
-                ))}
-              </div>
-            )}
+                    <IconWrapper icon={Settings} size="sm" />
+                    <span>Settings</span>
+                  </Button>
+                </Flex>
+              </Flex>
+              <Separator className="!w-full" />
+
+              {workspaces?.map((workspace) => (
+                <DropdownMenuItem
+                  key={workspace.id}
+                  onSelect={() => {
+                    onWorkspaceChange(workspace.id);
+                  }}
+                  className="flex cursor-pointer items-center gap-2.5 rounded-md px-2 py-1.5 text-[var(--color-text-primary)] transition-colors duration-150 hover:bg-[var(--color-hover-subtle)] focus:bg-[var(--color-hover-subtle)]"
+                >
+                  <WorkspaceIcon
+                    value={workspace.icon || workspace.name}
+                    style={{ fontSize: "14px" }}
+                  />
+                  <span className="flex-1 truncate text-sm">
+                    {workspace.name}
+                  </span>
+                  {activeWorkspace?.id === workspace.id && (
+                    <Check className="h-4 w-4 text-[var(--palette-blue-text)]" />
+                  )}
+                </DropdownMenuItem>
+              ))}
+            </Flex>
 
             {/* Create New Workspace */}
             {onCreateWorkspace && (
@@ -190,6 +221,11 @@ export const WorkspaceHeader = React.forwardRef<
             onClick={onNewPage}
             title="New page"
           />
+        )}
+
+        {/* Settings Dialog */}
+        {!!settingsOpen && (
+          <SettingsDialog open={settingsOpen} onOpenChange={setSettingsOpen} />
         )}
       </div>
     );

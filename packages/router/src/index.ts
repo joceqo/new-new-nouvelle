@@ -71,3 +71,6 @@ export type {
 
 // Export page functionality
 export { PageProvider, usePage, type Page } from "./lib/page-context";
+
+// Export theme functionality
+export { ThemeProvider, useTheme } from "./lib/theme-context";

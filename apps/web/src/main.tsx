@@ -7,6 +7,7 @@ import {
   AuthProvider,
   WorkspaceProvider,
   PageProvider,
+  ThemeProvider,
   queryClient,
   useAuth,
   useWorkspace,
@@ -37,22 +38,28 @@ function App() {
           },
         }}
       />
-      <TanStackRouterDevtools router={router} initialIsOpen={false} />
+      <TanStackRouterDevtools
+        router={router}
+        initialIsOpen={false}
+        position="bottom-right"
+      />
     </>
   );
 }
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
-    <QueryClientProvider client={queryClient}>
-      <AuthProvider>
-        <WorkspaceProvider>
-          <PageProvider>
-            <App />
-          </PageProvider>
-        </WorkspaceProvider>
-      </AuthProvider>
-      <ReactQueryDevtools initialIsOpen={false} />
-    </QueryClientProvider>
+    <ThemeProvider>
+      <QueryClientProvider client={queryClient}>
+        <AuthProvider>
+          <WorkspaceProvider>
+            <PageProvider>
+              <App />
+            </PageProvider>
+          </WorkspaceProvider>
+        </AuthProvider>
+        <ReactQueryDevtools initialIsOpen={false} />
+      </QueryClientProvider>
+    </ThemeProvider>
   </React.StrictMode>
 );
