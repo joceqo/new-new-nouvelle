@@ -1,9 +1,10 @@
 import * as React from "react";
 import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "@/lib/utils";
+import Flex from "@/components/design_system/Layout/Flex";
 
 const avatarVariants = cva(
-  "relative flex shrink-0 overflow-hidden rounded-md bg-gray-200",
+  "relative shrink-0 overflow-hidden rounded-md bg-gray-200",
   {
     variants: {
       size: {
@@ -57,9 +58,13 @@ export const Avatar = React.forwardRef<HTMLDivElement, AvatarProps>(
             onError={() => setImageError(true)}
           />
         ) : (
-          <div className="flex h-full w-full items-center justify-center font-semibold text-gray-600">
+          <Flex
+            align="center"
+            justify="center"
+            className="h-full w-full font-semibold text-gray-600"
+          >
             {displayFallback}
-          </div>
+          </Flex>
         )}
       </div>
     );

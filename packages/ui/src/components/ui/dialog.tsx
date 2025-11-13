@@ -1,6 +1,7 @@
 import * as React from "react";
 import { X } from "lucide-react";
 import { cn } from "@/lib/utils";
+import Flex from "@/components/design_system/Layout/Flex";
 
 export interface DialogProps {
   open: boolean;
@@ -84,7 +85,7 @@ export const DialogContent = React.forwardRef<HTMLDivElement, DialogContentProps
     return (
       <>
         <DialogOverlay />
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+        <Flex align="center" justify="center" className="fixed inset-0 z-50" p="4">
           <div
             ref={ref}
             className={cn(
@@ -104,7 +105,7 @@ export const DialogContent = React.forwardRef<HTMLDivElement, DialogContentProps
               <span className="sr-only">Close</span>
             </button>
           </div>
-        </div>
+        </Flex>
       </>
     );
   }
@@ -117,13 +118,18 @@ export interface DialogHeaderProps extends React.HTMLAttributes<HTMLDivElement> 
 
 export const DialogHeader = React.forwardRef<HTMLDivElement, DialogHeaderProps>(
   ({ children, className, ...props }, ref) => (
-    <div
+    <Flex
       ref={ref}
-      className={cn("flex flex-col space-y-1.5 px-6 pt-6 pb-4", className)}
+      direction="column"
+      gap="1"
+      px="6"
+      pt="6"
+      pb="4"
+      className={className}
       {...props}
     >
       {children}
-    </div>
+    </Flex>
   )
 );
 DialogHeader.displayName = "DialogHeader";
@@ -134,13 +140,18 @@ export interface DialogFooterProps extends React.HTMLAttributes<HTMLDivElement> 
 
 export const DialogFooter = React.forwardRef<HTMLDivElement, DialogFooterProps>(
   ({ children, className, ...props }, ref) => (
-    <div
+    <Flex
       ref={ref}
-      className={cn("flex items-center justify-end gap-2 px-6 py-4 border-t border-[var(--color-divider)]", className)}
+      align="center"
+      justify="end"
+      gap="2"
+      px="6"
+      py="4"
+      className={cn("border-t border-[var(--color-divider)]", className)}
       {...props}
     >
       {children}
-    </div>
+    </Flex>
   )
 );
 DialogFooter.displayName = "DialogFooter";

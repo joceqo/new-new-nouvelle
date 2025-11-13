@@ -1,5 +1,6 @@
 import * as React from "react";
 import { cn } from "@/lib/utils";
+import Flex from "@/components/design_system/Layout/Flex";
 
 const Card = React.forwardRef<
   HTMLDivElement,
@@ -22,11 +23,14 @@ const CardHeader = React.forwardRef<
   HTMLDivElement,
   React.HTMLAttributes<HTMLDivElement>
 >(({ className, ...props }, ref) => (
-  <div
-    ref={ref}
-    className={cn("flex flex-col space-y-1.5 p-4", className)}
-    {...props}
-  />
+  <div ref={ref}>
+    <Flex
+      direction="column"
+      gap="1.5"
+      className={cn("p-4", className)}
+      {...props}
+    />
+  </div>
 ));
 CardHeader.displayName = "CardHeader";
 
@@ -52,7 +56,10 @@ const CardDescription = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <p
     ref={ref}
-    className={cn("text-sm text-[var(--color-text-emphasis-medium)]", className)}
+    className={cn(
+      "text-sm text-[var(--color-text-emphasis-medium)]",
+      className
+    )}
     {...props}
   />
 ));
@@ -70,12 +77,17 @@ const CardFooter = React.forwardRef<
   HTMLDivElement,
   React.HTMLAttributes<HTMLDivElement>
 >(({ className, ...props }, ref) => (
-  <div
-    ref={ref}
-    className={cn("flex items-center p-4 pt-0", className)}
-    {...props}
-  />
+  <div ref={ref}>
+    <Flex align="center" className={cn("p-4 pt-0", className)} {...props} />
+  </div>
 ));
 CardFooter.displayName = "CardFooter";
 
-export { Card, CardHeader, CardFooter, CardTitle, CardDescription, CardContent };
+export {
+  Card,
+  CardHeader,
+  CardFooter,
+  CardTitle,
+  CardDescription,
+  CardContent,
+};
