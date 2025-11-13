@@ -1,5 +1,6 @@
 import * as React from "react";
 import { cn } from "@/lib/utils";
+import Flex from "@/components/design_system/Layout/Flex";
 
 export interface InputOTPProps
   extends Omit<React.InputHTMLAttributes<HTMLInputElement>, "onChange"> {
@@ -41,7 +42,7 @@ const InputOTP = React.forwardRef<HTMLInputElement, InputOTPProps>(
     };
 
     return (
-      <div className={cn("flex items-center gap-2", className)}>
+      <Flex align="center" gap="2" className={className}>
         {Array.from({ length: maxLength }).map((_, index) => (
           <input
             key={index}
@@ -100,7 +101,7 @@ const InputOTP = React.forwardRef<HTMLInputElement, InputOTPProps>(
             {...props}
           />
         ))}
-      </div>
+      </Flex>
     );
   }
 );
@@ -109,7 +110,7 @@ InputOTP.displayName = "InputOTP";
 // For compatibility with the original component structure
 const InputOTPGroup: React.FC<{ children: React.ReactNode }> = ({
   children,
-}) => <div className="flex items-center gap-2">{children}</div>;
+}) => <Flex align="center" gap="2">{children}</Flex>;
 
 const InputOTPSlot: React.FC<{ index: number }> = () => null; // Not used in our implementation
 
